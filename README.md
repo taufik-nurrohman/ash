@@ -15,7 +15,7 @@ Usage
 
 ~~~ .html
 <!DOCTYPE html>
-  <html dir="ltr">
+<html dir="ltr">
   <head>
     <meta charset="utf-8">
     <link href="ash.min.css" rel="stylesheet">
