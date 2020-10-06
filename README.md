@@ -55,6 +55,7 @@ Regular expressions and class naming specifications are very inspired by the [Hi
 If you know that some tokens already have a consistent pattern, you can define their pattern as constants to be used later across languages that will get the benefit from it:
 
 ~~~ .js
+ASH.LOG = '\\b(?:false|null|true)\\b';
 ASH.NUM = '\\b-?(?:\\d+?\\.)?\\d+\\b';
 ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
 ~~~
@@ -66,17 +67,19 @@ Every language syntax basically have a structure, and usually they have the same
 Name | Description
 ---- | -----------
 `com` | Comment.
-`con` | Constant.
 `exp` | Expression. Regular expression.
 `inh` | Inherit. Used to make certain chunk inside a token to have the same color as the parent color.
 `fun` | Function. A function declaration.
 `key` | Key. Should be paired with `val`.
+`lib` | Library. Built-in objects or classes.
+`log` | [Three-valued logic](https://en.m.wikipedia.org/wiki/Three-valued_logic). Includes `false`, `null`, `true`.
 `nam` | Name. Name of function, HTML tag, etc.
 `num` | Number. Including units and modifiers, if any.
+`obj` | Object. Also class, interface.
 `par` | Parameter. As in function.
 `str` | String. Literal string.
 `tag` | Tag. As in HTML tag or document tag.
-`typ` | Type. The document type or identifier.
+`typ` | Type. Document type or identifier.
 `val` | Value. Should be paired with `key`.
 `wor` | Word. Special words that are reserved by the language parser such as `do`, `else`, `function`, `if`, `var`, `while`, etc.
 
@@ -134,8 +137,8 @@ ASH['*.json'] = function(content) {
             ASH.STR,
             // Number
             ASH.NUM,
-            // Boolean and `null`
-            '\\bfalse|null|true\\b'
+            // Logic
+            ASH.LOG
         ],
         // A helper method to generate `<span>` element with class(es)
         t = this.t;
@@ -143,8 +146,8 @@ ASH['*.json'] = function(content) {
         // `m` return the matching part(s)
         // `i` return the matched pattern index
         if (0 === i) {
-            // Attribute, String
-            return t('key.str', m[1]) + m[2] + m[3];
+            // Attribute
+            return t('key', m[1]) + m[2] + m[3];
         }
         if (1 === i) {
             // Value, String
@@ -155,8 +158,8 @@ ASH['*.json'] = function(content) {
             return t('val.num', m[0]);
         }
         if (3 === i) {
-            // Value, Word, Literal
-            return t('val.wor.lit', m[0]);
+            // Value, Logic
+            return t('val.log', m[0]);
         }
         // Other(s)
         return m[0];

@@ -58,6 +58,7 @@
     (function($$) {
 
         // Pre-defined constant(s)
+        $$.LOG = '\\b(?:false|null|true)\\b';
         $$.NUM = '\\b-?(?:\\d+?\\.)?\\d+\\b';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
 
@@ -83,7 +84,7 @@
             }
             a = src.split('/');
             min = '.min.js' === a.pop().slice(-7);
-            win.fetch(a.join('/') + '/' + x + (min ? '.min' : "") + '.js').then(function(response) {
+            win.fetch(a.join('/') + '/ash/' + x + (min ? '.min' : "") + '.js').then(function(response) {
                 return response.ok && response.text();
             }).then(function(text) {
                 if (isSet(text)) {
@@ -171,8 +172,13 @@
             return $;
         }
 
-        $.chunk = function(pattern, fn) {
-
+        $.chunk = function(pattern, fn, content) {
+            var i = 0, v,
+                r = new RegExp(pattern.join('|'), 'g');
+            while (null !== (v = r.exec(content))) {
+                fn.call(v, i);
+                ++i;
+            }
         };
 
         $.hooks = hooks;
