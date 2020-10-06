@@ -3,10 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta content="width=device-width" name="viewport">
+    <title>Demo</title>
     <link href="ash.css" rel="stylesheet">
   </head>
   <body>
-    <pre><code class="json">{&quot;foo&quot;:&quot;bar&quot;}</code></pre>
+    <pre><code class="json">{
+  &quot;num.int&quot;: 0,
+  &quot;num.flo&quot;: 0.1,
+  &quot;str&quot;: &quot;a&quot;,
+  &quot;tvl&quot;: true,
+  &quot;any&quot;: [false, null, true, &quot;a&quot;, 0, 0.1],
+}</code></pre>
     <script src="ash.js"></script>
     <script>
     document.querySelectorAll('pre > code').forEach(code => {
