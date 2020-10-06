@@ -3,7 +3,7 @@ Asynchronous Syntax Highlighter
 
 > A hard mode client-side syntax highlighter for the web.
 
-Ash aims to solve problems related to client-side syntax highlighter&rsquo;s file size which is mostly getting even bigger as the variant of the language you want to highlight increases.
+ASH aims to solve problems related to client-side syntax highlighter&rsquo;s file size which is mostly getting bigger as the language variant you want to highlight increases.
 
 Features
 --------
@@ -48,11 +48,11 @@ Methods and Properties
 Development
 -----------
 
-Regular expressions and class naming specifications are very inspired by the [Highlight.js](https://github.com/highlightjs/highlight.js) project. The API may be very ugly, but I want to prioritize the performance and size of the file for now.
+Regular expressions and class naming specifications are very inspired by the [Highlight.js](https://github.com/highlightjs/highlight.js) project. API may be very ugly, but I want to prioritize performance and size of the file for now.
 
 ### Regular Expression Specifications
 
-If you know that some tokens already have a consistent pattern, you can define their pattern as constants to be used later across languages that will get the benefit from it:
+If you already know that some tokens have a consistent pattern, you can define the pattern as constant to be used later across languages that could possibly benefit from it:
 
 ~~~ .js
 ASH.LOG = '\\b(?:false|null|true)\\b';
@@ -62,14 +62,14 @@ ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
 
 ### Class Naming Specifications
 
-Every language syntax basically have a structure, and usually they have the same kind of categorization. For example, although CSS and JavaScript are two different languages, they already have unified tokens such as _function_, _keyword_, _number_, and _string_. The following are standard class names that likely would apply to all kind of language syntax:
+Every language syntax basically have a structure, and usually they have the same kind of categorization. For example, although CSS and JavaScript are two different languages, they obviously have a unified tokens such as _function_, _keyword_, _number_, and _string_. The following are standard class names that likely would apply to all kind of language syntax:
 
 Name | Description
 ---- | -----------
 `com` | Comment.
 `exp` | Expression. Regular expression.
-`inh` | Inherit. Used to make certain chunk inside a token to have the same color as the parent color.
 `fun` | Function. A function declaration.
+`inh` | Inherit. Used to make certain chunk inside a token to have the same color as the parent color.
 `key` | Key. Should be paired with `val`.
 `lib` | Library. Built-in objects or classes.
 `log` | [Three-valued logic](https://en.m.wikipedia.org/wiki/Three-valued_logic). Includes `false`, `null`, `true`.
@@ -83,11 +83,11 @@ Name | Description
 `val` | Value. Should be paired with `key`.
 `wor` | Word. Special words that are reserved by the language parser such as `do`, `else`, `function`, `if`, `var`, `while`, etc.
 
-Others are free to be defined by developers. But each category must at least be compatible with the existing classes, and must consist of a maximum of three letters. For example, you may want to distinguish between float and integer number. You can add `flo` class together with `num`. Or, you may want to make a sub-category for number that is represented in HEX format. You can add `hex` class together with `num`.  Sub-category coloring may be added by the syntax highlighter theme designer optionally. The default color for numbers will always inherit to the `num` class.
+Others are free to be defined by developers. Each category must at least be compatible with the existing classes, and must consist of a maximum of three letters. For example, you may want to distinguish between float and integer number. You can add `flo` class together with `num`. Or, you may want to make a sub-category for number that is represented in HEX format. You can add `hex` class together with `num`.  Sub-category coloring can be added by the syntax highlighter theme designer optionally. The default color for numbers will always inherit to the `num` class.
 
 ### Adding Your Own Syntax Highlighter
 
-I don&rsquo;t want to look fancy here. The main feature of this syntax highlighter is the ability to load language definition asynchronously. About how you will mark the tokens is up to you. All you have to do is define a language category based on the file extension like this:
+I don&rsquo;t want to look fancy here. The main feature of this syntax highlighter is the ability to load language definition asynchronously. About the way you will mark the tokens is up to you. All you have to do is define a language category based on the file extension like so:
 
 ~~~ .js
 ASH['*.css'] = function(content) {};
@@ -112,18 +112,18 @@ Defining languages together with the core will make the highlighting work synchr
 └── ash.js
 ~~~
 
-The function parameter contains the plain text from the source element it contains. `this` refers to the `ASH` instance. You can get the available methods and properties from there:
+The function parameter contains the plain text version of the source element contents. `this` refers to the `ASH` instance. You can get the available methods and properties from there:
 
 ~~~ .js
 ASH['*.json'] = function(content) {
     // Mark the desired parts of your syntax here
-    content = content.replace(/[\{\}\[\]:,]/g, '<b>$&</b>')
-    // Then return the modified value
+    content = content.replace(/[\{\}\[\]:,]/g, '<b>$&</b>');
+    // Then return the modified content
     return content;
 };
 ~~~
 
-> **Tips:** Use AST parsers such as A and B  to get more accurate results. Using this usually has the side effect of a longer parsing process.
+> **Tips:** Use AST parsers such as A and B to get more accurate results. Using this usually has the side effect of a longer parsing process.
 
 Below is a simple example of using the `ash.chunk` method to mark portions of a JSON file using regular expressions:
 
@@ -131,9 +131,9 @@ Below is a simple example of using the `ash.chunk` method to mark portions of a 
 ASH['*.json'] = function(content) {
     // Set your pattern sequence to match, ordered by priority
     let pattern = [
-            // Literal string followed by `:`
+            // String followed by `:`
             '(' + ASH.STR + ')(\\s*)(:)',
-            // Literal string
+            // String
             ASH.STR,
             // Number
             ASH.NUM,
@@ -166,6 +166,11 @@ ASH['*.json'] = function(content) {
     }, content);
 };
 ~~~
+
+Limitations
+-----------
+
+ - Currently not possible to preserve HTML tags in the source code.
 
 License
 -------
