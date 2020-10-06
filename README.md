@@ -24,7 +24,9 @@ Usage
     <pre><code class="json">{&quot;foo&quot;:&quot;bar&quot;}</code></pre>
     <script src="ash.min.js"></script>
     <script>
-    document.querySelectorAll('pre > code').forEach(new ASH);
+    document.querySelectorAll('pre > code').forEach(code => {
+        new ASH(code);
+    });
     </script>
   </body>
 </html>
