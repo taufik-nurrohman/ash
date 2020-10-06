@@ -32,7 +32,7 @@ Usage
 </html>
 ~~~
 
-Exanples
+Examples
 --------
 
  - [No Idea?](https://taufik-nurrohman.github.io/ash/ash.html)
