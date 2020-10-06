@@ -35,6 +35,8 @@ Usage
 Exanples
 --------
 
+ - [No Idea?](https://taufik-nurrohman.github.io/ash/ash.html)
+
 **TODO**
 
 Settings

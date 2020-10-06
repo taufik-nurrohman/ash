@@ -1,10 +1,10 @@
 .ash {
-  background: #000;
-  color: #fff;
+  background: #2f4f4f;
+  color: #c0c0c0;
   direction: ltr;
   display: block;
   overflow: auto;
-  padding: 1em 1.5em;
+  padding: 1em 1.25em;
   text-align: left;
   white-space: pre;
 }
@@ -14,21 +14,25 @@
 }
 
 .ash .inh {
-  color: #fff; /* Same as main color */
+  color: #c0c0c0; /* Same as main color */
+}
+
+.ash .key {
+  color: #98fb98;
 }
 
 .ash .num {
-  color: #900;
+  color: #87ceeb;
 }
 
 .ash .str {
-  color: #090;
+  color: #66cdaa;
 }
 
 .ash .wor {
-  color: #f00;
+  color: #fa8072;
 }
 
 .ash .log {
-  color: #800;
+  color: #ffa07a;
 }

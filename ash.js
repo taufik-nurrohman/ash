@@ -34,7 +34,7 @@
     }
 
     function isSet(x) {
-        return 'undefined' !== typeof x || null === x;
+        return 'undefined' !== typeof x && null !== x;
     }
 
     function isString(x) {
@@ -55,11 +55,22 @@
         return node;
     }
 
+    function typeGet(classes, prefix) {
+        var m = classes && classes.match(new RegExp('\\b' + prefix + '([^\\s]+)\\b'));
+        if (m) {
+            return m[1];
+        }
+        if (classes) {
+            return classes.split(/\s+/)[0] || null;
+        }
+        return null;
+    }
+
     (function($$) {
 
         // Pre-defined constant(s)
         $$.LOG = '\\b(?:false|null|true)\\b';
-        $$.NUM = '\\b-?(?:\\d+?\\.)?\\d+\\b';
+        $$.NUM = '\\b(?:-?(?:\\d+?\\.)?\\d+(?:[eE]\\+?\\d+)?|0[xX][a-fA-F\\d]+|\\d+n)\\b';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
 
         $$.version = '0.0.0';
@@ -73,30 +84,6 @@
         $$[instances] = {};
 
         $$._ = $$.prototype;
-
-        $$._.fetch = function(x, onSuccess, onError) {
-            var $ = this,
-                source = $.source,
-                content = source[textContent],
-                a, min, url;
-            if (!src) {
-                return $;
-            }
-            a = src.split('/');
-            min = '.min.js' === a.pop().slice(-7);
-            win.fetch(a.join('/') + '/ash/' + x + (min ? '.min' : "") + '.js').then(function(response) {
-                return response.ok && response.text();
-            }).then(function(text) {
-                if (isSet(text)) {
-                    toScript(text);
-                    isFunction(onSuccess) && onSuccess.call($, content);
-                } else {
-                    isFunction(onError) && onError.call($, content);
-                }
-            }).catch(function() {
-                isFunction(onError) && onError.call($, content);
-            });
-        };
 
     })(win[name] = function(source, o) {
 
@@ -125,10 +112,6 @@
 
         // Mark current DOM as active syntax highlighter to prevent duplicate instance
         source[name] = 1;
-
-        var content = source[textContent];
-
-        source.classList.add(cn);
 
         function hookLet(name, fn) {
             if (!isSet(name)) {
@@ -173,12 +156,41 @@
         }
 
         $.chunk = function(pattern, fn, content) {
-            var i = 0, v,
+            var j = pattern.length,
                 r = new RegExp(pattern.join('|'), 'g');
-            while (null !== (v = r.exec(content))) {
-                fn.call(v, i);
-                ++i;
+            content = content.replace(r, function() {
+                var lot = Array.from(arguments),
+                    index;
+                for (var i = 0; i < j; ++i) {
+                    if ((new RegExp('^' + pattern[i] + '$')).test(lot[0])) {
+                        index = i;
+                        break;
+                    }
+                }
+                return fn.call($, lot.slice(0, -2), index);
+            });
+            return content;
+        };
+
+        $.fetch = function(x, onSuccess, onError) {
+            var a, min, url;
+            if (!src) {
+                return $;
             }
+            a = src.split('/');
+            min = '.min.js' === a.pop().slice(-7);
+            win.fetch(a.join('/') + '/ash/' + x + (min ? '.min' : "") + '.js').then(function(response) {
+                return response.ok && response.text();
+            }).then(function(text) {
+                if (isSet(text)) {
+                    toScript(text);
+                    isFunction(onSuccess) && onSuccess.call($, content);
+                } else {
+                    isFunction(onError) && onError.call($, content);
+                }
+            }).catch(function() {
+                isFunction(onError) && onError.call($, content);
+            });
         };
 
         $.hooks = hooks;
@@ -200,6 +212,25 @@
             n = n || 'span';
             return '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + content + '</' + n + '>';
         };
+
+        var content = source[textContent],
+            type = typeGet(source.className, cn + '-');
+
+        if (null !== type) {
+            source.classList.add(cn);
+            source.classList.remove(type);
+            source.classList.add(cn + '-' + type);
+            var marker = $$['*.' + type];
+            if (isFunction(marker)) {
+                source.innerHTML = marker.call($, content);
+            } else {
+                $.fetch(type, function(content) {
+                    source.innerHTML = $$['*.' + type].call($, content);
+                }, function() {});
+            }
+        }
+
+        return $;
 
     });
 
