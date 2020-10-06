@@ -1,0 +1,34 @@
+.ash {
+  background: #000;
+  color: #fff;
+  direction: ltr;
+  display: block;
+  overflow: auto;
+  padding: 1em 1.5em;
+  text-align: left;
+  white-space: pre;
+}
+
+.ash .com {
+  color: #666;
+}
+
+.ash .inh {
+  color: #fff; /* Same as main color */
+}
+
+.ash .num {
+  color: #900;
+}
+
+.ash .str {
+  color: #090;
+}
+
+.ash .wor {
+  color: #f00;
+}
+
+.ash .wor.lit {
+  color: #800;
+}

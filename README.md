@@ -50,8 +50,7 @@ Development
 
 Regular expressions and class naming specifications are very inspired by the [Highlight.js](https://github.com/highlightjs/highlight.js) project. The API may be very ugly, but I want to prioritize the performance and size of the file for now.
 
-Regular Expression Specifications
----------------------------------
+### Regular Expression Specifications
 
 If you know that some tokens already have a consistent pattern, you can define their pattern as constants to be used later across languages that will get the benefit from it:
 
@@ -60,8 +59,7 @@ ASH.NUM = '\\b-?(?:\\d+?\\.)?\\d+\\b';
 ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
 ~~~
 
-Class Naming Specifications
----------------------------
+### Class Naming Specifications
 
 Every language syntax basically have a structure, and usually they have the same kind of categorization. For example, although CSS and JavaScript are two different languages, they already have unified tokens such as _function_, _keyword_, _number_, and _string_. The following are standard class names that likely would apply to all kind of language syntax:
 
@@ -84,8 +82,7 @@ Name | Description
 
 Others are free to be defined by developers. But each category must at least be compatible with the existing classes, and must consist of a maximum of three letters. For example, you may want to distinguish between float and integer number. You can add `flo` class together with `num`. Or, you may want to make a sub-category for number that is represented in HEX format. You can add `hex` class together with `num`.  Sub-category coloring may be added by the syntax highlighter theme designer optionally. The default color for numbers will always inherit to the `num` class.
 
-Adding Your Own Syntax Highlighter
-----------------------------------
+### Adding Your Own Syntax Highlighter
 
 I don&rsquo;t want to look fancy here. The main feature of this syntax highlighter is the ability to load language definition asynchronously. About how you will mark the tokens is up to you. All you have to do is define a language category based on the file extension like this:
 
