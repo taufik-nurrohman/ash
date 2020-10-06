@@ -1,15 +1,15 @@
 ASH['*.json'] = function(content) {
     var t = this.t;
     return this.chunk([
-            // String followed by `:`
-            '(' + ASH.STR + ')(\\s*)(:)',
-            // String
-            ASH.STR,
-            // Number
-            ASH.NUM,
-            // Logic
-            ASH.LOG
-        ], function(v, i) {
+        // String, followed by `:`
+        '(' + ASH.STR + ')(\\s*)(:)',
+        // String
+        ASH.STR,
+        // Number
+        ASH.NUM,
+        // Logic
+        ASH.LOG
+    ], function(v, i) {
         if (0 === i && '"' === v[1][0]) {
             return t('key', v[1]) + v[2] + m[3];
         }
