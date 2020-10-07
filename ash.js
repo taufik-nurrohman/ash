@@ -249,12 +249,14 @@
             classSet(source, cn);
             classLet(source, type);
             classSet(source, cn + '-' + type);
-            var syntax = $$.x[type]; // Load langauge data directly or via proxy
-            if (isObject(syntax)) {
-                source.innerHTML = toSyntax.call($, syntax, content);
-            } else if (isFunction(syntax)) {
-                source.innerHTML = syntax.call($, content);
-            }
+            (async function() {
+                var syntax = await $$.x[type]; // Load langauge data directly or via proxy
+                if (isObject(syntax)) {
+                    source.innerHTML = toSyntax.call($, syntax, content);
+                } else if (isFunction(syntax)) {
+                    source.innerHTML = syntax.call($, content);
+                }
+            })();
         }
 
         return $;
