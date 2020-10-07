@@ -33,6 +33,6 @@ ASH.x.js = function(content) {
         if (6 === i || 7 === i) {
             return t('lib', v[0]);
         }
-        return t("", v[0]);
+        return t(0, v[0]);
     }, content);
 };

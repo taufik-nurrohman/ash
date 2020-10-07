@@ -22,6 +22,6 @@ ASH.x.json = function(content) {
         if (3 === i) {
             return t('val.log', v[0]);
         }
-        return t("", v[0]);
+        return t(0, v[0]);
     }, content);
 };

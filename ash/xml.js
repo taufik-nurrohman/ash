@@ -14,6 +14,6 @@ ASH.x.xml = function(content) {
                 return v[1] + t('key', v[2]) + (v[3] || "") + t('val', v[4] || "");
             }, v[3] || "") + '&gt;', 0);
         }
-        return t("", v[0]);
+        return t(0, v[0]);
     }, content);
 };
