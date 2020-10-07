@@ -1,4 +1,4 @@
-ASH['*.xml'] = function(content) {
+ASH.x.xml = function(content) {
     var chunk = this.chunk,
         t = this.t;
     return chunk(['<!--[\\s\\S]*?-->', '<(\\/?)([^\\s]+?)(\\s[^>]*)?>'], function(v, i) {

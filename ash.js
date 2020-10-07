@@ -17,6 +17,18 @@
         src = script.src,
         textContent = 'textContent';
 
+    function classHas(of, name) {
+        return of.classList.contains(name);
+    }
+
+    function classLet(of, name) {
+        of.classList.remove(name);
+    }
+
+    function classSet(of, name) {
+        of.classList.add(name);
+    }
+
     function eventLet(to, event, fn) {
         to.removeEventListener(event, fn, false);
     }
@@ -59,20 +71,25 @@
         return node;
     }
 
+    function toSyntax(syntax, content) {
+
+    }
+
     function typeGet(classes, prefix) {
+        // Prioritize class prefixed by `ash-`
         var m = classes && classes.match(toPattern('\\b' + prefix + '([^\\s]+)\\b'));
         if (m) {
             return m[1];
         }
+        // Return the first class name if any
         if (classes) {
             return classes.split(/\s+/)[0] || null;
         }
-        return null;
     }
 
     (function($$) {
 
-        // Pre-defined constant(s)
+        // Reusable pattern(s)
         $$.LOG = '\\b(?:false|null|true)\\b';
         $$.NUM = '\\b(?:-?(?:\\d+?\\.)?\\d+(?:[eE]\\+?\\d+)?|0[xX][a-fA-F\\d]+|\\d+n)\\b';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
@@ -86,6 +103,31 @@
 
         // Collect all instance(s)
         $$[instances] = {};
+
+        // Storage of language token(s)
+        $$.x = new Proxy({}, {
+            get: function(storage, key) {
+                return storage[key] || !async function() {
+                    var a, min, url;
+                    if (!src) {
+                        return;
+                    }
+                    a = src.split('/');
+                    min = '.min.js' === a.pop().slice(-7);
+                    return await win.fetch(a.join('/') + '/ash/' + x + (min ? '.min' : "") + '.js').then(function(response) {
+                        return response.ok && response.text();
+                    }).then(function(text) {
+                        if (isSet(text)) {
+                            toScript(text);
+                            return storage[key];
+                        }
+                    });
+                })();
+            },
+            set: function(storage, key, value) {
+                storage[key] = value;
+            }
+        });
 
         $$._ = $$.prototype;
 
@@ -178,27 +220,6 @@
             return content;
         };
 
-        $.fetch = function(x, onSuccess, onError) {
-            var a, min, url;
-            if (!src) {
-                return $;
-            }
-            a = src.split('/');
-            min = '.min.js' === a.pop().slice(-7);
-            win.fetch(a.join('/') + '/ash/' + x + (min ? '.min' : "") + '.js').then(function(response) {
-                return response.ok && response.text();
-            }).then(function(text) {
-                if (isSet(text)) {
-                    toScript(text);
-                    isFunction(onSuccess) && onSuccess.call($, content);
-                } else {
-                    isFunction(onError) && onError.call($, content);
-                }
-            }).catch(function() {
-                isFunction(onError) && onError.call($, content);
-            });
-        };
-
         $.hooks = hooks;
         $.off = hookLet;
         $.on = hookSet;
@@ -216,24 +237,24 @@
 
         $.t = function(type, content, esc, n) {
             n = n || 'span';
-            esc = isSet(esc) ? esc : 1;
-            return '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + (esc ? content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : content) + '</' + n + '>';
+            if (esc = isSet(esc) ? esc : 1) {
+                content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+            return type ? '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + content + '</' + n + '>' : content;
         };
 
         var content = source[textContent],
             type = typeGet(source.className, cn + '-');
 
         if (null !== type) {
-            source.classList.add(cn);
-            source.classList.remove(type);
-            source.classList.add(cn + '-' + type);
-            var marker = $$['*.' + type];
-            if (isFunction(marker)) {
-                source.innerHTML = marker.call($, content);
-            } else {
-                $.fetch(type, function(content) {
-                    source.innerHTML = $$['*.' + type].call($, content);
-                }, function() {});
+            classSet(source, cn);
+            classLet(source, type);
+            classSet(source, cn + '-' + type);
+            var syntax = $$.x[type]; // Load langauge data directly or via proxy
+            if (isObject(syntax)) {
+                source.innerHTML = toSyntax.call($, syntax, content);
+            } else if (isFunction(syntax)) {
+                source.innerHTML = syntax.call($, content);
             }
         }
 

@@ -1,4 +1,4 @@
-ASH['*.json'] = function(content) {
+ASH.x.json = function(content) {
     var t = this.t;
     return this.chunk([
         // String, followed by `:`
