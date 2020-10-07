@@ -10,7 +10,7 @@ ASH.x.xml = function(content) {
             return t('typ', v[0]);
         }
         if (1 === i) {
-            return t('tag', '&lt;' + v[1] + t('nam', v[2]) + chunk('(\\s)([^\\s>]+?)(?:(=)(' + ASH.STR + '|[^\\s>]+?))?', function(v, i) {
+            return t('tag', '&lt;' + v[1] + t('nam', v[2]) + chunk('(\\s)([^\\s>=]+?)(?:(=)(' + ASH.STR + '|[^\\s>]+?))?', function(v, i) {
                 return v[1] + t('key', v[2]) + (v[3] || "") + t('val', v[4] || "");
             }, v[3] || "") + '&gt;', 0);
         }
