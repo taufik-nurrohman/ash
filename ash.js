@@ -122,7 +122,7 @@
                             return storage[key];
                         }
                     });
-                })();
+                }();
             },
             set: function(storage, key, value) {
                 storage[key] = value;
