@@ -2,7 +2,6 @@ ASH.x.xml = function(content) {
     var chunk = this.chunk,
         t = this.t;
     return chunk(['<!--[\\s\\S]*?-->', '<(\\/?)([^\\s]+?)(\\s[^>]*)?>'], function(v, i) {
-      console.log([v,i])
         if (0 === i) {
             return t('com', v[0]);
         }
