@@ -97,8 +97,7 @@
         $$.version = '0.0.0';
 
         $$.state = {
-            'class': 'ash',
-            'x': 'txt'
+            'class': 'ash'
         };
 
         // Collect all instance(s)
@@ -107,14 +106,14 @@
         // Storage of language token(s)
         $$.x = new Proxy({}, {
             get: function(storage, key) {
-                return storage[key] || !async function() {
+                return storage[key] || (async function() {
                     var a, min, url;
                     if (!src) {
                         return;
                     }
                     a = src.split('/');
                     min = '.min.js' === a.pop().slice(-7);
-                    return await win.fetch(a.join('/') + '/ash/' + x + (min ? '.min' : "") + '.js').then(function(response) {
+                    return await win.fetch(a.join('/') + '/ash/' + key + (min ? '.min' : "") + '.js').then(function(response) {
                         return response.ok && response.text();
                     }).then(function(text) {
                         if (isSet(text)) {
@@ -122,7 +121,7 @@
                             return storage[key];
                         }
                     });
-                }();
+                })();
             },
             set: function(storage, key, value) {
                 storage[key] = value;
@@ -246,7 +245,7 @@
         var content = source[textContent],
             type = typeGet(source.className, cn + '-');
 
-        if (null !== type) {
+        if (type) {
             classSet(source, cn);
             classLet(source, type);
             classSet(source, cn + '-' + type);
