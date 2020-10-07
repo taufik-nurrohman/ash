@@ -1,0 +1,29 @@
+"foo bar"
+
+1
+
+1.5
+
+true
+
+false
+
+null
+
+{"foo": "bar"}
+
+{
+    "key1": "a",
+    "key2": 1,
+    "key3": 1.5,
+    "key4": -1,
+    "key5": true,
+    "key6": false,
+    "key7": null,
+    "key8": ["a", 1, 1.5, -1, true, false, null],
+    "key9": {
+        "a": "a",
+        "b": 1,
+        "c": 1.5
+    }
+}

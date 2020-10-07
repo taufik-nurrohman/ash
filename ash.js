@@ -48,6 +48,10 @@
         return a;
     }
 
+    function toPattern(a, b) {
+        return new RegExp(a, b);
+    }
+
     function toScript(content) {
         var node = toNode('script');
         node[textContent] = content;
@@ -56,7 +60,7 @@
     }
 
     function typeGet(classes, prefix) {
-        var m = classes && classes.match(new RegExp('\\b' + prefix + '([^\\s]+)\\b'));
+        var m = classes && classes.match(toPattern('\\b' + prefix + '([^\\s]+)\\b'));
         if (m) {
             return m[1];
         }
@@ -156,18 +160,20 @@
         }
 
         $.chunk = function(pattern, fn, content) {
+            if (isString(pattern)) {
+                pattern = [pattern]; // Force to be array
+            }
             var j = pattern.length,
-                r = new RegExp(pattern.join('|'), 'g');
+                r = toPattern(pattern.join('|'), 'g'), id, lot;
             content = content.replace(r, function() {
-                var lot = Array.from(arguments),
-                    index;
+                lot = arguments;
                 for (var i = 0; i < j; ++i) {
-                    if ((new RegExp('^' + pattern[i] + '$')).test(lot[0])) {
-                        index = i;
+                    if (toPattern('^' + pattern[i] + '$').test(lot[0])) {
+                        id = i;
                         break;
                     }
                 }
-                return fn.call($, lot.slice(0, -2), index);
+                return fn.call($, lot, id);
             });
             return content;
         };
@@ -208,9 +214,10 @@
         $.source = source;
         $.state = state;
 
-        $.t = function(type, content, n) {
+        $.t = function(type, content, esc, n) {
             n = n || 'span';
-            return '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + content + '</' + n + '>';
+            esc = isSet(esc) ? esc : 1;
+            return '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + (esc ? content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : content) + '</' + n + '>';
         };
 
         var content = source[textContent],

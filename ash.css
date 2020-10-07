@@ -1,38 +1,55 @@
 .ash {
-  background: #2f4f4f;
-  color: #c0c0c0;
+  background: #3f3f3f;
+  color: #dcdcdc;
   direction: ltr;
   display: block;
   overflow: auto;
-  padding: 1em 1.25em;
+  padding: .5em .75em;
   text-align: left;
   white-space: pre;
 }
 
 .ash .com {
-  color: #666;
+  color: #7f9f7f;
 }
 
 .ash .inh {
-  color: #c0c0c0; /* Same as main color */
+  color: #dcdcdc; /* Same as main color */
 }
 
 .ash .key {
-  color: #98fb98;
+  color: #e3ceab;
 }
 
 .ash .num {
-  color: #87ceeb;
+  color: #8cd0d3;
 }
 
 .ash .str {
-  color: #66cdaa;
+  color: #cc9393;
+}
+
+.ash .tag {
+  color: #e3ceab;
+  font-weight: bold;
+}
+
+.ash .tag .nam {
+  color: #efef8f;
+}
+
+.ash .typ {
+  color: #7f9f7f;
 }
 
 .ash .wor {
-  color: #fa8072;
+  color: #e3ceab;
+}
+
+.ash .lib {
+  color: #efef8f;
 }
 
 .ash .log {
-  color: #ffa07a;
+  color: #efefaf;
 }

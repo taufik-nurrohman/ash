@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html class="no-js" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Lorem Ipsum</title>
+    <script>
+    document.documentElement.classList.remove('no-js'); 
+    </script>
+    <style>
+    :root {
+      --r: 255;
+      --g: 255;
+      --b: 255;
+    }
+    body {
+      background: rgb(var(--r), var(--g), var(--b));
+      color: #000;
+    }
+    </style>
+  </head>
+  <body>
+    <!-- Lorem ipsum dolor sit amet. -->
+    <h1>Lorem Ipsum</h1>
+    <p>Lorem ipsum dolor sit amet.</p>
+  </body>
+</html>

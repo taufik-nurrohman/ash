@@ -1,0 +1,9 @@
+/*
+ * comment
+ */
+
+!function(win, doc) {
+    // comment
+    let str = 'str';
+    let number = 3000;
+}(window, document);
