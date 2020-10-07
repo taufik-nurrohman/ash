@@ -21,6 +21,11 @@
   color: #e3ceab;
 }
 
+/* Should appear before any sub-category */
+.ash .val {
+  color: #cc9393;
+}
+
 .ash .num {
   color: #8cd0d3;
 }
@@ -40,10 +45,6 @@
 
 .ash .typ {
   color: #7f9f7f;
-}
-
-.ash .val {
-  color: #cc9393;
 }
 
 .ash .wor {

@@ -7,3 +7,22 @@
     let str = 'str';
     let number = 3000;
 }(window, document);
+
+"use strict"
+'use strict'
+
+const a = 0;
+let b = 1;
+var c = 2;
+
+[1, 0.1, .1, -1, -0.1, -.1]
+
+[1, 0x00f, 3e5, 3e+5, 999999999999999n]
+
+for (let i = 0, j = data.length; i < j; ++i) {
+    continue;
+}
+
+function foo(a, b, c = 4) {}
+
+foo('a', true, 1);
