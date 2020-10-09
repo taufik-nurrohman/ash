@@ -1,6 +1,6 @@
 (function(def0) {
-    def0['\\/\\*[\\s\\S]*?\\*\\/'] = ['com'];
-    def0['\\/\\/[^\\n]+'] = ['com'];
+    def0['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.st0'];
+    def0['\\/\\/[^\\n]+'] = ['com.st1'];
     def0['(?:"use strict"|\'use strict\')'] = ['typ'];
     def0['([{,]\\s*)(' + ASH.STR + '|\\[[^\\[]+\\]|[a-zA-Z_$][\\w$]*)(\\s*:)'] = [0, 0, 'key', 0];
     def0[ASH.STR] = ['str'];
@@ -41,6 +41,7 @@
         'return',
         'set',
         'switch',
+        'this',
         'try',
         'var',
         'void',
@@ -52,7 +53,6 @@
         'global',
         'globalThis',
         'self',
-        'this',
         'window'
     ].join('|') + ')';
     def0['\\b' + wors + '\\b'] = ['wor'];

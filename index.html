@@ -18,11 +18,25 @@ textarea {
   height: 15em;
 }
 
-code:hover span {
+input {
+  display: none;
+}
+
+label {
+  display: inline-block;
+  color: #00f;
+  cursor: pointer;
+}
+
+input:checked + label {
+  color: #f00;
+}
+
+input:checked + label + pre code span {
   outline: 1px dotted;
 }
 
-code:hover span::after {
+input:checked + label + pre code span::after {
   content: '(' attr(class) ')';
   display: inline-block;
   vertical-align: middle;
@@ -53,6 +67,8 @@ code:hover span::after {
       </p>
     </form>
     <hr>
+    <input id="inspector" type="checkbox">
+    <label for="inspector">Inspect</label>
     <pre></pre>
     <script src="ash.js"></script>
     <script>
