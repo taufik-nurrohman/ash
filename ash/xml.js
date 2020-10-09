@@ -6,9 +6,9 @@
     // Categorize the captured HTML attribute(s)
     atr[ASH_XML_DATA] = {};
     // HTML attribute with value
-    atr[ASH_XML_DATA]['(\\s+)([^\\s>=]+)(=)(' + ASH.STR + '|[^\\s>]+?)'] = [0, 0, 'key', 0, 'val'];
+    atr[ASH_XML_DATA]['(\\s+)([^\\s=\\/>]+)(=)(' + ASH.STR + '|[^\\s=\\/>]+?)'] = [0, 0, 'key', 0, 'val'];
     // HTML attribute without value
-    atr[ASH_XML_DATA]['(\\s+)([^\\s>=]+)'] = [0, 0, 'key'];
+    atr[ASH_XML_DATA]['(\\s+)([^\\s=\\/>]+)'] = [0, 0, 'key'];
     // Capture a HTML tag
     let ASH_XML_TAG = '<\\/?[^\\s]+?(?:\\s[^>]*)?>';
     // Categorize the captured HTML tag
