@@ -32,6 +32,7 @@ a` `aa\`a`
 // regex test
 [/.*/, /\/[a-z\d]+\//g]
 [//] this should be a comment
+[/*/] nothing to repeat, this should be a comment */
 
 // reserved words as object property test
 class FooClass {}
