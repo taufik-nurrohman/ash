@@ -29,6 +29,10 @@ var c = 2; // comment
 `aaa` `aa
 a` `aa\`a`
 
+// regex test
+[/.*/, /\/[a-z\d]+\//g]
+[//] this should be a comment
+
 // reserved words as object property test
 class FooClass {}
 const foo = new FooClass;
