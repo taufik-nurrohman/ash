@@ -18,18 +18,8 @@
         // Plain tag or a closing tag
         '(<)(\\/?)([^\\s]+)(>)': ['tag', 0, 0, 'nam', 0]
     };
-    def0['<script(?:\\s[^>]*)?>[\\s\\S]*<\\/script>'] = {
-        [ASH_XML_PATTERN]: ASH_XML_TASK,
-        '[\\s\\S]*?': function(v) {
-            return v[0]; // TODO
-        }
-    };
-    def0['<style(?:\\s[^>]*)?>[\\s\\S]*<\\/style>'] = {
-        [ASH_XML_PATTERN]: ASH_XML_TASK,
-        '[\\s\\S]*?': function(v) {
-            return v[0]; // TODO
-        }
-    };
+    def0['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(<\\/script>)'] = [0, def0, '~js', def0];
+    def0['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(<\\/style>)'] = [0, def0, '~css', def0];
     def0[ASH_XML_PATTERN] = ASH_XML_TASK; 
     ASH.tokens.xml = def0;
 })({}, {});

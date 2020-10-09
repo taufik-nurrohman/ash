@@ -7,13 +7,14 @@
 
 import foo from '../foo';
 
+// comment
 const a = 0;
 let b = 1;
-var c = 2;
+var c = 2; // comment
 
 [1, 0.1, .1, -1, -0.1, -.1]
 
-[1, 0x00f, 3e5, 3e+5, 999999999999999n]
+[1, 0x00f, 3e5, 3e+5, 999999999999999999999999999999n]
 
 for (let i = 0, j = data.length; i < j; ++i) {
     continue;
@@ -21,6 +22,17 @@ for (let i = 0, j = data.length; i < j; ++i) {
 
 function foo(a, b, c = 4) {
     return a + b + c;
+}
+
+function bar(
+    a, // comment 1
+    b, // comment 2
+    c = 4 /* comment 3 */
+) {
+    if (b) {
+        return [1_000_000, 1_000_000.1, 1_000_000.1000_1];
+    }
+    return [1, -1, -.1, -0.1, +1, +.1, +0.1];
 }
 
 foo('a', true, 1);
@@ -52,7 +64,13 @@ class Foo implements FooInterface {
         return undefined;
     }
     toString() {
-        return "";
+        return `foo bar ${baz + 1}`;
+    }
+}
+
+class Button extends React.Component {
+    render() {
+        return <button>{text}</button>
     }
 }
 

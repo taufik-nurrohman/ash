@@ -165,9 +165,8 @@
     (function($$) {
 
         // Reusable pattern(s)
-        let NUM = '(?:(?:\\d+?\\.)?\\d+(?:[eE]\\+?\\d+)?|0[xX][a-fA-F\\d]+|\\d+n)';
         $$.LOG = '\\b(?:false|null|true)\\b';
-        $$.NUM = '(?:-\\.' + NUM + '|-' + NUM + '|\\.' + NUM + '|\\b' + NUM + ')\\b';
+        $$.NUM = '(?:[-+]?0[xX][a-fA-F\\d]+|[-+]?(?:\\d*(?:_\\d+)*\\.)?\\d+(?:_\\d+)*(?:n|[eE]\\+?\\d+)?)\\b';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
 
         $$.version = '0.0.0';
@@ -338,6 +337,10 @@
                     source[innerHTML] = toSyntax($, syntax, content);
                 } else if (isFunction(syntax)) {
                     source[innerHTML] = syntax.call($, content);
+                }
+                let others = source.querySelectorAll('[class^="~"]');
+                if (others.length) {
+                    console.log(['Highlighting others...', others]);
                 }
             })();
         }
