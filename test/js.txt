@@ -12,14 +12,44 @@ const a = 0;
 let b = 1;
 var c = 2; // comment
 
-[1, 0.1, .1, -1, -0.1, -.1]
+// number test
+[1, 0.1, .1]
+[-1, -0.1, -.1]
+[+1, +0.1, +.1]
+[0b10010, 0B10010]
+[0o600, 0O600, 0600]
+[0x00f, 0X00F]
+[3e5, 3e+5, 3e-5]
+[99999999999999999999n]
+[1_000_000, 0b00_00_00, 0o00_00, 0x00_ff]
 
-[1, 0x00f, 3e5, 3e+5, 999999999999999999999999999999n]
+// string test
+"aaa" "aa'a" "aa\"a"
+'aaa' 'aa"a' 'aa\'a'
+`aaa` `aa
+a` `aa\`a`
 
-for (let i = 0, j = data.length; i < j; ++i) {
-    continue;
-}
+// reserved words as object property test
+class FooClass {}
+const foo = new FooClass;
+foo.class = 1;
+foo.bar = {class: 0};
+foo.baz = {
+    get: function() {},
+    set: function() {},
+    get foo: function() {},
+    set foo: function() {}
+};
 
+// object property test
+window.foo = {
+    key: 'value',
+    '#': 4,
+    "@": true,
+    [foo.toString()]: ""
+};
+
+// function test
 function foo(a, b, c = 4) {
     return a + b + c;
 }
@@ -28,24 +58,14 @@ function bar(
     a, // comment 1
     b, // comment 2
     c = 4 /* comment 3 */
-) {
-    if (b) {
-        return [1_000_000, 1_000_000.1, 1_000_000.1000_1];
-    }
-    return [1, -1, -.1, -0.1, +1, +.1, +0.1];
-}
+) {}
 
 foo('a', true, 1);
 
-window.foo = {
-    key: 'value',
-    '#': 4,
-    "@": true,
-    [foo.toString()]: ""
-};
-
+// function call test
 bar = bar.replace(/[^a-z-]+/g, '-').replace(/^-+|-+$/g, "");
 
+// class and method test
 interface FooInterface {
     bar() {}
     baz() {}
@@ -68,10 +88,19 @@ class Foo implements FooInterface {
     }
 }
 
+class Bar extends Foo {
+    constructor() {
+        super()
+    }
+}
+
+// JSX test
 class Button extends React.Component {
     render() {
         return <button>{text}</button>
     }
 }
 
-export default foo;
+const button = new Button;
+
+export default Button;
