@@ -18,7 +18,7 @@
         script = doc.currentScript,
         src = script.src,
         textContent = 'textContent',
-        tokens = 'tokens';
+        token = 'token';
 
     function classHas(of, name) {
         return of[classList].contains(name);
@@ -107,7 +107,7 @@
                             // Recurse
                             value += toSyntax($, task[i], lot[i]);
                         } else if (isString(task[i])) {
-                            value += $.t(task[i], lot[i]);
+                            value += $.t(task[i], lot[i], 1, '~' === task[i][0] ? 'mark' : 'span');
                         } else {
                             value += $.t(0, lot[i]);
                         }
@@ -168,6 +168,7 @@
         $$.LOG = '\\b(?:false|null|true)\\b';
         $$.NUM = '(?:0[bB][01]+(?:_[01]+)*n?|0[oO]\\d+(?:_\\d+)*n?|0[xX][a-fA-F\\d]+(?:_[a-fA-F\\d]+)*n?|[-+]?(?:\\d*(?:_\\d+)*\\.)?\\d+(?:_\\d+)*(?:n|[eE][-+]?\\d+)?)\\b';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
+        $$.URL = '\\b(?:https?):\\/\\/\\S+\\b';
 
         $$.version = '0.0.0';
 
@@ -179,18 +180,17 @@
         $$[instances] = {};
 
         // Storage of language token(s)
-        $$[tokens] = new Proxy({}, {
+        $$[token] = new Proxy({}, {
             get: function(storage, key) {
                 return storage[key] || (async function() {
-                    let a, min, url;
+                    let a, b, min, url;
                     if (!src) {
                         return;
                     }
-                    a = src.split('/');
-                    min = '.min.js' === a.pop().slice(-7);
-                    return await win.fetch(a.join('/') + '/ash/' + key + (min ? '.min' : "") + '.js').then(function(response) {
-                        return response.ok && response.text();
-                    }).then(function(text) {
+                    a = src.split('?');
+                    b = a[0].split('/');
+                    min = '.min.js' === b.pop().slice(-7);
+                    return await win.fetch(b.join('/') + '/ash/' + key + (min ? '.min' : "") + '.js' + (a[1] ? '?' + a[1] : "")).then(response => response.ok && response.text()).then(text => {
                         if (isSet(text)) {
                             toScript(text);
                             return storage[key];
@@ -283,8 +283,8 @@
             }
             let j = pattern.length,
                 r = toPattern(pattern.join('|'), 'g'), id, lot;
-            content = content.replace(r, function() {
-                lot = arguments;
+            return j ? content.replace(r, function() {
+                lot = toArray(arguments).filter(v => isString(v));
                 for (let i = 0; i < j; ++i) {
                     if (toPattern('^' + pattern[i] + '$').test(lot[0])) {
                         id = i;
@@ -292,8 +292,7 @@
                     }
                 }
                 return fn.call($, lot, id);
-            });
-            return content;
+            }) : $.t(0, content);
         };
 
         $.hooks = hooks;
@@ -332,13 +331,13 @@
             classSet(source, classNameTo + '-' + type);
             (async function() {
                 // Load language definition(s) directly or via proxy
-                let syntax = await $$[tokens][type];
+                let syntax = await $$[token][type];
                 if (isObject(syntax)) {
                     source[innerHTML] = toSyntax($, syntax, content);
                 } else if (isFunction(syntax)) {
                     source[innerHTML] = syntax.call($, content);
                 }
-                let others = source.querySelectorAll('[class^="~"]');
+                let others = source.querySelectorAll('mark[class^="~"]');
                 if (others.length) {
                     console.log(['Highlighting others...', others]);
                 }

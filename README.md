@@ -3,7 +3,9 @@ Asynchronous Syntax Highlighter
 
 > A hard mode client-side syntax highlighter for the web.
 
-ASH aims to solve problems related to client-side syntax highlighter&rsquo;s file size which is mostly getting bigger as the language variant you want to highlight increases.
+Ash aims to solve problems related to client-side syntax highlighter&rsquo;s file size which is mostly getting bigger as the language variant you want to highlight increases.
+
+[Demo and Documentation](https://taufik-nurrohman.github.io/ash)
 
 Features
 --------
@@ -79,29 +81,38 @@ Name | Description
 `log` | [Three-valued logic](https://en.m.wikipedia.org/wiki/Three-valued_logic). Includes `false`, `null`, `true`.
 `nam` | Name. Name of function, HTML tag, etc.
 `num` | Number. Including units and modifiers, if any.
-`obj` | Object. Also class, interface.
-`par` | Parameter. As in function.
+`sgm` | SGML tags. As in HTML tags.
 `str` | String. Literal string.
 `sym` | Symbol. Smiley, HTML entities, etc.
-`tag` | Tag. As in HTML tag or document tag.
 `typ` | Type. Document type or identifier.
 `val` | Value. Should be paired with `key`.
 `wor` | Word. Special words that are reserved by the language parser such as `do`, `else`, `function`, `if`, `var`, `while`, etc.
 
 Others are free to be defined by developers. Each category must at least be compatible with the existing classes, and must consist of a maximum of three letters. For example, you may want to distinguish between float and integer number. You can add `flo` class together with `num`. Or, you may want to make a sub-category for number that is represented in HEX format. You can add `hex` class together with `num`.  Sub-category coloring can be added by the syntax highlighter theme designer optionally. The default color for numbers will always inherit to the `num` class.
 
+Name | Description
+---- | -----------
+`bul` | Bullet. As for list and YAML array sequence.
+`cod` | Code. As in Markdown syntax for codes.
+`ima` | Image. As in Markdown syntax for images.
+`lin` | Link. As in Markdown syntax for links.
+`quo` | Quote. As in Markdown syntax for quotes.
+`sec` | Section. As in INI syntax for sections.
+`tit` | Title. As in Markdown syntax for headings.
+`url` | URL. Just in case you want to highlight URL.
+
 ### Adding Your Own Syntax Highlighter
 
 I don&rsquo;t want to look fancy here. The main feature of this syntax highlighter is the ability to load language definition asynchronously. About the way you will mark the tokens is up to you. All you have to do is define a language category based on the file extension like so:
 
 ~~~ .js
-ASH.tokens.css = function(content) {};
-ASH.tokens.js = function(content) {};
-ASH.tokens.xml = function(content) {};
+ASH.token.css = function(content) {};
+ASH.token.js = function(content) {};
+ASH.token.xml = function(content) {};
 
 // You can also make alias
-ASH.tokens.html = 'xml';
-ASH.tokens.sgml = ASH.tokens.xml;
+ASH.token.html = 'xml';
+ASH.token.sgml = ASH.token.xml;
 ~~~
 
 Defining languages together with the core will make the highlighting work synchronously. To make it asynchronous, you will need to store them as separate files:
@@ -120,7 +131,7 @@ Defining languages together with the core will make the highlighting work synchr
 The function parameter contains the plain text version of the source element contents. `this` refers to the `ASH` instance. You can get the available methods and properties from there:
 
 ~~~ .js
-ASH.tokens.json = function(content) {
+ASH.token.json = function(content) {
     // Mark the desired parts of your syntax here
     content = content.replace(/[\{\}\[\]:,]/g, '<b>$&</b>');
     // Then return the modified content
@@ -133,7 +144,7 @@ ASH.tokens.json = function(content) {
 Below is a simple example of using the `ash.chunk` method to mark portions of a JSON file using regular expressions:
 
 ~~~ .js
-ASH.tokens.json = function(content) {
+ASH.token.json = function(content) {
     // Set your pattern sequence to match, ordered by priority
     let pattern = [
             // String, followed by `:`
@@ -175,16 +186,16 @@ ASH.tokens.json = function(content) {
 Below is a simple example of defining language as pattern sequence:
 
 ~~~ .js
-let tokens = {};
+let token = {};
 
-tokens['(' + ASH.STR + ')(\\s*)(:)'] = [0, 'key', 0, 0];
-tokens[ASH.STR] = ['val.str'];
-tokens[ASH.LOG] = ['val.log'];
-tokens[ASH.NUM] = function(v) {
+token['(' + ASH.STR + ')(\\s*)(:)'] = [0, 'key', 0, 0];
+token[ASH.STR] = ['val.str'];
+token[ASH.LOG] = ['val.log'];
+token[ASH.NUM] = function(v) {
     return 'val.num.' + (-1 === v[0].indexOf('.') ? 'flo' : 'int');
 };
 
-ASH.tokens.json = tokens;
+ASH.token.json = token;
 ~~~
 
 Limitations
