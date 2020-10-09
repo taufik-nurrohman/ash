@@ -1,4 +1,4 @@
-ASH.x.js = function(content) {
+ASH.tokens.js = function(content) {
     var chunk = this.chunk,
         t = this.t;
 

@@ -34,13 +34,11 @@
   color: #cc9393;
 }
 
-.ash .tag {
-  color: #e3ceab;
-  font-weight: bold;
-}
+.ash .tag {}
 
 .ash .tag .nam {
   color: #efef8f;
+  font-weight: bold;
 }
 
 .ash .typ {

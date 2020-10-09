@@ -26,6 +26,7 @@ textarea {
           <option value="js">JavaScript</option>
           <option value="json">JSON</option>
           <option value="php">PHP</option>
+          <option value="txt">Plain Text</option>
           <option value="xml">HTML, SGML, XML</option>
           <option value="yaml">YAML</option>
         </select>
@@ -44,30 +45,28 @@ textarea {
 
 (function(win, doc) {
 
-    var form = doc.forms[0],
+    let form = doc.forms[0],
         code = doc.querySelector('pre > code'),
         content = form.content,
         x = form.x;
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', e => {
         code.className = x.value;
         code.textContent = content.value;
         // Destroy where possible
-        if (ASH.instances[0]) {
-            ASH.instances[0].pop();
+        for (let key in ASH.instances) {
+            ASH.instances[key].pop();
         }
         new ASH(code);
         e.preventDefault();
     });
 
     // Load example by select-box change
-    x.addEventListener('change', function() {
-        win.fetch('test/' + this.value + '.txt').then(function(response) {
-            return response.ok && response.text();
-        }).then(function(text) {
+    x.addEventListener('change', () => {
+        win.fetch('test/' + x.value + '.txt').then(response => response.ok && response.text()).then(text => {
             content.value = text;
             form.submit.click();
-        }).catch(function(e) {
+        }).catch(e => {
             content.value = e;
         });
     });

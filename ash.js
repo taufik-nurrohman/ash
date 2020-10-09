@@ -1,4 +1,3 @@
-
 /*!
  * ==============================================================
  *  ASYNCHRONOUS SYNTAX HIGHLIGHTER 0.0.0
@@ -10,23 +9,27 @@
 
 (function(win, doc, name) {
 
-    var appendChild = 'appendChild',
+    let appendChild = 'appendChild',
+        classList = 'classList',
+        className = 'className',
         head = doc.head,
+        innerHTML = 'innerHTML',
         instances = 'instances',
         script = doc.currentScript,
         src = script.src,
-        textContent = 'textContent';
+        textContent = 'textContent',
+        tokens = 'tokens';
 
     function classHas(of, name) {
-        return of.classList.contains(name);
+        return of[classList].contains(name);
     }
 
     function classLet(of, name) {
-        of.classList.remove(name);
+        of[classList].remove(name);
     }
 
     function classSet(of, name) {
-        of.classList.add(name);
+        of[classList].add(name);
     }
 
     function eventLet(to, event, fn) {
@@ -37,12 +40,16 @@
         to.addEventListener(event, fn, false);
     }
 
+    function isArray(x) {
+        return Array.isArray(x);
+    }
+
     function isFunction(x) {
         return 'function' === typeof x;
     }
 
     function isObject(x) {
-        return 'object' === typeof x;
+        return 'object' === typeof x && !isArray(x);
     }
 
     function isSet(x) {
@@ -56,7 +63,7 @@
     function toNode(a, b, c) {
         a = doc.createElement(a);
         b && b[appendChild](a);
-        c && (a.className = c);
+        c && (a[className] = c);
         return a;
     }
 
@@ -65,19 +72,90 @@
     }
 
     function toScript(content) {
-        var node = toNode('script');
+        let node = toNode('script');
         node[textContent] = content;
         head[appendChild](node);
         return node;
     }
 
-    function toSyntax(syntax, content) {
-
+    function toSyntax($, syntax, content) {
+        let pattern = Object.keys(syntax),
+            fn = Object.values(syntax),
+            j = pattern.length;
+        return pattern.length ? content.replace(toPattern(pattern.join('|'), 'g'), function() {
+            let id, lot = Array.from(arguments),
+                first = lot[0], m, task, value;
+            for (let i = 0; i < j; ++i) {
+                if (m = toPattern('^' + pattern[i] + '$').test(first)) {
+                    id = i;
+                    task = fn[i];
+                    break;
+                }
+            }
+            if (m) {
+                if (isArray(task)) {
+                    value = "";
+                    for (let i = 0, j = task.length; i < j; ++i) {
+                        if (0 === i) {
+                            continue; // Ignore first array to be used later
+                        }
+                        if (!isSet(lot[i])) {
+                            continue;
+                        }
+                        if (isObject(task[i])) {
+                            // Recurse
+                            value += toSyntax($, task[i], lot[i]);
+                        } else if (isString(task[i])) {
+                            value += $.t(task[i], lot[i]);
+                        } else {
+                            value += $.t(0, lot[i]);
+                        }
+                    }
+                    return $.t(task[0], value, 0);
+                }
+                if (isFunction(task)) {
+                    value = task.call($, lot, id);
+                    if (isArray(value)) {
+                        let v = "";
+                        for (let i = 0, j = value.length; i < j; ++i) {
+                            if (0 === i) {
+                                continue; // Ignore first array to be used later
+                            }
+                            if (isObject(value[i])) {
+                                // Recurse
+                                v += toSyntax($, value[i], lot[i]);
+                            } else if (isString(value[i])) {
+                                v += $.t(value[i], lot[i]);
+                            } else {
+                                v += $.t(0, lot[i]);
+                            }
+                        }
+                        return $.t(value[0], v, 0);
+                    }
+                    if (isObject(value)) {
+                        // Recurse
+                        return toSyntax($, value, first);
+                    }
+                    if (isString(value)) {
+                        return $.t(value, first);
+                    }
+                    return $.t(0, value);
+                }
+                if (isObject(task)) {
+                    // Recurse
+                    return toSyntax($, value, first);
+                }
+                if (isString(task)) {
+                    return $.t(task, first);
+                }
+            }
+            return first;
+        }) : $.t(0, content);
     }
 
     function typeGet(classes, prefix) {
         // Prioritize class prefixed by `ash-`
-        var m = classes && classes.match(toPattern('\\b' + prefix + '([^\\s]+)\\b'));
+        let m = classes && classes.match(toPattern('\\b' + prefix + '([^\\s]+)\\b'));
         if (m) {
             return m[1];
         }
@@ -104,10 +182,10 @@
         $$[instances] = {};
 
         // Storage of language token(s)
-        $$.x = new Proxy({}, {
+        $$[tokens] = new Proxy({}, {
             get: function(storage, key) {
                 return storage[key] || (async function() {
-                    var a, min, url;
+                    let a, min, url;
                     if (!src) {
                         return;
                     }
@@ -134,13 +212,15 @@
 
         if (!source) return;
 
-        var $ = this,
+        let $ = this,
             $$ = win[name],
             hooks = {},
             state = Object.assign({}, $$.state, isString(o) ? {
                 'class': o
             } : (o || {})),
-            cn = state['class'];
+            classNameTo = state['class'],
+            classNameToRestore = source[className],
+            contentToRestore = source[innerHTML];
 
         // Already instantiated, skip!
         if (source[name]) {
@@ -164,7 +244,7 @@
             }
             if (isSet(hooks[name])) {
                 if (isSet(fn)) {
-                    for (var i = 0, j = hooks[name].length; i < j; ++i) {
+                    for (let i = 0, j = hooks[name].length; i < j; ++i) {
                         if (fn === hooks[name][i]) {
                             hooks[name].splice(i, 1);
                         }
@@ -194,7 +274,7 @@
             if (!isSet(hooks[name])) {
                 return $;
             }
-            for (var i = 0, j = hooks[name].length; i < j; ++i) {
+            for (let i = 0, j = hooks[name].length; i < j; ++i) {
                 hooks[name][i].apply($, lot);
             }
             return $;
@@ -204,11 +284,11 @@
             if (isString(pattern)) {
                 pattern = [pattern]; // Force to be array
             }
-            var j = pattern.length,
+            let j = pattern.length,
                 r = toPattern(pattern.join('|'), 'g'), id, lot;
             content = content.replace(r, function() {
                 lot = arguments;
-                for (var i = 0; i < j; ++i) {
+                for (let i = 0; i < j; ++i) {
                     if (toPattern('^' + pattern[i] + '$').test(lot[0])) {
                         id = i;
                         break;
@@ -228,33 +308,35 @@
                 return $; // Already ejected
             }
             delete source[name];
+            source[className] = classNameToRestore;
+            source[innerHTML] = contentToRestore;
             return hookFire('pop', [content]);
         };
 
         $.source = source;
         $.state = state;
 
-        $.t = function(type, content, esc, n) {
-            n = n || 'span';
-            if (esc = isSet(esc) ? esc : 1) {
+        $.t = function(type, content, forceEscape = 1, n = 'span') {
+            if (forceEscape) {
                 content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }
             return type ? '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + content + '</' + n + '>' : content;
         };
 
-        var content = source[textContent],
-            type = typeGet(source.className, cn + '-');
+        let content = source[textContent],
+            type = typeGet(classNameToRestore, classNameTo + '-');
 
         if (type) {
-            classSet(source, cn);
+            classSet(source, classNameTo);
             classLet(source, type);
-            classSet(source, cn + '-' + type);
+            classSet(source, classNameTo + '-' + type);
             (async function() {
-                var syntax = await $$.x[type]; // Load langauge data directly or via proxy
+                // Load language definition(s) directly or via proxy
+                let syntax = await $$[tokens][type];
                 if (isObject(syntax)) {
-                    source.innerHTML = toSyntax.call($, syntax, content);
+                    source[innerHTML] = toSyntax($, syntax, content);
                 } else if (isFunction(syntax)) {
-                    source.innerHTML = syntax.call($, content);
+                    source[innerHTML] = syntax.call($, content);
                 }
             })();
         }

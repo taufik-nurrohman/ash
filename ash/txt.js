@@ -1,3 +1,1 @@
-ASH.x.txt = function(content) {
-    return content; // No syntax
-};
+ASH.tokens.txt = {}; // No syntax
