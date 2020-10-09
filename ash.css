@@ -1,6 +1,8 @@
+/* <https://en.wikipedia.org/wiki/Wikipedia:Zenburn> */
+
 .ash {
   background: #3f3f3f;
-  color: #dcdcdc;
+  color: #dcdccc;
   direction: ltr;
   display: block;
   overflow: auto;
@@ -13,17 +15,25 @@
   color: #7f9f7f;
 }
 
+.ash .exp {
+  color: #e89393;
+}
+
 .ash .inh {
-  color: #dcdcdc; /* Same as main color */
+  color: #dcdccc; /* Same as main color */
 }
 
 .ash .key {
-  color: #e3ceab;
+  color: #ffcfaf;
 }
 
 /* Should appear before any sub-category */
 .ash .val {
   color: #cc9393;
+}
+
+.ash .nam {
+  font-weight: bold;
 }
 
 .ash .num {
@@ -34,25 +44,27 @@
   color: #cc9393;
 }
 
-.ash .tag {}
-
-.ash .tag .nam {
+.ash .tag {
   color: #efef8f;
-  font-weight: bold;
 }
 
 .ash .typ {
-  color: #7f9f7f;
+  color: #82a282;
 }
 
 .ash .wor {
-  color: #e3ceab;
+  color: #f0dfaf;
 }
 
+.ash .fun,
 .ash .lib {
   color: #efef8f;
 }
 
 .ash .log {
-  color: #efefaf;
+  color: #dca3a3;
+}
+
+.ash .sym {
+  color: #dca3a3;
 }

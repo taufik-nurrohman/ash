@@ -24,3 +24,17 @@
     <p>Lorem ipsum dolor sit amet.</p>
   </body>
 </html>
+
+
+<a>
+
+<a b="c" d="e" f g>
+
+<a b='c' d='e' f g>
+
+<a b=c d=e f g>
+
+<div
+  class="foo"
+  id="bar"
+>

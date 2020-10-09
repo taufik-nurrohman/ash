@@ -82,6 +82,7 @@ Name | Description
 `obj` | Object. Also class, interface.
 `par` | Parameter. As in function.
 `str` | String. Literal string.
+`sym` | Symbol. Smiley, HTML entities, etc.
 `tag` | Tag. As in HTML tag or document tag.
 `typ` | Type. Document type or identifier.
 `val` | Value. Should be paired with `key`.
@@ -94,13 +95,13 @@ Others are free to be defined by developers. Each category must at least be comp
 I don&rsquo;t want to look fancy here. The main feature of this syntax highlighter is the ability to load language definition asynchronously. About the way you will mark the tokens is up to you. All you have to do is define a language category based on the file extension like so:
 
 ~~~ .js
-ASH.x.css = function(content) {};
-ASH.x.js = function(content) {};
-ASH.x.xml = function(content) {};
+ASH.tokens.css = function(content) {};
+ASH.tokens.js = function(content) {};
+ASH.tokens.xml = function(content) {};
 
 // You can also make alias
-ASH.x.html = 'xml';
-ASH.x.sgml = ASH.x.xml;
+ASH.tokens.html = 'xml';
+ASH.tokens.sgml = ASH.tokens.xml;
 ~~~
 
 Defining languages together with the core will make the highlighting work synchronously. To make it asynchronous, you will need to store them as separate files:
@@ -119,7 +120,7 @@ Defining languages together with the core will make the highlighting work synchr
 The function parameter contains the plain text version of the source element contents. `this` refers to the `ASH` instance. You can get the available methods and properties from there:
 
 ~~~ .js
-ASH.x.json = function(content) {
+ASH.tokens.json = function(content) {
     // Mark the desired parts of your syntax here
     content = content.replace(/[\{\}\[\]:,]/g, '<b>$&</b>');
     // Then return the modified content
@@ -132,7 +133,7 @@ ASH.x.json = function(content) {
 Below is a simple example of using the `ash.chunk` method to mark portions of a JSON file using regular expressions:
 
 ~~~ .js
-ASH.x.json = function(content) {
+ASH.tokens.json = function(content) {
     // Set your pattern sequence to match, ordered by priority
     let pattern = [
             // String, followed by `:`
@@ -176,14 +177,14 @@ Below is a simple example of defining language as pattern sequence:
 ~~~ .js
 let tokens = {};
 
-tokens['(' + ASH.STR + ')(\\s*)(:)'] = ['key', "", ""];
-tokens[ASH.STR] = 'val.str';
+tokens['(' + ASH.STR + ')(\\s*)(:)'] = [0, 'key', 0, 0];
+tokens[ASH.STR] = ['val.str'];
+tokens[ASH.LOG] = ['val.log'];
 tokens[ASH.NUM] = function(v) {
-    return 'val.' + (-1 === v.indexOf('.') ? 'flo' : 'int');
+    return 'val.num.' + (-1 === v[0].indexOf('.') ? 'flo' : 'int');
 };
-tokens[ASH.LOG] = 'val.log';
 
-ASH.x.json = tokens;
+ASH.tokens.json = tokens;
 ~~~
 
 Limitations

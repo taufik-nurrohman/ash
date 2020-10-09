@@ -60,6 +60,10 @@
         return 'string' === typeof x;
     }
 
+    function toArray(x) {
+        return Array.from(x);
+    }
+
     function toNode(a, b, c) {
         a = doc.createElement(a);
         b && b[appendChild](a);
@@ -82,9 +86,10 @@
         let pattern = Object.keys(syntax),
             fn = Object.values(syntax),
             j = pattern.length;
-        return pattern.length ? content.replace(toPattern(pattern.join('|'), 'g'), function() {
-            let id, lot = Array.from(arguments),
-                first = lot[0], m, task, value;
+        return j ? content.replace(toPattern(pattern.join('|'), 'g'), function() {
+            let lot = toArray(arguments).filter(v => isString(v)),
+                first = lot[0],
+                id, m, task, value = "";
             for (let i = 0; i < j; ++i) {
                 if (m = toPattern('^' + pattern[i] + '$').test(first)) {
                     id = i;
@@ -94,13 +99,9 @@
             }
             if (m) {
                 if (isArray(task)) {
-                    value = "";
                     for (let i = 0, j = task.length; i < j; ++i) {
                         if (0 === i) {
                             continue; // Ignore first array to be used later
-                        }
-                        if (!isSet(lot[i])) {
-                            continue;
                         }
                         if (isObject(task[i])) {
                             // Recurse
@@ -111,7 +112,7 @@
                             value += $.t(0, lot[i]);
                         }
                     }
-                    return $.t(task[0], value, 0);
+                    return $.t(task[0], value || first, value ? 0 : 1);
                 }
                 if (isFunction(task)) {
                     value = task.call($, lot, id);
@@ -130,23 +131,19 @@
                                 v += $.t(0, lot[i]);
                             }
                         }
-                        return $.t(value[0], v, 0);
+                        return $.t(value[0], v || first, v ? 0 : 1);
+                    }
+                    if (isFunction(value)) {
+                        // TODO
                     }
                     if (isObject(value)) {
                         // Recurse
                         return toSyntax($, value, first);
                     }
-                    if (isString(value)) {
-                        return $.t(value, first);
-                    }
-                    return $.t(0, value);
                 }
                 if (isObject(task)) {
                     // Recurse
-                    return toSyntax($, value, first);
-                }
-                if (isString(task)) {
-                    return $.t(task, first);
+                    return toSyntax($, task, first);
                 }
             }
             return first;
@@ -168,8 +165,9 @@
     (function($$) {
 
         // Reusable pattern(s)
+        let NUM = '(?:(?:\\d+?\\.)?\\d+(?:[eE]\\+?\\d+)?|0[xX][a-fA-F\\d]+|\\d+n)';
         $$.LOG = '\\b(?:false|null|true)\\b';
-        $$.NUM = '\\b(?:-?(?:\\d+?\\.)?\\d+(?:[eE]\\+?\\d+)?|0[xX][a-fA-F\\d]+|\\d+n)\\b';
+        $$.NUM = '(?:-\\.' + NUM + '|-' + NUM + '|\\.' + NUM + '|\\b' + NUM + ')\\b';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
 
         $$.version = '0.0.0';
@@ -317,6 +315,9 @@
         $.state = state;
 
         $.t = function(type, content, forceEscape = 1, n = 'span') {
+            if (!isSet(content)) {
+                return;
+            }
             if (forceEscape) {
                 content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }

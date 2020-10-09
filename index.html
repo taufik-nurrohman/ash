@@ -6,16 +6,25 @@
     <meta content="width=device-width" name="viewport">
     <title>Asynchronous Syntax Highlighter</title>
     <link href="ash.css" rel="stylesheet">
-<style>
-* {
-  box-sizing: border-box;
-}
-textarea {
-  display: block;
-  width: 100%;
-  height: 15em;
-}
-</style>
+    <style>
+    * {
+      box-sizing: border-box;
+    }
+    textarea {
+      display: block;
+      width: 100%;
+      height: 15em;
+    }
+    code:hover span {
+      outline: 1px dotted;
+    }
+    code:hover span::after {
+      content: '(' attr(class) ')';
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 75%;
+    }
+    </style>
   </head>
   <body>
     <form>
@@ -39,25 +48,23 @@ textarea {
       </p>
     </form>
     <hr>
-    <pre><code></code></pre>
+    <pre></pre>
     <script src="ash.js"></script>
     <script>
 
 (function(win, doc) {
 
     let form = doc.forms[0],
-        code = doc.querySelector('pre > code'),
         content = form.content,
+        view = doc.querySelector('pre'),
         x = form.x;
 
     form.addEventListener('submit', e => {
+        let code = doc.createElement('code');
         code.className = x.value;
         code.textContent = content.value;
-        // Destroy where possible
-        for (let key in ASH.instances) {
-            ASH.instances[key].pop();
-        }
-        new ASH(code);
+        view.innerHTML = "";
+        view.appendChild((new ASH(code)).source);
         e.preventDefault();
     });
 

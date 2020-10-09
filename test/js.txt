@@ -2,14 +2,10 @@
  * comment
  */
 
-!function(win, doc) {
-    // comment
-    let str = 'str';
-    let number = 3000;
-}(window, document);
-
 "use strict"
 'use strict'
+
+import foo from '../foo';
 
 const a = 0;
 let b = 1;
@@ -23,6 +19,41 @@ for (let i = 0, j = data.length; i < j; ++i) {
     continue;
 }
 
-function foo(a, b, c = 4) {}
+function foo(a, b, c = 4) {
+    return a + b + c;
+}
 
 foo('a', true, 1);
+
+window.foo = {
+    key: 'value',
+    '#': 4,
+    "@": true,
+    [foo.toString()]: ""
+};
+
+bar = bar.replace(/[^a-z-]+/g, '-').replace(/^-+|-+$/g, "");
+
+interface FooInterface {
+    bar() {}
+    baz() {}
+    toString() {}
+}
+
+class Foo implements FooInterface {
+    constructor() {
+        this.foo = 1;
+        this.bar = 'baz';
+    }
+    bar() {
+        return this.bar;
+    }
+    baz() {
+        return undefined;
+    }
+    toString() {
+        return "";
+    }
+}
+
+export default foo;
