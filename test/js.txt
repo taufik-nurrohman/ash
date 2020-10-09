@@ -49,6 +49,9 @@ window.foo = {
     [foo.toString()]: ""
 };
 
+// object shorthand test
+{foo, bar, baz, qux: 1}
+
 // function test
 function foo(a, b, c = 4) {
     return a + b + c;
