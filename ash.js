@@ -167,8 +167,9 @@
         // Reusable pattern(s)
         $$.LOG = '\\b(?:false|null|true)\\b';
         $$.NUM = '(?:0[bB][01]+(?:_[01]+)*n?|0[oO]\\d+(?:_\\d+)*n?|0[xX][a-fA-F\\d]+(?:_[a-fA-F\\d]+)*n?|[-+]?(?:\\d*(?:_\\d+)*\\.)?\\d+(?:_\\d+)*(?:n|[eE][-+]?\\d+)?)\\b';
+        $$.PUN = '\\b(?:[@#$_&+\\(\\)\\/*"\':;!?,.~`|^={}\\\\%\\[\\]<>-]+)\\b';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
-        $$.URL = '\\b(?:https?):\\/\\/\\S+\\b';
+        $$.URI = '\\b(?:https?):\\/\\/\\S+\\b';
 
         $$.version = '0.0.0';
 
@@ -332,6 +333,10 @@
             (async function() {
                 // Load language definition(s) directly or via proxy
                 let syntax = await $$[token][type];
+                // Process alias(es)
+                while (isString(syntax)) {
+                    syntax = await $$[token][type];
+                }
                 if (isObject(syntax)) {
                     source[innerHTML] = toSyntax($, syntax, content);
                 } else if (isFunction(syntax)) {

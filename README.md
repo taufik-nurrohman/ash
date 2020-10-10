@@ -81,7 +81,7 @@ Name | Description
 `log` | [Three-valued logic](https://en.m.wikipedia.org/wiki/Three-valued_logic). Includes `false`, `null`, `true`.
 `nam` | Name. Name of function, HTML tag, etc.
 `num` | Number. Including units and modifiers, if any.
-`sgm` | SGML tags. As in HTML tags.
+`mar` | Markup. As in HTML tags or Markdown syntax.
 `str` | String. Literal string.
 `sym` | Symbol. Smiley, HTML entities, etc.
 `typ` | Type. Document type or identifier.
@@ -99,7 +99,7 @@ Name | Description
 `quo` | Quote. As in Markdown syntax for quotes.
 `sec` | Section. As in INI syntax for sections.
 `tit` | Title. As in Markdown syntax for headings.
-`url` | URL. Just in case you want to highlight URL.
+`uri` | URI. Just in case you want to highlight URI.
 
 ### Adding Your Own Syntax Highlighter
 
@@ -107,12 +107,12 @@ I don&rsquo;t want to look fancy here. The main feature of this syntax highlight
 
 ~~~ .js
 ASH.token.css = function(content) {};
+ASH.token.html = function(content) {};
 ASH.token.js = function(content) {};
-ASH.token.xml = function(content) {};
 
 // You can also make alias
-ASH.token.html = 'xml';
-ASH.token.sgml = ASH.token.xml;
+ASH.token.jsx = 'js';
+ASH.token.ts = ASH.token.js;
 ~~~
 
 Defining languages together with the core will make the highlighting work synchronously. To make it asynchronous, you will need to store them as separate files:
@@ -122,9 +122,7 @@ Defining languages together with the core will make the highlighting work synchr
 ├── ash\
 │   ├── css.js
 │   ├── html.js
-│   ├── js.js
-│   ├── sgml.js
-│   └── xml.js
+│   └── js.js
 └── ash.js
 ~~~
 
@@ -178,7 +176,7 @@ ASH.token.json = function(content) {
             return t('val.log', m[0]);
         }
         // Other(s)
-        return t("", m[0]);
+        return t(0, m[0]);
     }, content);
 };
 ~~~

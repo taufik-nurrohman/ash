@@ -13,6 +13,8 @@ a =b
 a= b
 
 [a]
-b = [c] ; bug
+
+; bug
+b = [c]
 
 a = b ; c = d

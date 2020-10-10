@@ -1,17 +1,21 @@
 (function(token) {
-    token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.st0'];
-    token['\\/\\/[^\\n]+'] = ['com.st1'];
+    let key = '(?:[a-zA-Z_$][\\w$]*)';
+    token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.s0'];
+    token['\\/\\/[^\\n]+'] = ['com.s1'];
     token['(?:"use strict"|\'use strict\')'] = ['typ'];
     token['<\\/?[^\\s>]+(?:\\s[^>]*)?>'] = ['~js']; // JSX
-    token['([{,]\\s*)(' + ASH.STR + '|\\[[^\\[]+\\]|[a-zA-Z_$][\\w$]*)(\\s*[:]\\s*)'] = [0, 0, 'key', 0];
+    token['([{,])(\\s*)(' + ASH.STR + '|\\[[^\\[]+\\]|' + key + ')(\\s*)(:)'] = [0, 'pun', 0, 'key', 0, 'pun'];
     token[ASH.STR] = function(v) {
-        return ['str.st' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
+        return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
     };
-    token[ASH.LOG] = ['log.st0'];
-    token['\\b(?:Infinity|NaN|undefined)\\b'] = ['log.st1'];
+    token[ASH.LOG] = ['log.s0'];
+    token['\\b(?:Infinity|NaN|undefined)\\b'] = ['log.s1'];
     token[ASH.NUM] = ['num'];
     token[/\/(?:(?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+)\/(?:(?:g(?:im?|mi?)?|i(?:gm?|mg?)?|m(?:gi?|ig?)?)?)/.source] = ['exp']; // <https://stackoverflow.com/a/17843773/421333>
-    token['\\b(class|extends|function|implements|interface|new)(\\s+)([a-zA-Z_$][\\w$]*(?:\\.[a-zA-Z_$][\\w$]*)*)\\b'] = [0, 'wor', 0, 'fun'];
+    token['\\b(class|extends|function|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b'] = [0, 'wor', 0, 'fun'];
+    token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
+    token['\\b(\\.)([#?]?' + key + ')\\b'] = [0, 'pun', 0]; // Skip
+    token['\\b(#' + key + ')\\b'] = [0, 0]; // Skip
     let wors = '(?:' + [
         'abstract',
         'arguments',
@@ -93,6 +97,6 @@
     ].join('|') + ')';
     token['\\b' + wors + '\\b'] = ['wor'];
     token['\\b' + libs + '\\b'] = ['lib'];
-    token['\\b([a-zA-Z_$][\\w$]*)(\\s*\\()'] = [0, 'fun', 0];
+    token[ASH.PUN] = ['pun'];
     ASH.token.js = token;
 })({});

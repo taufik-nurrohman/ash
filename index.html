@@ -18,25 +18,16 @@ textarea {
   height: 15em;
 }
 
-input {
-  display: none;
-}
-
 label {
   display: inline-block;
-  color: #00f;
   cursor: pointer;
 }
 
-input:checked + label {
-  color: #f00;
-}
-
-input:checked + label + pre code span {
+.inspect code span {
   outline: 1px dotted;
 }
 
-input:checked + label + pre code span::after {
+.inspect code span::after {
   content: '(' attr(class) ')';
   display: inline-block;
   vertical-align: middle;
@@ -50,12 +41,12 @@ input:checked + label + pre code span::after {
       <p>
         <select name="x">
           <option value="css">CSS</option>
-          <option value="ini">INI, TOML</option>
+          <option value="html">HTML</option>
+          <option value="ini">INI</option>
           <option value="js">JavaScript</option>
           <option value="json">JSON</option>
           <option value="php">PHP</option>
           <option value="txt">Plain Text</option>
-          <option value="xml">HTML, SGML, XML</option>
           <option value="yaml">YAML</option>
         </select>
       </p>
@@ -67,9 +58,13 @@ input:checked + label + pre code span::after {
       </p>
     </form>
     <hr>
-    <input id="inspector" type="checkbox">
-    <label for="inspector">Inspect</label>
     <pre></pre>
+    <p>
+      <label>
+        <input type="checkbox">
+        <span>Inspect</span>
+      </label>
+    </p>
     <script src="ash.js"></script>
     <script>
 
@@ -77,6 +72,8 @@ input:checked + label + pre code span::after {
 
     let form = doc.forms[0],
         content = form.content,
+        toggle = doc.querySelector('input[type=checkbox]'),
+        root = doc.documentElement,
         view = doc.querySelector('pre'),
         x = form.x;
 
@@ -97,6 +94,11 @@ input:checked + label + pre code span::after {
         }).catch(e => {
             content.value = e;
         });
+    });
+
+    // Toggle inspector
+    toggle.addEventListener('change', () => {
+        root.classList[toggle.checked ? 'add' : 'remove']('inspect');
     });
 
 })(window, document);

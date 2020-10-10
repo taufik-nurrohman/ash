@@ -27,7 +27,9 @@ var c = 2; // comment
 "aaa" "aa'a" "aa\"a"
 'aaa' 'aa"a' 'aa\'a'
 `aaa` `aa
-a` `aa\`a`
+aa
+aa
+aa` `aa\`a`
 
 // regex test
 [/.*/, /\/[a-z\d]+\//g]
@@ -68,9 +70,8 @@ function bar(
     c = 4 /* comment 3 */
 ) {}
 
-foo('a', true, 1);
-
 // function call test
+foo('a', true, 1);
 bar = bar.replace(/[^a-z-]+/g, '-').replace(/^-+|-+$/g, "");
 
 // class and method test
@@ -82,17 +83,17 @@ interface FooInterface {
 
 class Foo implements FooInterface {
     constructor() {
-        this.foo = 1;
-        this.bar = 'baz';
+        this.foo = 1
+        this.bar = 'baz'
     }
     bar() {
-        return this.bar;
+        return this.bar
     }
     baz() {
-        return undefined;
+        return undefined
     }
     toString() {
-        return `foo bar ${baz + 1}`;
+        return `foo bar ${baz + 1}`
     }
 }
 
