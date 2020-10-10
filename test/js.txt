@@ -72,7 +72,7 @@ function bar(
 
 // function call test
 foo('a', true, 1);
-bar = bar.replace(/[^a-z-]+/g, '-').replace(/^-+|-+$/g, "");
+bar = bar.replace(/\W+/g, '-').replace(/^-+|-+$/g, "");
 
 // class and method test
 interface FooInterface {
@@ -85,6 +85,7 @@ class Foo implements FooInterface {
     constructor() {
         this.foo = 1
         this.bar = 'baz'
+        this.#baz = 0
     }
     bar() {
         return this.bar
