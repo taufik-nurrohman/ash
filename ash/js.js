@@ -13,7 +13,6 @@
     token[ASH.NUM] = ['num'];
     token[/\/(?:(?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+)\/(?:(?:g(?:im?|mi?)?|i(?:gm?|mg?)?|m(?:gi?|ig?)?)?)/.source] = ['exp']; // <https://stackoverflow.com/a/17843773/421333>
     token['\\b(class|extends|function|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b'] = [0, 'wor', 0, 'fun'];
-    token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
     token['(\\.)([#?]?' + key + ')\\b'] = [0, 'pun', 0]; // Skip
     token['#' + key + '\\b'] = [0]; // Skip
     let wors = '(?:' + [
@@ -97,6 +96,7 @@
     ].join('|') + ')';
     token['\\b' + wors + '\\b'] = ['wor'];
     token['\\b' + libs + '\\b'] = ['lib'];
+    token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
     token[ASH.PUN] = ['pun'];
     ASH.token.js = token;
 })({});
