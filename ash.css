@@ -32,6 +32,10 @@
   color: #cc9393;
 }
 
+.ash .mar {
+  color: #efef8f;
+}
+
 .ash .nam {
   font-weight: bold;
 }
@@ -42,10 +46,6 @@
 
 .ash .str {
   color: #cc9393;
-}
-
-.ash .tag {
-  color: #efef8f;
 }
 
 .ash .typ {
@@ -63,6 +63,10 @@
 
 .ash .log {
   color: #dca3a3;
+}
+
+.ash .pun {
+  color: #cfbfaf;
 }
 
 .ash .sym {
