@@ -19,6 +19,7 @@
         // Plain tag or a closing tag
         '(<)(\\/?)([^\\s]+)(>)': ['mar', 'pun', 'pun', 'nam', 'pun']
     };
+    token['(<)(\\/)(>)'] = ['mar', 'pun', 'pun', 'pun'];
     token[tag] = task;
     ASH.token.sgml = token;
 })({}, {});
