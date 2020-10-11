@@ -28,3 +28,17 @@ div {
   border-radius: .25em;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
 }
+
+.div {
+  color: red;
+}
+
+@media (max-width: 450lx) {
+  body {
+    font-size: 80%;
+  }
+}
+
+/* selector test */
+div#div.foo[bar='baz']::qux {}
+#foo\:bar:hover {}
