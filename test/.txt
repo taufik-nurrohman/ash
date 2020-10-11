@@ -24,3 +24,8 @@ aa
 aa`
 
 `aa\`a`
+
+aaa true bbb false ccc null
+aaa atrue bbb bfalse ccc cnull
+
+aaa http://example.com bbb ccc
