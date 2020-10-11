@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Lorem Ipsum</title>
     <script>
-    document.documentElement.classList.remove('no-js'); 
+    document.documentElement.classList.remove('no-js');
     </script>
     <style>
     :root {
@@ -22,6 +22,15 @@
     <!-- Lorem ipsum dolor sit amet. -->
     <h1>Lorem Ipsum</h1>
     <p>Lorem ipsum dolor sit amet.</p>
+    <template>
+      <ul>
+        <li>List item 1</li>
+        <li>List item 2</li>
+        <li>List item 3</li>
+        <li>List item 4</li>
+        <li>List item 5</li>
+      </ul>
+    </template>
   </body>
 </html>
 
