@@ -20,6 +20,10 @@
   color: #efefef;
 }
 
+.ash .ele {
+  color: #e3ceab;
+}
+
 .ash .exp,
 .ash .pse {
   color: #e89393;
@@ -38,8 +42,7 @@
   color: #cc9393;
 }
 
-.ash .mar,
-.ash .ele {
+.ash .mar {
   color: #efef8f;
 }
 
@@ -76,10 +79,6 @@
 
 .ash .pun {
   color: #cfbfaf;
-}
-
-.ash .que {
-  color: #e3ceab;
 }
 
 .ash .id,

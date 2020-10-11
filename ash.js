@@ -135,7 +135,7 @@
                                 // Recurse
                                 v += toSyntax($, value[i], lot[i]);
                             } else if (isString(value[i])) {
-                                v += $.t(value[i], lot[i], 1, '~' === lot[i][0] ? 'mark' : 'span');
+                                v += $.t(value[i], lot[i], 1, '~' === value[i][0] ? 'mark' : 'span');
                             } else {
                                 v += $.t(0, lot[i]);
                             }
@@ -325,7 +325,12 @@
                 return;
             }
             if (forceEscape) {
-                content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                content = content.replace(/<[^>]+>|[&<>]/g, function(v) {
+                    // if ('<' === v[0][0] && '>' === v[0].slice(-1)) {
+                        // return v[0]; // Skip embedded HTML tag(s)
+                    // }
+                    return v[0].replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
+                });
             }
             return type ? '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + content + '</' + n + '>' : content;
         };

@@ -33,7 +33,7 @@ div {
   color: red;
 }
 
-@media (max-width: 450lx) {
+@media (max-width: 450px) {
   body {
     font-size: 80%;
   }
