@@ -112,7 +112,7 @@
                             // Recurse
                             value += toSyntax($, task[i], lot[i]);
                         } else if (isString(task[i])) {
-                            value += $.t(task[i], lot[i], 1, '~' === task[i][0] ? 'mark' : 'span');
+                            value += $.t(task[i], lot[i]);
                         } else {
                             value += $.t(0, lot[i]);
                         }
@@ -135,7 +135,7 @@
                                 // Recurse
                                 v += toSyntax($, value[i], lot[i]);
                             } else if (isString(value[i])) {
-                                v += $.t(value[i], lot[i], 1, '~' === value[i][0] ? 'mark' : 'span');
+                                v += $.t(value[i], lot[i]);
                             } else {
                                 v += $.t(0, lot[i]);
                             }
@@ -320,9 +320,12 @@
         $.source = source;
         $.state = state;
 
-        $.t = function(type, content, forceEscape = 1, n = 'span') {
+        $.t = function(type, content, forceEscape = 1, n) {
             if (!isSet(content)) {
                 return;
+            }
+            if (!isSet(n)) {
+                n = '~' === type[0] ? 'mark' : 'span';
             }
             if (forceEscape) {
                 content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
