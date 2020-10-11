@@ -7,7 +7,7 @@
     // Categorize the captured SGML attribute(s)
     atr[data] = {};
     // SGML attribute with value
-    atr[data]['(\\s+)([^\\s=\\/>]+)(=)(' + ASH.STR + '|[^\\s=\\/>]+?)'] = [0, 0, 'key', 'pun', 'val'];
+    atr[data]['(\\s+)([^\\s=\\/>]+)(=)(' + ASH.STR + '|[^\\s=\\/>]+)'] = [0, 0, 'key', 'pun', 'val'];
     // SGML attribute without value
     atr[data]['(\\s+)([^\\s=\\/>]+)'] = [0, 0, 'key'];
     // Capture a SGML tag

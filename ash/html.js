@@ -6,7 +6,7 @@
     // Categorize the captured HTML attribute(s)
     atr[data] = {};
     // HTML attribute with value
-    atr[data]['(\\s+)([^\\s=\\/>]+)(=)(' + ASH.STR + '|[^\\s=\\/>]+?)'] = [0, 0, 'key', 'pun', 'val'];
+    atr[data]['(\\s+)([^\\s=\\/>]+)(=)(' + ASH.STR + '|[^\\s=\\/>]+)'] = [0, 0, 'key', 'pun', 'val'];
     // HTML attribute without value
     atr[data]['(\\s+)([^\\s=\\/>]+)'] = [0, 0, 'key'];
     // Capture a HTML tag
