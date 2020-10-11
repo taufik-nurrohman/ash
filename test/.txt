@@ -12,6 +12,25 @@ const a = 0;
 let b = 1;
 var c = 2; // comment
 
+// number test
+[1, 0.1, .1]
+[-1, -0.1, -.1]
+[+1, +0.1, +.1]
+[0b10010, 0B10010]
+[0o600, 0O600, 0600]
+[0x00f, 0X00F]
+[3e5, 3e+5, 3e-5]
+[99999999999999999999n]
+[1_000_000, 0b00_00_00, 0o00_00, 0x00_ff]
+
+// string test
+"aaa" "aa'a" "aa\"a"
+'aaa' 'aa"a' 'aa\'a'
+`aaa` `aa
+aa
+aa
+aa` `aa\`a`
+
 // regex test
 [/.*/, /\/[a-z\d]+\//g]
 [//] this should be a comment
@@ -40,9 +59,6 @@ window.foo = {
 // object shorthand test
 {foo, bar, baz, qux: 1}
 
-// object chainning test
-console.log(foo?.bar?.baz?.qux);
-
 // function test
 function foo(a, b, c = 4) {
     return a + b + c;
@@ -56,7 +72,7 @@ function bar(
 
 // function call test
 foo('a', true, 1);
-bar = bar.replace(/\W+/g, '-');
+bar = bar.replace(/\W+/g, '-').replace(/^-+|-+$/g, "");
 
 // class and method test
 interface FooInterface {
