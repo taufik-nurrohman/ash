@@ -1,0 +1,12 @@
+<lines>
+  <line>first line</line>
+  <line>second line</line>
+</lines>
+
+<!ELEMENT chapter - - (title, section+)>
+<!ELEMENT title o o (#PCDATA)>
+<!ELEMENT section - - (title, subsection+)>
+
+<QUOTE TYPE=example>
+  typically something like <ITALICS>this</>
+</QUOTE>
