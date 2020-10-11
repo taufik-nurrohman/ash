@@ -19,6 +19,6 @@
     token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
     token[ASH.PUN] = ['pun'];
     // Others must be value
-    token['[^\\s]+']: ['val'];
+    token['[^\\s]+'] = ['val'];
     ASH.token.css = token;
 })({}, {});
