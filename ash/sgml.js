@@ -3,7 +3,7 @@
     token['<!--[\\s\\S]*?-->'] = ['com'];
     token['<![^>]+>'] = ['typ'];
     // Capture SGML attribute(s)
-    let data = '\\s+[^\\s>=]+(?:=(?:' + ASH.STR + '|[^\\s>]+?))?';
+    let data = '\\s+[^\\s>=]+(?:=(?:' + ASH.STR + '|[^\\s=\\/>]+))?';
     // Categorize the captured SGML attribute(s)
     atr[data] = {};
     // SGML attribute with value

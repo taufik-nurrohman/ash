@@ -2,7 +2,7 @@
     token['<!--[\\s\\S]*?-->'] = ['com'];
     token['<![^>]+>'] = ['typ'];
     // Capture HTML attribute(s)
-    let data = '\\s+[^\\s>=]+(?:=(?:' + ASH.STR + '|[^\\s>]+?))?';
+    let data = '\\s+[^\\s>=]+(?:=(?:' + ASH.STR + '|[^\\s=\\/>]+))?';
     // Categorize the captured HTML attribute(s)
     atr[data] = {};
     // HTML attribute with value
