@@ -1,1 +1,4 @@
-ASH.token.xml = 'sgml';
+ASH.token.xml = {
+    '<\\?xml\\s[\\s\\S]*?\\?>': ['typ'],
+    '<[^>]+>': ['~sgml']
+};
