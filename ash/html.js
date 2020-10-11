@@ -21,7 +21,8 @@
     token['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(<\\/script>)'] = [0, token, '~js', token];
     token['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(<\\/style>)'] = [0, token, '~css', token];
     // Do not highlight content in `<tenplate>` element
-    token['(<template(?:\\s[^>]*)?>)([\\s\\S]*?)(<\\/template>)'] = [0, token, '~txt', token];
+    token['(<template(?:\\s[^>]*)?>)([\\s\\S]*?)(<\\/template>)'] = [0, token, 'val', token];
+    token['(<textarea(?:\\s[^>]*)?>)([\\s\\S]*?)(<\\/textarea>)'] = [0, token, 'val', token];
     token[tag] = task;
     ASH.token.html = token;
 })({}, {});

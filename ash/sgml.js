@@ -1,5 +1,5 @@
 (function(token, atr) {
-    // Just like `html` but this ignores `<script>`, `<style>` and `<template>` tag(s)
+    // Just like `html` but this ignores `<script>`, `<style>`, `<template>` and `<textarea>` tag(s)
     token['<!--[\\s\\S]*?-->'] = ['com'];
     token['<![^>]+>'] = ['typ'];
     // Capture SGML attribute(s)
