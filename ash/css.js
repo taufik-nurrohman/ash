@@ -1,10 +1,16 @@
 (function(token, query) {
     let key = '(?:\\\\' + ASH.PUN + '|[a-zA-Z_-][\\w-]*)';
+    query['(\\()([^)]+)(\\))'] = ['pun', token, 'pun'];
     query['\\[[^\\]]+\\]'] = ['que.att'];
     query['::?' + key] = ['que.pse'];
     query['\\.' + key] = ['que.cla'];
     query['#' + key] = ['que.id'];
     query['@' + key] = ['que.wor'];
+    query['\\b(?:' + [
+        'and',
+        'not',
+        'only'
+    ].join('|') + ')\\b'] = ['que.wor'];
     query[key] = ['que.ele'];
     query[ASH.PUN] = ['pun'];
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com'];
