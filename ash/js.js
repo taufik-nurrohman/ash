@@ -14,8 +14,8 @@
     token[/\/(?:(?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+)\/(?:(?:g(?:im?|mi?)?|i(?:gm?|mg?)?|m(?:gi?|ig?)?)?)/.source] = ['exp']; // <https://stackoverflow.com/a/17843773/421333>
     token['\\b(class|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b'] = [0, 'wor', 0, 'cla'];
     token['\\b(function)(\\s+)(' + key + ')\\b'] = [0, 'wor', 0, 'fun'];
-    token['(\\??)(\\.)(#?' + key + ')\\b'] = [0, 'pun', 'pun', 0]; // Skip
-    token['#' + key + '\\b'] = [0]; // Skip
+    token['(\\??)(\\.)(#?' + key + ')\\b'] = [0, 'pun', 'pun', 'key']; // Skip
+    token['#' + key + '\\b'] = ['key']; // Skip
     let wors = '(?:' + [
         'abstract',
         'arguments',
