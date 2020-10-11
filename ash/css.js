@@ -1,8 +1,8 @@
 (function(token, query) {
-    let key = '(?:\\\\.|[a-zA-Z_-][\\w-]*)';
+    let key = '(?:[a-zA-Z_-][\\w-]*)';
     let f = '\\b(' + key + ')(\\s*)(\\()';
     let u = ASH.NUM + '(?:[cme]m|ch|ex|in|p[ctx]|rem|v(?:[hw]|max|min)|%)';
-    query['\\[\\]'] = ['que.att'];
+    query['\\[[^\\]]+\\]'] = ['que.att'];
     query['::?' + key] = ['que.pse'];
     query['\\.' + key] = ['que.cla'];
     query['#' + key] = ['que.id'];
