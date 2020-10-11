@@ -14,7 +14,7 @@
     token[/\/(?:(?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+)\/(?:(?:g(?:im?|mi?)?|i(?:gm?|mg?)?|m(?:gi?|ig?)?)?)/.source] = ['exp']; // <https://stackoverflow.com/a/17843773/421333>
     token['\\b(class|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b'] = [0, 'wor', 0, 'cla'];
     token['\\b(function)(\\s+)(' + key + ')\\b'] = [0, 'wor', 0, 'fun'];
-    token['(\\??\\.)(#?' + key + ')\\b'] = [0, 'pun', 0]; // Skip
+    token['(\\??)(\\.)(#?' + key + ')\\b'] = [0, 'pun', 'pun', 0]; // Skip
     token['#' + key + '\\b'] = [0]; // Skip
     let wors = '(?:' + [
         'abstract',
@@ -100,5 +100,8 @@
     token['\\b' + libs + '\\b'] = ['lib'];
     token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
     token[ASH.PUN] = ['pun'];
+    token['\\b(?:[A-Z_][A-Z\\d_]*)+\\b'] = ['con'];
+    // Else, must be variable(s)
+    token['\\b' + key + '\\b'] = ['var'];
     ASH.token.js = token;
 })({});

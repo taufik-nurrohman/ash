@@ -40,7 +40,7 @@ window.foo = {
 // object shorthand test
 {foo, bar, baz, qux: 1}
 
-// object chainning test
+// object chaining test
 console.log(foo?.bar?.baz?.qux);
 
 // function test

@@ -15,7 +15,13 @@
   color: #7f9f7f;
 }
 
-.ash .exp {
+.ash .con,
+.ash .tit {
+  color: #efefef;
+}
+
+.ash .exp,
+.ash .pse {
   color: #e89393;
 }
 
@@ -32,7 +38,8 @@
   color: #cc9393;
 }
 
-.ash .mar {
+.ash .mar,
+.ash .ele {
   color: #efef8f;
 }
 
@@ -57,6 +64,7 @@
   color: #f0dfaf;
 }
 
+.ash .cla,
 .ash .fun,
 .ash .lib {
   color: #efef8f;
@@ -70,6 +78,11 @@
   color: #cfbfaf;
 }
 
+.ash .que {
+  color: #e3ceab;
+}
+
+.ash .id,
 .ash .sym {
   color: #dca3a3;
 }

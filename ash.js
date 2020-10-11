@@ -86,6 +86,7 @@
         let pattern = Object.keys(syntax),
             fn = Object.values(syntax),
             j = pattern.length;
+        // TODO: Stream using `exec` for easy control in the future
         return j ? content.replace(toPattern(pattern.join('|'), 'g'), function() {
             let lot = toArray(arguments).filter(v => isString(v)),
                 first = lot[0],
@@ -102,6 +103,10 @@
                     for (let i = 0, j = task.length; i < j; ++i) {
                         if (0 === i) {
                             continue; // Ignore first array to be used later
+                        }
+                        if ("" === lot[i]) {
+                            // Do not mark empty string
+                            continue;
                         }
                         if (isObject(task[i])) {
                             // Recurse
@@ -122,21 +127,22 @@
                             if (0 === i) {
                                 continue; // Ignore first array to be used later
                             }
+                            if ("" === lot[i]) {
+                                // Do not mark empty string
+                                continue;
+                            }
                             if (isObject(value[i])) {
                                 // Recurse
                                 v += toSyntax($, value[i], lot[i]);
                             } else if (isString(value[i])) {
-                                v += $.t(value[i], lot[i]);
+                                v += $.t(value[i], lot[i], 1, '~' === lot[i][0] ? 'mark' : 'span');
                             } else {
                                 v += $.t(0, lot[i]);
                             }
                         }
                         return $.t(value[0], v || first, v ? 0 : 1);
                     }
-                    if (isFunction(value)) {
-                        // TODO
-                    }
-                    if (isObject(value)) {
+                    if (isFunction(value) || isObject(value)) {
                         // Recurse
                         return toSyntax($, value, first);
                     }
@@ -284,6 +290,7 @@
             }
             let j = pattern.length,
                 r = toPattern(pattern.join('|'), 'g'), id, lot;
+            // TODO: Stream using `exec` for easy control in the future
             return j ? content.replace(r, function() {
                 lot = toArray(arguments).filter(v => isString(v));
                 for (let i = 0; i < j; ++i) {
