@@ -24,8 +24,7 @@
   color: #e3ceab;
 }
 
-.ash .exp,
-.ash .pse {
+.ash .exp {
   color: #e89393;
 }
 
@@ -50,10 +49,12 @@
   font-weight: bold;
 }
 
+.ash .id,
 .ash .num {
   color: #8cd0d3;
 }
 
+.ash .pse,
 .ash .str {
   color: #cc9393;
 }
@@ -81,7 +82,6 @@
   color: #cfbfaf;
 }
 
-.ash .id,
 .ash .sym {
   color: #dca3a3;
 }

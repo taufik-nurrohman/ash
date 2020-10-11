@@ -1,6 +1,6 @@
 (function(token, query) {
     let key = '(?:[a-zA-Z_-][\\w-]*)';
-    query['(\\()([^)]+)(\\))'] = ['pun', {}, 'pun'];
+    query['(\\()([^)]+)(\\))'] = [0, 'pun', token, 'pun'];
     query['\\[[^\\]]+\\]'] = ['que.att'];
     query['::?' + key] = ['que.pse'];
     query['\\.' + key] = ['que.cla'];
