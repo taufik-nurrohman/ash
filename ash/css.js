@@ -1,5 +1,5 @@
 (function(token, query) {
-    let key = '(?:\\\\' + ASH.PUN + '|[a-zA-Z_-][\\w-]*)';
+    let key = '(?:[a-zA-Z_-][\\w-]*)';
     query['(\\()([^)]+)(\\))'] = ['pun', token, 'pun'];
     query['\\[[^\\]]+\\]'] = ['que.att'];
     query['::?' + key] = ['que.pse'];
