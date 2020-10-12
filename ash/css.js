@@ -1,17 +1,17 @@
 ((token, query) => {
-    let key = '(?:\\\\.|[a-zA-Z_-][\\w-]*)';
+    let key = '(?:(?:\\\\.|[a-zA-Z_-])(?:\\\\.|[\\w-])*)';
     query['(\\()([^)]+)(\\))'] = [0, 'pun', token, 'pun'];
     query['\\[[^\\]]+\\]'] = ['que.att'];
-    query['::?' + key] = ['que.pse'];
-    query['\\.' + key] = ['que.cla'];
-    query['#' + key] = ['que.id'];
-    query['@' + key] = ['que.wor'];
+    query['::?' + key + '\\b'] = ['que.pse'];
+    query['\\.' + key + '\\b'] = ['que.cla'];
+    query['#' + key + '\\b'] = ['que.id'];
+    query['@' + key + '\\b'] = ['que.wor'];
     query['\\b(?:' + [
         'and',
         'not',
         'only'
     ].join('|') + ')\\b'] = ['que.wor'];
-    query[key] = ['que.ele'];
+    query['\\b' + key + '\\b'] = ['que.ele'];
     query[ASH.PUN] = ['pun'];
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com'];
     // Select everything after `}` and before `{`
@@ -26,6 +26,6 @@
     token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
     token[ASH.PUN] = ['pun'];
     // Other(s) must be value
-    token['[^\\s]+'] = ['val'];
+    token['\\b' + key + '\\b'] = ['val'];
     ASH.token.css = token;
 })({}, {});
