@@ -8,6 +8,7 @@
     token[ASH.LOG] = ['val.log'];
     token[ASH.NUM] = ['val.num'];
     token[ASH.PUN] = ['pun'];
+    // Other(s) must be value
     token['[^\\n;]+'] = ['val'];
     ASH.token.ini = token;
 })({});

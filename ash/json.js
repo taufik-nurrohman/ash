@@ -8,6 +8,7 @@
     token[ASH.NUM] = function(v) {
         return ['val.num.' + (/^-?\d+n?$/.test(v[0]) ? 'int' : 'flo')];
     };
+    // Other(s) must be punctuation
     token[ASH.PUN] = ['pun'];
     ASH.token.json = token;
 })({});

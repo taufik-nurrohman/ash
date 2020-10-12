@@ -101,7 +101,7 @@
     token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
     token[ASH.PUN] = ['pun'];
     token['\\b(?:[A-Z_][A-Z\\d_]*)+\\b'] = ['con'];
-    // Else, must be variable(s)
+    // Other(s) must be variable
     token['\\b' + key + '\\b'] = ['var'];
     ASH.token.js = token;
 })({});
