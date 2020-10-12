@@ -1,1 +1,1 @@
-ASH.token.svg = 'sgml';
+ASH.token.svg = 'xml';

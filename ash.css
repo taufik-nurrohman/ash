@@ -16,7 +16,8 @@
 }
 
 .ash .con,
-.ash .tit {
+.ash .tit,
+.ash .uri {
   color: #efefef;
 }
 

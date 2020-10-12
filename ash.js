@@ -83,10 +83,12 @@
     }
 
     function toSyntax($, syntax, content) {
+        // Normalize line-break to `\n` for consistent regex
+        content = content.replace(/\r\n|\r/g, '\n');
         let pattern = Object.keys(syntax),
             fn = Object.values(syntax),
             j = pattern.length;
-        // TODO: Stream using `exec` for easy control in the future
+        // TODO: Stream using `exec` for easy control in the future?
         return j ? content.replace(toPattern(pattern.join('|'), 'g'), function() {
             let lot = toArray(arguments).filter(v => isString(v)),
                 first = lot[0],
@@ -210,8 +212,6 @@
             }
         });
 
-        $$._ = $$.prototype;
-
     })(win[name] = function(source, o) {
 
         if (!source) return;
@@ -283,25 +283,6 @@
             }
             return $;
         }
-
-        $.chunk = function(pattern, fn, content) {
-            if (isString(pattern)) {
-                pattern = [pattern]; // Force to be array
-            }
-            let j = pattern.length,
-                r = toPattern(pattern.join('|'), 'g'), id, lot;
-            // TODO: Stream using `exec` for easy control in the future
-            return j ? content.replace(r, function() {
-                lot = toArray(arguments).filter(v => isString(v));
-                for (let i = 0; i < j; ++i) {
-                    if (toPattern('^' + pattern[i] + '$').test(lot[0])) {
-                        id = i;
-                        break;
-                    }
-                }
-                return fn.call($, lot, id);
-            }) : $.t(0, content);
-        };
 
         $.hooks = hooks;
         $.off = hookLet;

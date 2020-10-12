@@ -1,4 +1,4 @@
-(function(token) {
+(token => {
     let key = '(?:[a-zA-Z_$][\\w$]*)';
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.s0'];
     token['\\/\\/[^\\n]+'] = ['com.s1'];

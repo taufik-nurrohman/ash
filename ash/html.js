@@ -1,4 +1,4 @@
-(function(token, atr) {
+((token, atr) => {
     token['<!--[\\s\\S]*?-->'] = ['com'];
     token['<![^>]+>'] = ['typ'];
     // Capture HTML attribute(s)

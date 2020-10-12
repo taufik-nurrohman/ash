@@ -147,67 +147,27 @@ ASH.token.json = function(content) {
 
 > **Tips:** Use AST parsers such as A and B to get more accurate results. Using this usually has the side effect of a longer parsing process.
 
-Below is a simple example of using the `ash.chunk` method to mark portions of a JSON file using regular expressions:
+Below is a simple example of using the object method to mark portions of a JSON file using regular expressions:
 
 ~~~ .js
-ASH.token.json = function(content) {
-    // Set your pattern sequence to match, ordered by priority
-    let pattern = [
-            // String, followed by `:`
-            '(' + ASH.STR + ')(\\s*)(:)',
-            // String
-            ASH.STR,
-            // Number
-            ASH.NUM,
-            // Logic
-            ASH.LOG
-        ],
-        // A helper method to generate `<span>` element with class(es)
-        t = this.t;
-    return this.chunk(pattern, (m, i) => {
-        // `m` return the matching part(s)
-        // `i` return the matched pattern index
-        if (0 === i) {
-            // Attribute
-            return t('key', m[1]) + m[2] + m[3];
-        }
-        if (1 === i) {
-            // Value, String
-            return t('val.str', m[0]);
-        }
-        if (2 === i) {
-            // Value, Number
-            return t('val.num', m[0]);
-        }
-        if (3 === i) {
-            // Value, Logic
-            return t('val.log', m[0]);
-        }
-        // Other(s)
-        return t(0, m[0]);
-    }, content);
-};
+(token => {
+    token['(' + ASH.STR + ')(\\s*:)'] = [0, 'key', 0];
+    token[ASH.STR] = ['val.str'];
+    token[ASH.LOG] = ['val.log'];
+    token[ASH.NUM] = ['val.num'];
+    ASH.token.json = token;
+})({});
 ~~~
 
-Below is a simple example of defining language as pattern sequence:
+The order in which the patterns are given is very important. Patterns will be rearranged internally as a series of `regex1|regex2|regex3`.
 
-~~~ .js
-let token = {};
-
-token['(' + ASH.STR + ')(\\s*)(:)'] = [0, 'key', 0, 0];
-token[ASH.STR] = ['val.str'];
-token[ASH.LOG] = ['val.log'];
-token[ASH.NUM] = function(v) {
-    return 'val.num.' + (-1 === v[0].indexOf('.') ? 'flo' : 'int');
-};
-
-ASH.token.json = token;
-~~~
+Current implementation of syntax highlighter relies on regular expressions. I know this is bad, but to handle short code snippets, it should be enough. If you want to handle more complex cases, a syntax highlighter library such as [Highlight.js](https://github.com/highlightjs/highlight.js) will be more appropriate.
 
 Limitations
 -----------
 
  - Currently not possible to preserve HTML tags in the source code.
+ - Mixed PHP expression within a HTML tag is likely will break.
 
 License
 -------
