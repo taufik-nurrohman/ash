@@ -2,20 +2,20 @@
     let key = '(?:(?:\\\\.|[a-zA-Z_-])(?:\\\\.|[\\w-])*)';
     query['(\\()([^)]+)(\\))'] = [0, 'pun', token, 'pun'];
     query['\\[[^\\]]+\\]'] = ['que.att'];
-    query['::?' + key + '\\b'] = ['que.pse'];
-    query['\\b\\.' + key + '\\b'] = ['que.cla'];
-    query['\\b#' + key + '\\b'] = ['que.id'];
-    query['\\b@' + key + '\\b'] = ['que.wor'];
+    query['::?' + key] = ['que.pse'];
+    query['\\.' + key] = ['que.cla'];
+    query['#' + key] = ['que.id'];
+    query['@' + key] = ['que.wor'];
     query['\\b(?:' + [
         'and',
         'not',
         'only'
     ].join('|') + ')\\b'] = ['que.wor'];
-    query['\\b' + key + '\\b'] = ['que.ele'];
+    query[key] = ['que.ele'];
     query[ASH.PUN] = ['pun'];
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com'];
     // Select everything after `}` and before `{`
-    token['\\b(\\s*)([^{}]+)(\\s*)(\\{)'] = [0, 0, query, 0, 'pun'];
+    token['(\\s*)([^{}]+)(\\s*)(\\{)'] = [0, 0, query, 0, 'pun'];
     token['(' + key + ')(\\s*)(:)'] = [0, 'key', 0, 'pun'];
     token[ASH.STR] = ['str'];
     // Slice -2 to remove the `\b` part
