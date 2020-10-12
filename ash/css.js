@@ -3,9 +3,9 @@
     query['(\\()([^)]+)(\\))'] = [0, 'pun', token, 'pun'];
     query['\\[[^\\]]+\\]'] = ['que.att'];
     query['::?' + key + '\\b'] = ['que.pse'];
-    query['\\.' + key + '\\b'] = ['que.cla'];
-    query['#' + key + '\\b'] = ['que.id'];
-    query['@' + key + '\\b'] = ['que.wor'];
+    query['\\b\\.' + key + '\\b'] = ['que.cla'];
+    query['\\b#' + key + '\\b'] = ['que.id'];
+    query['\\b@' + key + '\\b'] = ['que.wor'];
     query['\\b(?:' + [
         'and',
         'not',
