@@ -306,7 +306,7 @@
                 return;
             }
             if (!isSet(n)) {
-                n = '~' === type[0] ? 'mark' : 'span';
+                n = '~' === type[0] ? 'ins' : 'span';
             }
             if (forceEscape) {
                 content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -333,7 +333,7 @@
                 } else if (isFunction(syntax)) {
                     source[innerHTML] = syntax.call($, content);
                 }
-                let others = source.querySelectorAll('mark[class^="~"]');
+                let others = source.querySelectorAll('ins[class^="~"]');
                 if (others.length) {
                     console.log(['Highlighting others...', others]);
                 }
