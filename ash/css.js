@@ -14,8 +14,8 @@
     query[key] = ['que.ele'];
     query[ASH.PUN] = ['pun'];
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com'];
-    // Select everything after `}` and before `{`
-    token['(\\s*)([^{}]+)(\\s*)(\\{)'] = [0, 0, query, 0, 'pun'];
+    // Select everything before `{`
+    token['(\\s*)([^{}]+?)(\\s*)(\\{)'] = [0, 0, query, 0, 'pun'];
     token['(' + key + ')(\\s*)(:)'] = [0, 'key', 0, 'pun'];
     token[ASH.STR] = ['str'];
     // Slice -2 to remove the `\b` part
