@@ -326,7 +326,7 @@
                 let syntax = await $$[token][type];
                 // Process alias(es)
                 while (isString(syntax)) {
-                    syntax = await $$[token][type];
+                    syntax = await $$[token][syntax];
                 }
                 if (isObject(syntax)) {
                     source[innerHTML] = toSyntax($, syntax, content);
