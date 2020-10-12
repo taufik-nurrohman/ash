@@ -3,7 +3,7 @@
     token[';[^\\n]+'] = ['com'];
     token['\\b(' + key + ')([ ]*)(=)([ ]*)([^\\n]+)'] = [0, 'key', 0, 'pun', 0, token];
     token['\\b(' + key + ')([ ]*)(=)'] = [0, 'key', 0, 'pun'];
-    token['\\[[^\\n\\]]+\\](?=\\n)'] = ['sec'];
+    token['\\[[^\\n\\]]+\\]'] = ['sec'];
     token[ASH.STR] = ['val.str'];
     token[ASH.LOG] = ['val.log'];
     token[ASH.NUM] = ['val.num'];

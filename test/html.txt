@@ -37,13 +37,33 @@
 
 <a>
 
-<a b="c" d="e" f g>
+<aaa bbb="ccc" ddd="eee" fff ggg>
+<aaa bbb="ccc" ddd="eee" fff ggg/>
+<aaa bbb="ccc" ddd="eee" fff ggg />
 
-<a b='c' d='e' f g>
+<aaa bbb='ccc' ddd='eee' fff ggg>
 
-<a b=c d=e f g>
+<aaa bbb=ccc ddd=eee fff ggg>
 
 <div
   class="foo"
   id="bar"
 >
+
+<script>
+<!--
+alert('foo');
+-->
+</script>
+
+<script>
+//<![CDATA[
+alert('bar');
+//]]>
+</script>
+
+<script>
+/*<![CDATA[*/
+alert('baz');
+/*]]>*/
+</script>
