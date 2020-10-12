@@ -333,9 +333,14 @@
                 } else if (isFunction(syntax)) {
                     source[innerHTML] = syntax.call($, content);
                 }
-                let others = source.querySelectorAll('ins[class^="~"]');
-                if (others.length) {
-                    console.log(['Highlighting others...', others]);
+                let others = source.querySelectorAll('ins[class^="~"]'),
+                    j = others.length;
+                if (j) {
+                    for (let i = 0; i < j; ++i) {
+                        others[i][className] = others[i][className].slice(1);
+                        new $$(others[i]);
+                        classLet(others[i], classNameTo);
+                    }
                 }
             })();
         }
