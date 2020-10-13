@@ -95,12 +95,18 @@
           <select name="x">
             <option disabled selected>Syntax&hellip;</option>
             <option value="test">Generic Pattern Test</option>
+            <option value="htaccess">Apache</option>
+            <option value="sh">Bash</option>
+            <option value="c">C</option>
             <option value="css">CSS</option>
             <option value="html">HTML</option>
+            <option value="http">HTTP</option>
             <option value="ini">INI</option>
             <option value="js">JavaScript</option>
             <option value="json">JSON</option>
+            <option value="md">Markdown</option>
             <option value="php">PHP</option>
+            <option value="py">Python</option>
             <option value="sgml">SGML</option>
             <option value="txt">Plain Text</option>
             <option value="xml">SVG, XML</option>
@@ -130,7 +136,7 @@
       <ul>
         <li>Currently not possible to preserve HTML tags in the source code.</li>
         <li>Mixed PHP expression within HTML tags likely will break.</li>
-        <li>These is no language detection system. You have to determine the syntax highlighting mode in the source element manually.</li>
+        <li>There aren&rsquo;t any automatic language detection feature. You have to determine the syntax highlighting mode in the source element manually.</li>
       </ul>
       <h2>Usage</h2>
       <pre><code>&lt;!DOCTYPE html&gt;
@@ -155,6 +161,7 @@
         <li>Line Numbers</li>
         <li>Code Snippet Copy Function</li>
         <li>Code Snippet Run Function</li>
+        <li>Language Detection by File Extension</li>
       </ul>
       <h2>Settings</h2>
       <pre><code>let ash = new ASH(<var>source</var>, <var>prefix</var>);</code></pre>
@@ -199,14 +206,20 @@ console.log([ASH.state, ash.state]);</code></pre>
       <h2>Languages</h2>
       <p>Currently support these languages:</p>
       <ul>
+        <li>Apache</li>
+        <li>Bash</li>
+        <li>C</li>
         <li><a href="ash/css.js" target="_blank">CSS</a></li>
         <li><a href="ash/html.js" target="_blank">HTML</a></li>
+        <li>HTTP</li>
         <li><a href="ash/ini.js" target="_blank">INI</a></li>
         <li><a href="ash/js.js" target="_blank">JavaScript</a></li>
         <li><a href="ash/json.js" target="_blank">JSON</a></li>
+        <li>Markdown</li>
         <li><a href="ash/php.js" target="_blank">PHP</a></li>
         <li><a href="ash/sgml.js" target="_blank">SGML</a></li>
         <li><a href="ash/txt.js" target="_blank">Plain Text</a></li>
+        <li>Python</li>
         <li><a href="ash/xml.js" target="_blank">XML</a> (also <a href="ash/svg.js" target="_blank">SVG</a>)</li>
         <li><a href="ash/yml.js" target="_blank">YAML</a></li>
       </ul>
