@@ -1,5 +1,5 @@
-Asynchronous Syntax Highlighter
-===============================
+Asynchronous Syntax Highlighter (~4 KB Minified)
+================================================
 
 > A hard mode client-side syntax highlighter for the web.
 
@@ -51,8 +51,21 @@ Methods and Properties
 
 **TODO**
 
-Development
------------
+Languages
+---------
+
+Currently support these languages:
+
+ - [CSS](ash/css.js)
+ - [HTML](ash/html.js)
+ - [INI](ash/ini.js)
+ - [JavaScript](ash/js.js)
+ - [JSON](ash/json.js)
+ - [PHP](ash/php.js)
+ - [SGML](ash/sgml.js)
+ - [Plain Text](ash/txt.js)
+ - [XML](ash/xml.js) (also [SVG](ash/svg.js))
+ - [YAML](ash/yml.js)
 
 Regular expressions and class naming specifications are very inspired by the [Highlight.js](https://github.com/highlightjs/highlight.js) project. API may be very ugly, but I want to prioritize performance and size of the file for now.
 

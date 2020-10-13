@@ -6,6 +6,13 @@
  * comment
  */
 
+@font-face {
+  font-family: sans-serif;
+  src: url(https://example.com/sans-serif.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --r: 0;
   --g: 255;
@@ -32,6 +39,12 @@ div {
 .div {
   color: red;
 }
+
+[div="div"] {
+  color: rgba(var(--r), var(--g), var(--b), var(--a, 1));
+}
+
+foo, bar, [baz], #qux, .foo:bar {}
 
 @media (max-width: 450px) {
   body {

@@ -3,6 +3,7 @@
 namespace Foo\Bar;
 
 use Foo\Bar;
+use Foo\{Bar,Baz,Qux};
 use Foo\Bar as Baz;
 use function foo;
 
@@ -19,7 +20,7 @@ define("FOO\\BAR", 1);
 // comment
 // comment
 
-echo FOO\BAR . $baz;
+echo FOO\BAR . $baz . __DIR__;
 
 # comment
 # comment
@@ -32,11 +33,15 @@ class Foo extends Bar {
         $args = func_get_args();
         $this->foo = $args[0];
         $this->bar = (array) ($args[1] ?? []);
+        $this->{$bar} = TRUE;
     }
 }
 
 $foo = array(1.5, true);
 $bar = (array) $foo;
+
+$$foo = 'bar';
+${$foo} = 'bar';
 
 $str = 'aaa
   bbb
