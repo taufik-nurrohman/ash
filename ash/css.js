@@ -17,6 +17,7 @@
     // Select everything before `{`
     token['((?:[@#.:]?' + key + '|\\[^\\]\\]+)[^{}]*)(\\s*)(\\{)'] = [0, query, 0, 'pun'];
     token['(' + key + ')(\\s*)(:)'] = [0, 'key', 0, 'pun'];
+    token['--' + key] = ['var'];
     token[ASH.STR] = ['str'];
     // Slice -2 to remove the `\b` part
     token[ASH.NUM.slice(0, -2) + '(?:(?:[cme]m|ch|deg|ex|in|p[ctx]|rem|v(?:[hw]|max|min))\\b|%)'] = ['num'];
