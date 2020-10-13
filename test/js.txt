@@ -1,5 +1,7 @@
 /*
  * comment
+ * comment
+ * comment
  */
 
 "use strict"
@@ -8,6 +10,9 @@
 import foo from '../foo';
 
 // comment
+// comment
+// comment
+
 const a = 0;
 let b = 1;
 var c = 2; // comment

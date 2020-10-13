@@ -1,0 +1,82 @@
+<?php
+
+namespace Foo\Bar;
+
+use Foo\Bar;
+use Foo\Bar as Baz;
+use function foo;
+
+/*
+ * comment
+ * comment
+ * comment
+ */
+
+define('FOO\BAR', 1);
+define("FOO\\BAR", 1);
+
+// comment
+// comment
+// comment
+
+echo FOO\BAR . $baz;
+
+# comment
+# comment
+# comment
+
+class Foo extends Bar {
+    public $foo = 1;
+    public $bar = [];
+    public function __construct() {
+        $args = func_get_args();
+        $this->foo = $args[0];
+        $this->bar = (array) ($args[1] ?? []);
+    }
+}
+
+$foo = array(1.5, true);
+$bar = (array) $foo;
+
+$str = 'aaa
+  bbb
+ccc';
+
+$str = "aaa
+  bbb
+ccc";
+
+$str = "aaa\n  bbb\nccc";
+
+$str = <<<AAA
+aaa
+  bbb
+ccc
+AAA;
+
+$str = <<<'AAA'
+aaa
+  bbb
+ccc
+AAA;
+
+$str = <<<"AAA"
+aaa
+  bbb
+ccc
+AAA;
+
+$foo = new Foo;
+
+echo $foo::class;
+
+echo Foo::class;
+
+namespace Foo\Bar\Baz;
+
+namespace Foo\Bar\Baz {
+    class Qux extends \Foo\Bar {}
+    function qux() {
+        return new Qux;
+    }
+}
