@@ -218,7 +218,6 @@
 
         let $ = this,
             $$ = win[name],
-            hooks = {},
             state = Object.assign({}, $$.state, isString(o) ? {
                 'class': o
             } : (o || {})),
@@ -242,52 +241,6 @@
         // Mark current DOM as active syntax highlighter to prevent duplicate instance
         source[name] = 1;
 
-        function hookLet(name, fn) {
-            if (!isSet(name)) {
-                return (hooks = {}), $;
-            }
-            if (isSet(hooks[name])) {
-                if (isSet(fn)) {
-                    for (let i = 0, j = hooks[name].length; i < j; ++i) {
-                        if (fn === hooks[name][i]) {
-                            hooks[name].splice(i, 1);
-                        }
-                    }
-                    // Clean-up empty hook(s)
-                    if (0 === j) {
-                        delete hooks[name];
-                    }
-                } else {
-                    delete hooks[name];
-                }
-            }
-            return $;
-        }
-
-        function hookSet(name, fn) {
-            if (!isSet(hooks[name])) {
-                hooks[name] = [];
-            }
-            if (isSet(fn)) {
-                hooks[name].push(fn);
-            }
-            return $;
-        }
-
-        function hookFire(name, lot) {
-            if (!isSet(hooks[name])) {
-                return $;
-            }
-            for (let i = 0, j = hooks[name].length; i < j; ++i) {
-                hooks[name][i].apply($, lot);
-            }
-            return $;
-        }
-
-        $.hooks = hooks;
-        $.off = hookLet;
-        $.on = hookSet;
-
         $.pop = function() {
             if (!source[name]) {
                 return $; // Already ejected
@@ -295,7 +248,7 @@
             delete source[name];
             source[className] = classNameToRestore;
             source[innerHTML] = contentToRestore;
-            return hookFire('pop', [content]);
+            return $;
         };
 
         $.source = source;
