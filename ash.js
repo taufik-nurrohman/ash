@@ -154,7 +154,7 @@
                     return toSyntax($, task, first);
                 }
             }
-            return first;
+            return $.t(0, first);
         }) : $.t(0, content);
     }
 

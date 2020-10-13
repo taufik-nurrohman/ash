@@ -3,7 +3,7 @@
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.s0'];
     token['\\/\\/[^\\n]+'] = ['com.s1'];
     token['(?:"use strict"|\'use strict\')'] = ['typ'];
-    token['<\\/?[^\\s>]+(?:\\s[^>]*)?>'] = ['~xml']; // JSX
+    token['<\\/?[^\\s<>]+(?:\\s[^>]*)?>'] = ['~xml']; // JSX
     token['([{,])(\\s*)(' + ASH.STR + '|\\[[^\\[]+\\]|' + key + ')(\\s*)(:)'] = [0, 'pun', 0, 'key', 0, 'pun'];
     token[ASH.STR] = function(v) {
         return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
