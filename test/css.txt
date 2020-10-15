@@ -35,7 +35,7 @@ div {
 
 @media (max-width: 450px) {
   body {
-    font-size: 80%;
+    font-size: 80% !important;
   }
 }
 
