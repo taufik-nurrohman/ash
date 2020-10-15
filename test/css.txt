@@ -6,6 +6,13 @@
  * comment
  */
 
+@font-face {
+  font-family: sans-serif;
+  src: url(https://example.com/sans-serif.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --r: 0;
   --g: 255;
@@ -33,6 +40,10 @@ div {
   color: red;
 }
 
+[div="div"] {
+  color: rgba(var(--r), var(--g), var(--b), var(--a, 1));
+}
+
 @media (max-width: 450px) {
   body {
     font-size: 80% !important;
@@ -41,7 +52,25 @@ div {
 
 /* selector test */
 div#div.foo[bar='baz']::qux {}
-
 #foo\:bar:hover {}
+foo, bar, [baz], #qux, .foo:bar {}
 
 @media only screen and (max-width: 100px) and (max-height: 100px) {}
+
+@keyframes test-1 {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 50px;
+  }
+}
+
+@keyframes test-2 {
+  from {
+    top: 0;
+  }
+  to {
+    top: 50px;
+  }
+}

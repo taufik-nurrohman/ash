@@ -1,112 +1,454 @@
-
 <!DOCTYPE html>
 <html dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta content="#000" name="theme-color">
     <meta content="width=device-width" name="viewport">
-    <title>Asynchronous Syntax Highlighter</title>
+    <meta content="Ash aims to solve problems related to client-side syntax highlighter&rsquo;s file size which is mostly getting bigger as the language variant you want to highlight increases." name="description">
+    <title>Asynchronous Syntax Highlighter &middot; A hard mode client-side syntax highlighter for the web.</title>
+    <link href="favicon.ico" rel="icon">
     <link href="ash.css" rel="stylesheet">
     <style>
-
-* {
-  box-sizing: border-box;
-}
-
-textarea {
-  display: block;
-  width: 100%;
-  height: 15em;
-}
-
-label {
-  display: inline-block;
-  cursor: pointer;
-}
-
-.inspect code span {
-  outline: 1px dotted;
-}
-
-.inspect code span::after {
-  content: '(' attr(class) ')';
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 75%;
-}
-
+    * {
+      box-sizing: border-box;
+    }
+    :root {
+      background: #fff;
+      color: #000;
+      border-top: 4px solid;
+      font: normal normal 16px/1.25 serif;
+    }
+    a {
+      color: #009;
+      text-decoration: none;
+    }
+    a, code {
+      word-wrap: break-word;
+    }
+    code {
+      font-family: monospace;
+      font-size: 80%;
+    }
+    footer, header, main, nav {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    hr {
+      border: 0;
+      color: inherit;
+      border-top: 1px dashed;
+      height: 0;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    pre code {
+      display: block;
+      background: #eee;
+      padding: 1em;
+    }
+    table {
+      width: 100%;
+    }
+    td, th {
+      text-align: left;
+      vertical-align: top;
+    }
+    textarea {
+      display: block;
+      width: 100%;
+      height: 15em;
+    }
+    label {
+      display: inline-block;
+      cursor: pointer;
+    }
+    .inspect code span {
+      outline: 1px dotted;
+    }
+    .inspect code span::after {
+      content: '(' attr(class) ')';
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 75%;
+    }
+    body > p:first-child {
+      background: #ffa;
+      border: 1px dashed;
+      margin-top: 0;
+      padding: .75em 1em;
+    }
     </style>
   </head>
   <body>
-    <form>
+    <p>Do you like this project? Please support my <a href="https://github.com/mecha-cms">Mecha CMS</a> project too. Thank you!</p>
+    <header>
+      <h1>Ash Syntax Highlighter v0.0.0</h1>
+      <p>Ash aims to solve the problem of client-side syntax highlighter file size which usually gets bigger as you have more syntax variants that you need to highlight. With Ash, you will only need to load the main file once, and the associated language files will be loaded automatically as needed.</p>
+      <p>Below is a demonstration of dynamic syntax highlighting. Try opening your network inspector to see what files will be loading each time a new syntax is applied.</p>
+      <hr>
+    </header>
+    <main>
+      <form method="get" target="_blank">
+        <p>
+          <select name="x">
+            <option disabled selected>Syntax&hellip;</option>
+            <option value="test">Generic Pattern Test</option>
+            <option value="htaccess">Apache</option>
+            <option value="sh">Bash</option>
+            <option value="c">C</option>
+            <option value="css">CSS</option>
+            <option value="html">HTML</option>
+            <option value="http">HTTP</option>
+            <option value="ini">INI</option>
+            <option value="js">JavaScript</option>
+            <option value="json">JSON</option>
+            <option value="md">Markdown</option>
+            <option value="php">PHP</option>
+            <option value="py">Python</option>
+            <option value="sgml">SGML</option>
+            <option value="txt">Plain Text</option>
+            <option value="xml">SVG, XML</option>
+            <option value="yaml">YAML</option>
+          </select>
+          <select name="skin">
+            <option value="zenburn">Zenburn</option>
+          </select>
+          <button name="submit" type="submit">Update</button>
+        </p>
+        <p>
+          <textarea name="content"></textarea>
+        </p>
+      </form>
+      <pre><code class="ash">Result goes here&hellip;</code></pre>
       <p>
-        <select name="x">
-          <option disabled selected>Syntax&hellip;</option>
-          <option value="test">Generic Pattern Test</option>
-          <option value="css">CSS</option>
-          <option value="html">HTML</option>
-          <option value="ini">INI</option>
-          <option value="js">JavaScript</option>
-          <option value="json">JSON</option>
-          <option value="php">PHP</option>
-          <option value="sgml">SGML</option>
-          <option value="txt">Plain Text</option>
-          <option value="xml">SVG, XML</option>
-          <option value="yaml">YAML</option>
-        </select>
+        <label>
+          <input type="checkbox">
+          <span>Inspect</span>
+        </label>
       </p>
-      <p>
-        <textarea name="content"></textarea>
-      </p>
-      <p>
-        <button name="submit" type="submit">Update</button>
-      </p>
-    </form>
-    <hr>
-    <pre></pre>
-    <p>
-      <label>
-        <input type="checkbox">
-        <span>Inspect</span>
-      </label>
-    </p>
+      <h2>Features</h2>
+      <ul>
+        <li>Light-weight, no dependencies. It uses vanilla JavaScript.</li>
+      </ul>
+      <h2>Limitations</h2>
+      <ul>
+        <li>Currently not possible to preserve HTML tags in the source code.</li>
+        <li>Mixed PHP expression within HTML tags likely will break.</li>
+        <li>There aren&rsquo;t any automatic language detection feature. You have to determine the syntax highlighting mode in the source element manually.</li>
+      </ul>
+      <h2>Usage</h2>
+      <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html dir="ltr"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;link href="<a href="ash.min.css" target="_blank">ash.min.css</a>" rel="stylesheet"&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;pre&gt;&lt;code class="json"&gt;{&amp;quot;foo&amp;quot;:1}&lt;/code&gt;&lt;/pre&gt;
+    &lt;script src="<a href="ash.min.js" target="_blank">ash.min.js</a>"&gt;&lt;/script&gt;
+    &lt;script&gt;
+    document.querySelectorAll('pre &gt; code[class]').forEach(code =&gt; {
+        new ASH(code);
+    });
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      <h2>Examples</h2>
+      <ul>
+        <li><a href="ash.html" target="_blank">No Idea?</a></li>
+        <li>Line Numbers</li>
+        <li>Code Snippet Copy Function</li>
+        <li>Code Snippet Run Function</li>
+        <li>Language Detection by File Extension</li>
+      </ul>
+      <h2>Settings</h2>
+      <pre><code>let ash = new ASH(<var>source</var>, <var>prefix</var>);</code></pre>
+      <pre><code>let ash = new ASH(<var>source</var>, <var>state</var> = {
+        class: 'ash'
+    });</code></pre>
+      <ul>
+        <li><var>source</var> &rarr; The source element that holds the initial code snippet. Usually a <code>&lt;code&gt;</code> element.</li>
+        <li><var>prefix</var> &rarr; The default class prefix.</li>
+        <li><var>state</var> &rarr; The configuration data.</li>
+        <li><var>state.class</var> &rarr; The default class prefix.</li>
+      </ul>
+      <h2>Methods and Properties</h2>
+      <h3>ASH.version</h3>
+      <p>Return the syntax highlighter version.</p>
+      <pre><code>let version = ASH.version,
+    major = version.split('.')[0];
+
+if (+major &lt; 2) { &hellip; }</code></pre>
+      <h3>ASH.state</h3>
+      <p>This property stores the initial values of <code>ash.state</code>.</p>
+      <pre><code>let ash = new ASH(source, {
+        foo: ['bar', 'baz', 'qux']
+    });
+
+console.log([ASH.state, ash.state]);</code></pre>
+      <h3>ASH.instances</h3>
+      <p>Return the syntax highlighter instances.</p>
+      <pre><code>for (let key in ASH.instances) {
+    console.log(key);
+    console.log(ASH.instances[key]);
+}</code></pre>
+      <h3>ash.state</h3>
+      <p>Return the modified syntax highlighter states.</p>
+      <h3>ash.source</h3>
+      <p>Return the syntax highlighter source element that holds the initial code snippet.</p>
+      <pre><code>ash.source.addEventListener('click', function() {
+    console.log(this.nodeName);
+}, false);</code></pre>
+      <h3>ash.pop()</h3>
+      <p>Remove syntax highlighting from the source element.</p>
+      <h2>Languages</h2>
+      <p>Currently support these languages:</p>
+      <ul>
+        <li>Apache</li>
+        <li>Bash</li>
+        <li>C</li>
+        <li><a href="ash/css.js" target="_blank">CSS</a></li>
+        <li><a href="ash/html.js" target="_blank">HTML</a></li>
+        <li>HTTP</li>
+        <li><a href="ash/ini.js" target="_blank">INI</a></li>
+        <li><a href="ash/js.js" target="_blank">JavaScript</a></li>
+        <li><a href="ash/json.js" target="_blank">JSON</a></li>
+        <li>Markdown</li>
+        <li><a href="ash/php.js" target="_blank">PHP</a></li>
+        <li><a href="ash/sgml.js" target="_blank">SGML</a></li>
+        <li><a href="ash/txt.js" target="_blank">Plain Text</a></li>
+        <li>Python</li>
+        <li><a href="ash/xml.js" target="_blank">XML</a> (also <a href="ash/svg.js" target="_blank">SVG</a>)</li>
+        <li><a href="ash/yml.js" target="_blank">YAML</a></li>
+      </ul>
+      <p>Regular expressions and class naming specifications are very inspired by the <a href="https://github.com/highlightjs/highlight.js" rel="nofollow" target="_blank">Highlight.js</a> project. API may be very ugly, but I want to prioritize performance and size of the file for now.</p>
+      <h3>Regular Expression Specifications</h3>
+      <p>If you already know that some tokens have a consistent pattern, you can define the pattern as constant to be used later across languages that could possibly benefit from it:</p>
+      <pre><code>ASH.LOG = '\\b(?:false|null|true)\\b';
+ASH.NUM = '\\b-?(?:\\d+?\\.)?\\d+\\b';
+ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'';</code></pre>
+      <h3>Class Naming Specifications</h3>
+      <p>Every language syntax basically have a structure, and usually they have the same kind of categorization. For example, although CSS and JavaScript are two different languages, they obviously have a unified tokens such as <em>function</em>, <em>keyword</em>, <em>number</em>, and <em>string</em>. The following are standard class names that likely would apply to all kind of language syntax:</p>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>cla</code></td>
+            <td>Class.</td>
+          </tr>
+          <tr>
+            <td><code>com</code></td>
+            <td>Comment.</td>
+          </tr>
+          <tr>
+            <td><code>con</code></td>
+            <td>Constant.</td>
+          </tr>
+          <tr>
+            <td><code>exp</code></td>
+            <td>Expression. Regular expression.</td>
+          </tr>
+          <tr>
+            <td><code>fun</code></td>
+            <td>Function. A function declaration.</td>
+           </tr>
+          <tr>
+            <td><code>inh</code></td>
+            <td>Inherit. Used to make certain chunk inside a token to have the same color as the parent color.</td>
+          </tr>
+          <tr>
+            <td><code>key</code></td>
+            <td>Key. Should be paired with <code>val</code>.</td>
+          </tr>
+          <tr>
+            <td><code>lib</code></td>
+            <td>Library. Built-in objects or classes.</td>
+          </tr>
+          <tr>
+            <td><code>log</code></td>
+            <td><a href="https://en.m.wikipedia.org/wiki/Three-valued_logic" rel="nofollow" target="_blank">Three-valued logic</a>. Includes <code>false</code>, <code>null</code>, <code>true</code>.</td>
+          </tr>
+          <tr>
+            <td><code>nam</code></td>
+            <td>Name. Name of function, HTML tag, etc.</td>
+          </tr>
+          <tr>
+            <td><code>num</code></td>
+            <td>Number. Including units and modifiers, if any.</td>
+          </tr>
+           <tr>
+            <td><code>mar</code></td>
+            <td>Markup. As in HTML tags or Markdown syntax.</td>
+          </tr>
+          <tr>
+            <td><code>str</code></td>
+            <td>String. Literal string.</td>
+          </tr>
+           <tr>
+            <td><code>sym</code></td>
+            <td>Symbol. Smiley, HTML entities, etc.</td>
+          </tr>
+           <tr>
+            <td><code>typ</code></td>
+            <td>Type. Document type or identifier.</td>
+          </tr>
+          <tr>
+            <td><code>val</code></td>
+            <td>Value. Should be paired with <code>key</code>.</td>
+          </tr>
+          <tr>
+            <td><code>var</code></td>
+            <td>Variable. In general, it should not be highlighted unless it has special pattern such as PHP variables.</td>
+          </tr>
+          <tr>
+            <td><code>wor</code></td>
+            <td>Word. Special words that are reserved by the language parser such as <code>do</code>, <code>else</code>, <code>function</code>, <code>if</code>, <code>var</code>, <code>while</code>, etc.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Others are free to be defined by developers. Each category must at least be compatible with the existing classes, and must consist of a maximum of three letters. For example, you may want to distinguish between float and integer number. You can add <code>flo</code> class together with <code>num</code>. Or, you may want to make a sub-category for number that is represented in HEX format. You can add <code>hex</code> class together with <code>num</code>.  Sub-category coloring can be added by the syntax highlighter theme designer optionally. The default color for numbers will always inherit to the <code>num</code> class.</p>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>att</code></td>
+            <td>Attribute. As in attribute selector in CSS.</td>
+          </tr>
+          <tr>
+            <td><code>bul</code></td>
+            <td>Bullet. As for list and YAML array sequence.</td>
+          </tr>
+          <tr>
+            <td><code>cod</code></td>
+            <td>Code. As in Markdown syntax for codes.</td>
+          </tr>
+          <tr>
+            <td><code>ele</code></td>
+            <td>Element. As in element selector in CSS.</td>
+          </tr>
+          <tr>
+            <td><code>id</code></td>
+            <td>ID. As in ID selector in CSS.</td>
+          </tr>
+          <tr>
+            <td><code>ima</code></td>
+            <td>Image. As in Markdown syntax for images.</td>
+          </tr>
+          <tr>
+            <td><code>lin</code></td>
+            <td>Link. As in Markdown syntax for links.</td>
+          </tr>
+          <tr>
+            <td><code>pse</code></td>
+            <td>Pseudo. As in pseudo class or element selector in CSS.</td>
+          </tr>
+          <tr>
+            <td><code>quo</code></td>
+            <td>Quote. As in Markdown syntax for quotes.</td>
+          </tr>
+          <tr>
+            <td><code>que</code></td>
+            <td>Query. As in CSS selector.</td>
+          </tr>
+          <tr>
+            <td><code>sec</code></td>
+            <td>Section. As in INI syntax for sections.</td>
+          </tr>
+          <tr>
+            <td><code>tit</code></td>
+            <td>Title. As in Markdown syntax for headings.</td>
+          </tr>
+          <tr>
+            <td><code>uri</code></td>
+            <td>URI. Just in case you want to highlight URI.</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Adding Your Own Syntax Highlighter</h3>
+      <p>I don&rsquo;t want to look fancy here. The main feature of this syntax highlighter is the ability to load language definition asynchronously. About the way you will mark the tokens is up to you. All you have to do is define a language category based on the file extension like so:</p>
+      <pre><code>ASH.token.css = function(content) {};
+ASH.token.html = function(content) {};
+ASH.token.js = function(content) {};
+
+// You can also make alias
+ASH.token.jsx = 'js';
+ASH.token.ts = ASH.token.js;</code></pre>
+      <p>Defining languages together with the core will make the highlighting work synchronously. To make it asynchronous, you will need to store them as separate files:</p>
+      <pre><code>.\
+├── ash\
+│   ├── css.js
+│   ├── html.js
+│   └── js.js
+└── ash.js</code></pre>
+      <p>The function parameter contains the plain text version of the source element contents. <code>this</code> refers to the <code>ASH</code> instance. You can get the available methods and properties from there:</p>
+      <pre><code>ASH.token.json = function(content) {
+    // Mark the desired parts of your syntax here
+    content = content.replace(/[\{\}\[\]:,]/g, '&lt;b&gt;$&amp;&lt;/b&gt;');
+    // Then return the modified content
+    return content;
+};</code></pre>
+      <blockquote>
+        <p><strong>Tips:</strong> Use AST parsers such as A and B to get more accurate results. Using this usually has the side effect of a longer parsing process.</p>
+      </blockquote>
+      <p>Below is a simple example of using the object method to mark portions of a JSON file using regular expressions:</p>
+      <pre><code>(token =&gt; {
+    token['(' + ASH.STR + ')(\\s*:)'] = [0, 'key', 0];
+    token[ASH.STR] = ['val.str'];
+    token[ASH.LOG] = ['val.log'];
+    token[ASH.NUM] = ['val.num'];
+    ASH.token.json = token;
+})({});</code></pre>
+      <p>The order in which the patterns are given is very important. Patterns will be rearranged internally as a series of <code>regex1|regex2|regex3</code>.</p>
+      <p>Current implementation of syntax highlighter relies on regular expressions. I know this is bad, but to handle short code snippets, it should be enough. If you want to handle more complex cases, a syntax highlighter library such as <a href="https://github.com/highlightjs/highlight.js" rel="nofollow" target="_blank">Highlight.js</a> will be more appropriate.</p>
+      <h2>License</h2>
+      <p>Use it for free, pay if you get paid. So, you&rsquo;ve just benefited financially after using this project? It&rsquo;s a good idea to <a href="https://paypal.me/tatautaufik" target="_blank">share a little financial support</a> with this open source project too. Your support will motivate me to do any further development, as well as to provide voluntary support to overcome problems related to this project.</p>
+      <p>Thank you! ❤️</p>
+    </main>
+    <footer>
+      <hr>
+      <p>&copy; 2020 <a href="/">Taufik Nurrohman</a></p>
+    </footer>
     <script src="ash.js"></script>
     <script>
-
-(function(win, doc) {
-
-    let form = doc.forms[0],
-        content = form.content,
-        toggle = doc.querySelector('input[type=checkbox]'),
-        root = doc.documentElement,
-        view = doc.querySelector('pre'),
-        x = form.x;
-
-    form.addEventListener('submit', e => {
-        let code = doc.createElement('code');
-        code.className = x.value;
-        code.textContent = content.value;
-        view.innerHTML = "";
-        view.appendChild((new ASH(code)).source);
-        e.preventDefault();
-    });
-
-    // Load example by select-box change
-    x.addEventListener('change', () => {
-        win.fetch('test/' + x.value + '.txt').then(response => response.ok && response.text()).then(text => {
-            content.value = text;
-            form.submit.click();
-        }).catch(e => {
-            content.value = e;
+    (function(win, doc) {
+        let form = doc.forms[0],
+            content = form.content,
+            toggle = doc.querySelector('input[type=checkbox]'),
+            root = doc.documentElement,
+            view = doc.querySelector('pre'),
+            x = form.x;
+        form.addEventListener('submit', e => {
+            let code = doc.createElement('code');
+            code.className = x.value;
+            code.textContent = content.value;
+            view.innerHTML = "";
+            view.appendChild((new ASH(code)).source);
+            e.preventDefault();
         });
-    });
-
-    // Toggle inspector
-    toggle.addEventListener('change', () => {
-        root.classList[toggle.checked ? 'add' : 'remove']('inspect');
-    });
-
-})(window, document);
-
+        x.addEventListener('change', () => {
+            win.fetch('test/' + x.value + '.txt').then(response => response.ok && response.text()).then(text => {
+                content.value = text;
+                form.submit.click();
+            }).catch(e => {
+                content.value = e;
+            });
+        });
+        toggle.addEventListener('change', () => {
+            root.classList[toggle.checked ? 'add' : 'remove']('inspect');
+        });
+    })(window, document);
     </script>
   </body>
 </html>

@@ -1,6 +1,6 @@
 <lines>
-  <line>first line</line>
-  <line>second line</line>
+  <line>1</line>
+  <line>2</line>
 </lines>
 
 <!ELEMENT chapter - - (title, section+)>
@@ -10,3 +10,7 @@
 <QUOTE TYPE=example>
   typically something like <ITALICS>this</>
 </QUOTE>
+
+<QUOTE aaa=bbb>
+<QUOTE aaa=bbb/>
+<QUOTE aaa=bbb />
