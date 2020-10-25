@@ -6,6 +6,7 @@
     query['::?' + key] = ['que.pse'];
     query['\\.' + key] = ['que.cla'];
     query['#' + key] = ['que.id'];
+    query['(@(?:keyframes|property))(\\s+)(' + key + ')'] = [0, 'que.wor', 0, 'nam'];
     query['@' + key] = ['que.wor'];
     // <https://www.w3.org/TR/CSS21/media.html>
     query['\\b(' + [
@@ -19,11 +20,13 @@
         'speech',
         'tty',
         'tv'
-    ].join('|') + ')\\b'] = [0]; // Skip
+    ].join('|') + ')\\b'] = ['typ'];
     query['\\b(?:' + [
         'and',
+        'from',
         'not',
-        'only'
+        'only',
+        'to'
     ].join('|') + ')\\b'] = ['que.wor'];
     query[key] = ['que.ele'];
     query[ASH.PUN] = ['pun'];
