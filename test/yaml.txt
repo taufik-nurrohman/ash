@@ -4,6 +4,13 @@ foo: 1
 bar: a
 baz: '1'
 qux: true
+a: [b, c, 'd', 1, true]
+b:
+  - a: b
+    c: d
+  - d
+  - e
+  - f
 ---
 'foo: bar': foo: bar
 "foo: bar": foo: bar
@@ -13,3 +20,6 @@ foo: 1
 bar: a
 baz: '1'
 qux: true
+
+---
+Begin new document...

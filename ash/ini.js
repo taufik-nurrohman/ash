@@ -1,14 +1,15 @@
-(token => {
+($ => {
     let key = '[a-zA-Z_][\\w]*';
-    token[';[^\\n]+'] = ['com'];
-    token['\\b(' + key + ')([ ]*)(=)([ ]*)([^\\n]+)'] = [0, 'key', 0, 'pun', 0, token];
-    token['\\b(' + key + ')([ ]*)(=)'] = [0, 'key', 0, 'pun'];
-    token['\\[[^\\n\\]]+\\]'] = ['sec'];
-    token[ASH.STR] = ['val.str'];
-    token[ASH.LOG] = ['val.log'];
-    token[ASH.NUM] = ['val.num'];
-    token[ASH.PUN] = ['pun'];
-    // Other(s) must be value
-    token['[^\\n;]+'] = ['val'];
-    ASH.token.ini = token;
-})({});
+    $.token.ini = [
+        [';[^\\n]+', ['com']],
+        ['\\b(' + key + ')([ ]*)(=)([ ]*)([^\\n]+)', [0, 'key', 0, 'pun', 0, token]],
+        ['\\b(' + key + ')([ ]*)(=)', [0, 'key', 0, 'pun']],
+        ['\\[[^\\n\\]]+\\]', ['sec']],
+        [ASH.STR, ['val.str']],
+        [ASH.LOG, ['val.log']],
+        [ASH.NUM, ['val.num']],
+        [ASH.PUN, ['pun']],
+        // Other(s) must be value
+        ['[^\\n]+', ['val']]
+    ];
+})(ASH);
