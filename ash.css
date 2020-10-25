@@ -67,10 +67,6 @@
   color: #cc9393;
 }
 
-.ash .typ {
-  color: #82a282;
-}
-
 .ash .sec,
 .ash .wor {
   color: #f0dfaf;
@@ -89,6 +85,7 @@
   color: #cfbfaf;
 }
 
-.ash .sym {
+.ash .sym,
+.ash .typ {
   color: #dca3a3;
 }

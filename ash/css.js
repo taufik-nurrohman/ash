@@ -29,13 +29,16 @@
         'to'
     ].join('|') + ')\\b'] = ['que.wor'];
     query[key] = ['que.ele'];
+    query['&'] = ['var'];
     query[ASH.PUN] = ['pun'];
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com'];
     // Select everything before `{`
-    token['((?:\\[[^\\n\\]]+\\]|[@#.:]?' + key + ')[^{}]*)(\\s*)(\\{)'] = [0, query, 0, 'pun'];
+    // Also select any word prefixed by `$` and `&` for preprocessor
+    token['((?:\\[[^\\n\\]]+\\]|[@#.:$&]?' + key + ')[^{}]*)(\\s*)(\\{)'] = [0, query, 0, 'pun'];
     token[ASH.URI] = ['uri'];
+    token['((?:--|$)' + key + ')(\\s*)(:)'] = [0, 'var', 0, 'pun'];
     token['(' + key + ')(\\s*)(:)'] = [0, 'key', 0, 'pun'];
-    token['--' + key] = ['var'];
+    token['(?:--|$)' + key] = ['var'];
     token['!' + key] = ['sym'];
     token[ASH.STR] = ['str'];
     // Slice -2 to remove the `\b` part
