@@ -197,6 +197,7 @@
     token['\\b(' + prefix + ')(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'cla'];
     token['\\b(' + keys + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
     token['\\b(' + keys + ')(:)(:)(' + key + ')'] = [0, 'cla', 'pun', 'pun', 'con'];
+    token['\\([ ]*(?:array|bool(?:ean)|double|float|int(?:eger)|object|string)[ ]*\\)'] = ['typ'];
     token['\\b' + wors + '\\b'] = ['wor'];
     token['\\b' + libs + '\\b'] = ['cla.lib'];
     // Magic constant <https://www.php.net/manual/en/language.constants.predefined.php>
