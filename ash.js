@@ -58,7 +58,14 @@
                 // Do not mark empty string!
                 continue;
             }
-            out += doMark(contents[i], names[i] || 0);
+            if (isArray(names[i])) {
+                // Recurse
+                out += fromTokens(toTokens(contents[i], names[i]));
+            } else if (isFunction(names[i])) {
+                // TODO
+            } else {
+                out += doMark(contents[i], names[i] || 0);
+            }
         }
         return doMark(out || doEscape(contents[0]), names[0], 0);
     }
@@ -133,6 +140,8 @@
         syntax.push(['.', [0]]); // Add any to skip
         let out = [],
             j = syntax.length, v;
+        // Normalize line-break to optimize the regular expression
+        content = content[replace](/\r\n|\r/g, '\n');
         while (content) {
             for (let i = 0; i < j; ++i) {
                 v = (new RegExp(syntax[i][0], 'g')).exec(content);

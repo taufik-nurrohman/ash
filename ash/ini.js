@@ -1,6 +1,6 @@
 ($ => {
     let key = '[a-zA-Z_][\\w]*';
-    $.token.ini = [
+    let token = [
         [';[^\\n]+', ['com']],
         ['\\b(' + key + ')([ ]*)(=)([ ]*)([^\\n]+)', [0, 'key', 0, 'pun', 0, token]],
         ['\\b(' + key + ')([ ]*)(=)', [0, 'key', 0, 'pun']],
@@ -12,4 +12,5 @@
         // Other(s) must be value
         ['[^\\n]+', ['val']]
     ];
+    $.token.ini = token;
 })(ASH);
