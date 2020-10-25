@@ -7,6 +7,19 @@
     query['\\.' + key] = ['que.cla'];
     query['#' + key] = ['que.id'];
     query['@' + key] = ['que.wor'];
+    // <https://www.w3.org/TR/CSS21/media.html>
+    query['\\b(' + [
+        'all',
+        'braille',
+        'embossed',
+        'handheld',
+        'print',
+        'projection',
+        'screen',
+        'speech',
+        'tty',
+        'tv'
+    ].join('|') + ')\\b'] = [0]; // Skip
     query['\\b(?:' + [
         'and',
         'not',
