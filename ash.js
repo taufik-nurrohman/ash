@@ -15,6 +15,7 @@
         head = doc.head,
         innerHTML = 'innerHTML',
         instances = 'instances',
+        push = 'push',
         replace = 'replace',
         script = doc.currentScript,
         src = script.src,
@@ -136,20 +137,20 @@
     }
 
     function toTokens(content, syntax) {
-        syntax.push(['\\s+', [0]]); // Add white-space to skip
-        syntax.push(['.', [0]]); // Add any to skip
+        syntax[push](['\\s+', [0]]); // Add white-space to be skipped
+        syntax[push](['.', [0]]); // Add any to be skipped
         let out = [],
             j = syntax.length, v;
-        // Normalize line-break to optimize the regular expression
+        // Normalize line-break to optimize regular expression
         content = content[replace](/\r\n|\r/g, '\n');
         while (content) {
             for (let i = 0; i < j; ++i) {
-                v = (new RegExp(syntax[i][0], 'g')).exec(content);
+                v = toPattern(syntax[i][0], 'g').exec(content);
                 if (!v || 0 !== v.index) {
                     continue;
                 }
                 content = content.slice(v[0].length);
-                out.push([v, syntax[i][1]]);
+                out[push]([v, syntax[i][1]]);
                 break;
             }
         }
@@ -175,7 +176,7 @@
         $$.NUM = '(?:0[bB][01]+(?:_[01]+)*n?|0[oO]\\d+(?:_\\d+)*n?|0[xX][a-fA-F\\d]+(?:_[a-fA-F\\d]+)*n?|[-+]?(?:\\d*(?:_\\d+)*\\.)?\\d+(?:_\\d+)*(?:n|[eE][-+]?\\d+)?)\\b';
         $$.PUN = '[!"#$%&\'\\(\\)*+,\\-.\\/:;<=>?@\\[\\]\\\\^_`{|}~]';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
-        $$.URI = '\\b(?:https?):\\/\\/\\S+\\b';
+        $$.URI = '\\bi(?:(?:ht|f)tps?:\\/\\/|(?:data|javascript|mailto):)\\S+\\b';
 
         $$.version = '0.0.0';
 
