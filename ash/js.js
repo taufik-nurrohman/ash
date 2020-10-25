@@ -12,9 +12,9 @@
     token['\\b(?:Infinity|NaN|undefined)\\b'] = ['log.s1'];
     token[ASH.NUM] = ['num'];
     token['\\/(?:(?![*+?])(?:[^\\n\\[/\\\\]|\\\\.|\\[(?:[^\\n\\]\\\\]|\\\\.)*\\])+)\\/[gimuy]*'] = ['exp'];
-    token['\\b(class|export\\s+default|export|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b'] = [0, 'wor', 0, 'cla'];
+    token['\\b(class|default|export|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b'] = [0, 'wor', 0, 'cla'];
     token['\\b(function)(\\s+)(' + key + ')\\b'] = [0, 'wor', 0, 'fun'];
-    token['(\\??)(\\.)(#?' + key + ')\\b'] = [0, 'pun', 'pun', 'key']; // Skip
+    token['(\\??)(\\.)(#?' + key + ')\\b'] = [0, 'pun', 'pun', 0]; // Skip
     token['#' + key + '\\b'] = ['key']; // Skip
     let wors = '(?:' + [
         'abstract',

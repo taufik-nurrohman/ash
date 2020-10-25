@@ -192,7 +192,7 @@
     token['(\\$+' + key + ')(:)(:)(' + key + ')'] = [0, 'var', 'pun', 'pun', 'con'];
     token['\\$+' + key] = ['var'];
     token['\\b(function)(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'fun'];
-    let prefix = 'as|class|extends|implements|interface|namespace|new|trait|use\\s+function|use';
+    let prefix = 'as|class|extends|implements|interface|namespace|new|trait|function|use';
     token['\\b(' + prefix + ')(\\s+)(' + libs + ')\\b'] = [0, 'wor', 0, 'cla.lib'];
     token['\\b(' + prefix + ')(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'cla'];
     token['\\b(' + keys + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
