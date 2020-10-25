@@ -1,0 +1,15 @@
+%YAML 1.2
+---
+foo: 1
+bar: a
+baz: '1'
+qux: true
+---
+'foo: bar': foo: bar
+"foo: bar": foo: bar
+...
+
+foo: 1
+bar: a
+baz: '1'
+qux: true

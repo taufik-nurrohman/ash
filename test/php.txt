@@ -6,6 +6,7 @@ use Foo\Bar;
 use Foo\{Bar,Baz,Qux};
 use Foo\Bar as Baz;
 use function foo;
+use const foo;
 
 /*
  * comment
