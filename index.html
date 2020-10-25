@@ -402,15 +402,14 @@ ASH.token.ts = ASH.token.js;</code></pre>
       <blockquote>
         <p><strong>Tips:</strong> Use AST parsers such as A and B to get more accurate results. Using this usually has the side effect of a longer parsing process.</p>
       </blockquote>
-      <p>Below is a simple example of using the object method to mark portions of a JSON file using regular expressions:</p>
-      <pre><code>(token =&gt; {
-    token['(' + ASH.STR + ')(\\s*:)'] = [0, 'key', 0];
-    token[ASH.STR] = ['val.str'];
-    token[ASH.LOG] = ['val.log'];
-    token[ASH.NUM] = ['val.num'];
-    ASH.token.json = token;
-})({});</code></pre>
-      <p>The order in which the patterns are given is very important. Patterns will be rearranged internally as a series of <code>regex1|regex2|regex3</code>.</p>
+      <p>Below is a simple example of using the array method to mark portions of a JSON file using regular expressions:</p>
+      <pre><code>ASH.token.json = [
+    ['(' + ASH.STR + ')(\\s*:)', [0, 'key', 0]],
+    [ASH.STR, ['val.str']],
+    [ASH.LOG, ['val.log']],
+    [ASH.NUM, ['val.num']]
+];</code></pre>
+      <p>The order in which the patterns are given is very important.</p>
       <p>Current implementation of syntax highlighter relies on regular expressions. I know this is bad, but to handle short code snippets, it should be enough. If you want to handle more complex cases, a syntax highlighter library such as <a href="https://github.com/highlightjs/highlight.js" rel="nofollow" target="_blank">Highlight.js</a> will be more appropriate.</p>
       <h2>License</h2>
       <p>Use it for free, pay if you get paid. So, you&rsquo;ve just benefited financially after using this project? It&rsquo;s a good idea to <a href="https://paypal.me/tatautaufik" target="_blank">share a little financial support</a> with this open source project too. Your support will motivate me to do any further development, as well as to provide voluntary support to overcome problems related to this project.</p>

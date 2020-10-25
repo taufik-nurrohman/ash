@@ -15,6 +15,7 @@
         head = doc.head,
         innerHTML = 'innerHTML',
         instances = 'instances',
+        replace = 'replace',
         script = doc.currentScript,
         src = script.src,
         textContent = 'textContent',
@@ -32,12 +33,54 @@
         of[classList].add(name);
     }
 
+    function doEscape(content) {
+        return (content + "")[replace](/&/g, '&amp;')[replace](/</g, '&lt;')[replace](/>/g, '&gt;');
+    }
+
+    function doMark(content, name, forceEscape = 1) {
+        if (!isSet(content)) {
+            return "";
+        }
+        if (forceEscape) {
+            content = doEscape(content);
+        }
+        return name ? '<span class="' + name[replace](/\./g, ' ') + '">' + content + '</span>' : content;
+    }
+
+    function doMarkAll(contents, names) {
+        let out = "";
+        for (let i = 0, j = contents.length; i < j; ++i) {
+            if (0 === i) {
+                // Ignore first array to be used later
+                continue;
+            }
+            if ("" === contents[i]) {
+                // Do not mark empty string!
+                continue;
+            }
+            out += doMark(contents[i], names[i] || 0);
+        }
+        return doMark(out || doEscape(contents[0]), names[0], 0);
+    }
+
     function eventLet(to, event, fn) {
         to.removeEventListener(event, fn, false);
     }
 
     function eventSet(to, event, fn) {
         to.addEventListener(event, fn, false);
+    }
+
+    function fromTokens(tokens) {
+        let out = "", v;
+        for (let i = 0, j = tokens.length; i < j; ++i) {
+            v = tokens[i];
+            if (isFunction(v[1])) {
+                v[1] = v[1].call({}, v[0]);
+            }
+            out += doMarkAll(v[0], v[1]);
+        }
+        return out;
     }
 
     function isArray(x) {
@@ -48,8 +91,11 @@
         return 'function' === typeof x;
     }
 
-    function isObject(x) {
-        return 'object' === typeof x && !isArray(x);
+    function isObject(x, isPlainObject) {
+        if ('object' !== typeof x) {
+            return false;
+        }
+        return isPlainObject ? x instanceof Object : true;
     }
 
     function isSet(x) {
@@ -82,80 +128,23 @@
         return node;
     }
 
-    function toSyntax($, syntax, content) {
-        // Normalize line-break to `\n` for consistent regex
-        content = content.replace(/\r\n|\r/g, '\n');
-        let pattern = Object.keys(syntax),
-            fn = Object.values(syntax),
-            j = pattern.length;
-        // TODO: Stream using `exec` for easy control in the future?
-        return j ? content.replace(toPattern(pattern.join('|'), 'g'), function() {
-            let lot = toArray(arguments).filter(v => isString(v)),
-                first = lot[0],
-                id, m, task, value = "";
+    function toTokens(content, syntax) {
+        syntax.push(['\\s+', [0]]); // Add white-space to skip
+        syntax.push(['.', [0]]); // Add any to skip
+        let out = [],
+            j = syntax.length, v;
+        while (content) {
             for (let i = 0; i < j; ++i) {
-                if (m = toPattern('^' + pattern[i] + '$').test(first)) {
-                    id = i;
-                    task = fn[i];
-                    break;
+                v = (new RegExp(syntax[i][0], 'g')).exec(content);
+                if (!v || 0 !== v.index) {
+                    continue;
                 }
+                content = content.slice(v[0].length);
+                out.push([v, syntax[i][1]]);
+                break;
             }
-            if (m) {
-                if (isArray(task)) {
-                    for (let i = 0, j = task.length; i < j; ++i) {
-                        if (0 === i) {
-                            continue; // Ignore first array to be used later
-                        }
-                        if ("" === lot[i]) {
-                            // Do not mark empty string
-                            continue;
-                        }
-                        if (isObject(task[i])) {
-                            // Recurse
-                            value += toSyntax($, task[i], lot[i]);
-                        } else if (isString(task[i])) {
-                            value += $.t(task[i], lot[i]);
-                        } else {
-                            value += $.t(0, lot[i]);
-                        }
-                    }
-                    return $.t(task[0], value || first, value ? 0 : 1);
-                }
-                if (isFunction(task)) {
-                    value = task.call($, lot, id);
-                    if (isArray(value)) {
-                        let v = "";
-                        for (let i = 0, j = value.length; i < j; ++i) {
-                            if (0 === i) {
-                                continue; // Ignore first array to be used later
-                            }
-                            if ("" === lot[i]) {
-                                // Do not mark empty string
-                                continue;
-                            }
-                            if (isObject(value[i])) {
-                                // Recurse
-                                v += toSyntax($, value[i], lot[i]);
-                            } else if (isString(value[i])) {
-                                v += $.t(value[i], lot[i]);
-                            } else {
-                                v += $.t(0, lot[i]);
-                            }
-                        }
-                        return $.t(value[0], v || first, v ? 0 : 1);
-                    }
-                    if (isFunction(value) || isObject(value)) {
-                        // Recurse
-                        return toSyntax($, value, first);
-                    }
-                }
-                if (isObject(task)) {
-                    // Recurse
-                    return toSyntax($, task, first);
-                }
-            }
-            return $.t(0, first);
-        }) : $.t(0, content);
+        }
+        return out;
     }
 
     function typeGet(classes, prefix) {
@@ -254,19 +243,6 @@
         $.source = source;
         $.state = state;
 
-        $.t = function(type, content, forceEscape = 1, n) {
-            if (!isSet(content)) {
-                return;
-            }
-            if (!isSet(n)) {
-                n = '~' === type[0] ? 'ins' : 'span';
-            }
-            if (forceEscape) {
-                content = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            }
-            return type ? '<' + n + ' class="' + type.replace(/\./g, ' ') + '">' + content + '</' + n + '>' : content;
-        };
-
         let content = source[textContent],
             type = typeGet(classNameToRestore, classNameTo + '-');
 
@@ -281,8 +257,8 @@
                 while (isString(syntax)) {
                     syntax = await $$[token][syntax];
                 }
-                if (isObject(syntax)) {
-                    source[innerHTML] = toSyntax($, syntax, content);
+                if (isArray(syntax)) {
+                    source[innerHTML] = fromTokens(toTokens(content, syntax));
                 } else if (isFunction(syntax)) {
                     source[innerHTML] = syntax.call($, content);
                 }
