@@ -4,7 +4,7 @@
     token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.s0'];
     token['\\/\\/[^\\n]+'] = ['com.s1'];
     token['#[^\\n]+'] = ['com.s2'];
-    token['(<)(<)(<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)\\4'] = [0, 'pun', 'pun', 'pun', 'con', 'str', 'con'];
+    // token['(<)(<)(<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)\\4'] = [0, 'pun', 'pun', 'pun', 'con', 'str', 'con'];
     token['<\\?(?:php|=)|\\?>'] = ['typ'];
     // token['<\\/?[^\\s>]+(?:\\s[^>]*)?>'] = ['~xml']; // JSX
     token[ASH.STR] = function(v) {
@@ -192,8 +192,9 @@
     token['(-)(>)(' + key + ')'] = [0, 'pun', 'pun', 'key']; // Skip
     token['(\\$+' + key + ')(:)(:)(' + key + ')'] = [0, 'var', 'pun', 'pun', 'con'];
     token['\\$+' + key] = ['var'];
+    token['\\b(const)(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'con'];
     token['\\b(function)(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'fun'];
-    let prefix = 'class|extends|implements|interface|namespace|new|trait|function|use';
+    let prefix = 'class|extends|implements|interface|namespace|new|trait|use';
     token['\\b(' + prefix + ')(\\s+)(' + libs + ')\\b'] = [0, 'wor', 0, 'cla.lib'];
     token['\\b(' + prefix + ')(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'cla'];
     token['\\b(' + keys + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
