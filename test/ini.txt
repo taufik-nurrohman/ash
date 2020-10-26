@@ -18,3 +18,15 @@ a= b
 b = [c]
 
 a = b ; c = d
+
+[package]
+name = "some_name"
+authors = ["author"]
+description = "this is \
+a description"
+
+[[lib]]
+name = ${NAME}
+default = True
+auto = no
+counter = 1_000

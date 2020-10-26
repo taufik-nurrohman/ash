@@ -16,6 +16,11 @@
   text-decoration: inherit;
 }
 
+.ash .err {
+  background: red;
+  color: white;
+}
+
 .ash .com {
   color: gray;
 }

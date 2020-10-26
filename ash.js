@@ -34,6 +34,38 @@
         of[classList].add(name);
     }
 
+    function doApply($$, $, type, content, fn) {
+        // Load language definition
+        let syntax = $$[token][type];
+        if (syntax) {
+            // Process alias(es)
+            if (isString(syntax)) {
+                return doApply($$, $, syntax, content, fn);
+            }
+            if (isArray(syntax)) {
+                return fn.call($, fromTokens(toTokens(content, syntax)));
+            }
+            if (isFunction(syntax)) {
+                return fn.call($, syntax.call($, content));
+            }
+        }
+        // Async
+        let a, b, min, url;
+        if (!src) {
+            return content;
+        }
+        a = src.split('?');
+        b = a[0].split('/');
+        min = '.min.js' === b.pop().slice(-7);
+        win.fetch(b.join('/') + '/ash/' + type + (min ? '.min' : "") + '.js' + (a[1] ? '?' + a[1] : "")).then(response => response.ok && response.text()).then(text => {
+            if (isSet(text)) {
+                toScript(text);
+                // Apply on success
+                doApply($$, $, type, content, fn);
+            }
+        });
+    }
+
     function doEscape(content) {
         return content[replace](/&/g, '&amp;')[replace](/</g, '&lt;')[replace](/>/g, '&gt;');
     }
@@ -140,8 +172,7 @@
     }
 
     function toTokens(content, syntax) {
-        syntax[push](['\\s+', [0]]); // Add white-space to be skipped
-        syntax[push](['.', [0]]); // Add any to be skipped
+        syntax[push](['[\\s\\S]', [0]]); // Add any to be skipped
         let out = [],
             j = syntax.length, v;
         // Normalize line-break to optimize regular expression
@@ -181,17 +212,30 @@
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
         $$.URI = '\\b(?:(?:ht|f)tps?:\\/\\/|(?:data|javascript|mailto):)\\S+\\b';
 
-        $$.version = '0.0.0';
+        function esc(x) {
+            if (isArray(x)) {
+                return x.map(x => esc(x));
+            }
+            return x[replace](toPattern('[' + $$.x[replace](/./g, '\\$&') + ']', 'g'), '\\$&');
+        }
+
+        $$.esc = esc;
+
+        $$.h = function(type, content, fn) {
+            doApply($$, {}, type, content, fn);
+        };
+
+        $$[instances] = {};
 
         $$.state = {
             'class': 'ash'
         };
 
-        // Collect all instance(s)
-        $$[instances] = {};
-
-        // Storage of token(s)
         $$[token] = {};
+
+        $$.version = '0.0.0';
+
+        $$.x = '!$^*()-=+[]{}\\|:<>,./?'; // Escape character(s)
 
     })(win[name] = function(source, o) {
 
@@ -238,44 +282,12 @@
         let content = source[textContent],
             type = typeGet(classNameToRestore, classNameTo + '-');
 
-        function doApply(content, type, fn) {
-            // Load language definition
-            let syntax = $$[token][type];
-            if (syntax) {
-                // Process alias(es)
-                if (isString(syntax)) {
-                    return doApply(content, syntax, fn);
-                }
-                if (isArray(syntax)) {
-                    return fn.call($, fromTokens(toTokens(content, syntax)));
-                }
-                if (isFunction(syntax)) {
-                    return fn.call($, syntax.call($, content));
-                }
-            }
-            // Async
-            let a, b, min, url;
-            if (!src) {
-                return content;
-            }
-            a = src.split('?');
-            b = a[0].split('/');
-            min = '.min.js' === b.pop().slice(-7);
-            win.fetch(b.join('/') + '/ash/' + type + (min ? '.min' : "") + '.js' + (a[1] ? '?' + a[1] : "")).then(response => response.ok && response.text()).then(text => {
-                if (isSet(text)) {
-                    toScript(text);
-                    // Apply on success
-                    doApply(content, type, fn);
-                }
-            });
-        }
-
         if (type) {
             classSet(source, classNameTo);
             classLet(source, type);
             classSet(source, classNameTo + '-' + type);
-            doApply(content, type, h => {
-                source[innerHTML] = h;
+            doApply($$, $, type, content, result => {
+                source[innerHTML] = result;
             });
         }
 

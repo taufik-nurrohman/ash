@@ -176,12 +176,21 @@
         <li><var>state.class</var> &rarr; The default class prefix.</li>
       </ul>
       <h2>Methods and Properties</h2>
-      <h3>ASH.version</h3>
-      <p>Return the syntax highlighter version.</p>
-      <pre><code>let version = ASH.version,
-    major = version.split('.')[0];
-
-if (+major &lt; 2) { &hellip; }</code></pre>
+      <h3>ASH.esc(content)</h3>
+      <p>Escape special characters in regular expression.</p>
+      <h3>ASH.h(type, content, fn)</h3>
+      <p>Static method to highlight a string input.</p>
+      <pre><code>let code = document.querySelector('code');
+ASH.h('xml', code.textContent, result =&gt; {
+    code.className = 'ash ash-xml';
+    code.innerHTML = result;
+});</code></pre>
+      <h3>ASH.instances</h3>
+      <p>Return the syntax highlighter instances.</p>
+      <pre><code>for (let key in ASH.instances) {
+    console.log(key);
+    console.log(ASH.instances[key]);
+}</code></pre>
       <h3>ASH.state</h3>
       <p>This property stores the initial values of <code>ash.state</code>.</p>
       <pre><code>let ash = new ASH(source, {
@@ -189,12 +198,14 @@ if (+major &lt; 2) { &hellip; }</code></pre>
     });
 
 console.log([ASH.state, ash.state]);</code></pre>
-      <h3>ASH.instances</h3>
-      <p>Return the syntax highlighter instances.</p>
-      <pre><code>for (let key in ASH.instances) {
-    console.log(key);
-    console.log(ASH.instances[key]);
-}</code></pre>
+      <h3>ASH.version</h3>
+      <p>Return the syntax highlighter version.</p>
+      <pre><code>let version = ASH.version,
+    major = version.split('.')[0];
+
+if (+major &lt; 2) { &hellip; }</code></pre>
+      <h3>ASH.x</h3>
+      <p>List of regular expression&rsquo;s special characters.</p>
       <h3>ash.state</h3>
       <p>Return the modified syntax highlighter states.</p>
       <h3>ash.source</h3>
@@ -393,7 +404,7 @@ ASH.token.ts = ASH.token.js;</code></pre>
 │   ├── html.js
 │   └── js.js
 └── ash.js</code></pre>
-      <p>The function parameter contains the plain text version of the source element contents. <code>this</code> refers to the <code>ASH</code> instance. You can get the available methods and properties from there:</p>
+      <p>The first function parameter contains the plain text version of the source element contents. <code>this</code> refers to the <code>ASH</code> instance. You can get the available methods and properties from there:</p>
       <pre><code>ASH.token.json = function(content) {
     // Mark the desired parts of your syntax here
     content = content.replace(/[\{\}\[\]:,]/g, '&lt;b&gt;$&amp;&lt;/b&gt;');
@@ -410,7 +421,20 @@ ASH.token.ts = ASH.token.js;</code></pre>
     [ASH.LOG, ['val.log']],
     [ASH.NUM, ['val.num']]
 ];</code></pre>
-      <p>The order in which the patterns are given is very important.</p>
+      <p>The order in which the patterns are given is very important. You can also make sub-pattern tasks:</p>
+      <pre><code>ASH.token.css = [
+    ['(#)((?:[a-fA-F\\d]{1,2}){3,4})', ['val', 0, 'num.hex']],
+    ['\\brgba?\\([^)]+\\)', [
+        ['([\\w-]+)(\\()', [0, 'fun', 'pun']],
+        ['-?\\d*\\.\\d+', ['num.flo']],
+        ['-?\\d+', ['num.int']],
+        ['[,)]', ['pun']]
+    ],
+    [ &hellip; ],
+    [ &hellip; ],
+    &hellip;
+    &hellip;
+];</code></pre>
       <p>Current implementation of syntax highlighter relies on regular expressions. I know this is bad, but to handle short code snippets, it should be enough. If you want to handle more complex cases, a syntax highlighter library such as <a href="https://github.com/highlightjs/highlight.js" rel="nofollow" target="_blank">Highlight.js</a> will be more appropriate.</p>
       <h2>License</h2>
       <p>Use it for free, pay if you get paid. So, you&rsquo;ve just benefited financially after using this project? It&rsquo;s a good idea to <a href="https://paypal.me/tatautaufik" target="_blank">share a little financial support</a> with this open source project too. Your support will motivate me to do any further development, as well as to provide voluntary support to overcome problems related to this project.</p>
