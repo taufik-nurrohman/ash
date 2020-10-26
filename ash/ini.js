@@ -2,7 +2,7 @@
     let key = '[a-zA-Z_][\\w]*';
     let token = [
         [';[^\\n]+', ['com']],
-        ['\\b(' + key + ')([ ]*)(=)([ ]*)([^\\n]+)', [0, 'key', 0, 'pun', 0, token]],
+        ['\\b(' + key + ')([ ]*)(=)([ ]*)([^\\n;]+)', [0, 'key', 0, 'pun', 0]],
         ['\\b(' + key + ')([ ]*)(=)', [0, 'key', 0, 'pun']],
         ['\\[[^\\n\\]]+\\]', ['sec']],
         [ASH.STR, ['val.str']],
@@ -10,7 +10,8 @@
         [ASH.NUM, ['val.num']],
         [ASH.PUN, ['pun']],
         // Other(s) must be value
-        ['[^\\n]+', ['val']]
+        ['[^\\n;]+', ['val']]
     ];
+    token[1][1].push(token); // Recurse!
     $.token.ini = token;
 })(ASH);

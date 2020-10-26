@@ -22,6 +22,7 @@
     <!-- Lorem ipsum dolor sit amet. -->
     <h1>Lorem Ipsum</h1>
     <p>Lorem ipsum dolor sit amet.</p>
+    <p>I &hearts; U</p>
     <template>
       <ul>
         <li>List item 1</li>

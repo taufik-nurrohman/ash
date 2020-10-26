@@ -35,40 +35,43 @@
     }
 
     function doEscape(content) {
-        return (content + "")[replace](/&/g, '&amp;')[replace](/</g, '&lt;')[replace](/>/g, '&gt;');
+        return content[replace](/&/g, '&amp;')[replace](/</g, '&lt;')[replace](/>/g, '&gt;');
     }
 
     function doMark(content, name, forceEscape = 1) {
         if (!isSet(content)) {
             return "";
         }
-        if (forceEscape) {
+        if (forceEscape && isString(content)) {
             content = doEscape(content);
         }
         return name ? '<span class="' + name[replace](/\./g, ' ') + '">' + content + '</span>' : content;
     }
 
     function doMarkAll(contents, names) {
-        let out = "";
+        let out = "",
+            content, name;
         for (let i = 0, j = contents.length; i < j; ++i) {
             if (0 === i) {
                 // Ignore first array to be used later
                 continue;
             }
-            if ("" === contents[i]) {
+            content = contents[i] || "";
+            name = names[i] || 0;
+            if ("" === content) {
                 // Do not mark empty string!
                 continue;
             }
-            if (isArray(names[i])) {
-                // Recurse
-                out += fromTokens(toTokens(contents[i], names[i]));
-            } else if (isFunction(names[i])) {
+            if (isArray(name)) {
+                // Recurse!
+                out += fromTokens(toTokens(content, name));
+            } else if (isFunction(name)) {
                 // TODO
             } else {
-                out += doMark(contents[i], names[i] || 0);
+                out += doMark(content, name);
             }
         }
-        return doMark(out || doEscape(contents[0]), names[0], 0);
+        return doMark(out || doEscape(contents[0] || ""), names[0] || 0, 0);
     }
 
     function eventLet(to, event, fn) {
@@ -176,7 +179,7 @@
         $$.NUM = '(?:0[bB][01]+(?:_[01]+)*n?|0[oO]\\d+(?:_\\d+)*n?|0[xX][a-fA-F\\d]+(?:_[a-fA-F\\d]+)*n?|[-+]?(?:\\d*(?:_\\d+)*\\.)?\\d+(?:_\\d+)*(?:n|[eE][-+]?\\d+)?)\\b';
         $$.PUN = '[!"#$%&\'\\(\\)*+,\\-.\\/:;<=>?@\\[\\]\\\\^_`{|}~]';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
-        $$.URI = '\\bi(?:(?:ht|f)tps?:\\/\\/|(?:data|javascript|mailto):)\\S+\\b';
+        $$.URI = '\\b(?:(?:ht|f)tps?:\\/\\/|(?:data|javascript|mailto):)\\S+\\b';
 
         $$.version = '0.0.0';
 
@@ -187,29 +190,8 @@
         // Collect all instance(s)
         $$[instances] = {};
 
-        // Storage of language token(s)
-        $$[token] = new Proxy({}, {
-            get: function(storage, key) {
-                return storage[key] || (async function() {
-                    let a, b, min, url;
-                    if (!src) {
-                        return;
-                    }
-                    a = src.split('?');
-                    b = a[0].split('/');
-                    min = '.min.js' === b.pop().slice(-7);
-                    return await win.fetch(b.join('/') + '/ash/' + key + (min ? '.min' : "") + '.js' + (a[1] ? '?' + a[1] : "")).then(response => response.ok && response.text()).then(text => {
-                        if (isSet(text)) {
-                            toScript(text);
-                            return storage[key];
-                        }
-                    });
-                })();
-            },
-            set: function(storage, key, value) {
-                storage[key] = value;
-            }
-        });
+        // Storage of token(s)
+        $$[token] = {};
 
     })(win[name] = function(source, o) {
 
@@ -256,32 +238,45 @@
         let content = source[textContent],
             type = typeGet(classNameToRestore, classNameTo + '-');
 
+        function doApply(content, type, fn) {
+            // Load language definition
+            let syntax = $$[token][type];
+            if (syntax) {
+                // Process alias(es)
+                if (isString(syntax)) {
+                    return doApply(content, syntax, fn);
+                }
+                if (isArray(syntax)) {
+                    return fn.call($, fromTokens(toTokens(content, syntax)));
+                }
+                if (isFunction(syntax)) {
+                    return fn.call($, syntax.call($, content));
+                }
+            }
+            // Async
+            let a, b, min, url;
+            if (!src) {
+                return content;
+            }
+            a = src.split('?');
+            b = a[0].split('/');
+            min = '.min.js' === b.pop().slice(-7);
+            win.fetch(b.join('/') + '/ash/' + type + (min ? '.min' : "") + '.js' + (a[1] ? '?' + a[1] : "")).then(response => response.ok && response.text()).then(text => {
+                if (isSet(text)) {
+                    toScript(text);
+                    // Apply on success
+                    doApply(content, type, fn);
+                }
+            });
+        }
+
         if (type) {
             classSet(source, classNameTo);
             classLet(source, type);
             classSet(source, classNameTo + '-' + type);
-            (async function() {
-                // Load language definition(s) directly or via proxy
-                let syntax = await $$[token][type];
-                // Process alias(es)
-                while (isString(syntax)) {
-                    syntax = await $$[token][syntax];
-                }
-                if (isArray(syntax)) {
-                    source[innerHTML] = fromTokens(toTokens(content, syntax));
-                } else if (isFunction(syntax)) {
-                    source[innerHTML] = syntax.call($, content);
-                }
-                let others = source.querySelectorAll('ins[class^="~"]'),
-                    j = others.length;
-                if (j) {
-                    for (let i = 0; i < j; ++i) {
-                        others[i][className] = others[i][className].slice(1);
-                        new $$(others[i]);
-                        classLet(others[i], classNameTo);
-                    }
-                }
-            })();
+            doApply(content, type, h => {
+                source[innerHTML] = h;
+            });
         }
 
         return $;

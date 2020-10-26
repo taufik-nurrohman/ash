@@ -1,7 +1,9 @@
-ASH.token.test = [
-    [ASH.STR, ['str']],
-    [ASH.NUM, ['num']],
-    [ASH.LOG, ['log']],
-    [ASH.PUN, ['pun']],
-    [ASH.URI, ['uri']]
-];
+($ => {
+    $.token.test = [
+        [$.STR, ['str']],
+        [$.NUM, ['num']],
+        [$.LOG, ['log']],
+        [$.PUN, ['pun']],
+        [$.URI, ['uri']]
+    ];
+})(ASH);
