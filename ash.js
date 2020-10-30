@@ -188,12 +188,7 @@
                 if (!v || 0 !== v.index) {
                     continue;
                 }
-                // Dirty check to match against word boundary after chunked
-                if (!r.match('a' + content)) {
-                    out[push]([v, [0]]); // Skip
-                } else {
-                    out[push]([v, syntax[i][1]]);
-                }
+                out[push]([v, syntax[i][1]]);
                 content = content.slice(v[0].length);
                 break;
             }
