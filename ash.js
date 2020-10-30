@@ -46,7 +46,11 @@
                 return fn.call($, fromTokens(toTokens(content, syntax)));
             }
             if (isFunction(syntax)) {
-                return fn.call($, syntax.call($, content));
+                syntax = fn.call($, syntax.call($, content));
+                if (isArray(syntax)) {
+                    return fn.call($, fromTokens(toTokens(content, syntax)));
+                }
+                return syntax;
             }
         }
         // Async
@@ -172,19 +176,25 @@
     }
 
     function toTokens(content, syntax) {
-        syntax[push](['[\\s\\S]', [0]]); // Add any to be skipped
+        syntax[push](['[\\s\\S]', [0]]); // Add * to be skipped
         let out = [],
-            j = syntax.length, v;
+            j = syntax.length, r, v;
         // Normalize line-break to optimize regular expression
         content = content[replace](/\r\n|\r/g, '\n');
         while (content) {
             for (let i = 0; i < j; ++i) {
-                v = toPattern(syntax[i][0], 'g').exec(content);
+                r = syntax[i][0];
+                v = (r = isString(r) ? toPattern(r[replace](/[\/]/g, '\\/'), 'g') : r).exec(content);
                 if (!v || 0 !== v.index) {
                     continue;
                 }
+                // Dirty check to match against word boundary after chunked
+                if (!r.match('a' + content)) {
+                    out[push]([v, [0]]); // Skip
+                } else {
+                    out[push]([v, syntax[i][1]]);
+                }
                 content = content.slice(v[0].length);
-                out[push]([v, syntax[i][1]]);
                 break;
             }
         }
@@ -208,7 +218,7 @@
         // Reusable pattern(s)
         $$.LOG = '\\b(?:false|null|true)\\b';
         $$.NUM = '(?:0[bB][01]+(?:_[01]+)*n?|0[oO]\\d+(?:_\\d+)*n?|0[xX][a-fA-F\\d]+(?:_[a-fA-F\\d]+)*n?|[-+]?(?:\\d*(?:_\\d+)*\\.)?\\d+(?:_\\d+)*(?:n|[eE][-+]?\\d+)?)\\b';
-        $$.PUN = '[!"#$%&\'\\(\\)*+,\\-.\\/:;<=>?@\\[\\]\\\\^_`{|}~]';
+        $$.PUN = '[!"#$%&\'\\(\\)*+,\\-./:;<=>?@\\[\\]\\\\^_`{|}~]';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
         $$.URI = '\\b(?:(?:ht|f)tps?:\\/\\/|(?:data|javascript|mailto):)\\S+\\b';
 

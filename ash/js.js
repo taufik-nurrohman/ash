@@ -1,22 +1,18 @@
-(token => {
+($ => {
     let key = '(?:[a-zA-Z_$][\\w$]*)';
-    token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.s0'];
-    token['\\/\\/[^\\n]+'] = ['com.s1'];
-    token['(?:"use strict"|\'use strict\')'] = ['typ'];
-    token['<\\/?[^\\s<>]+(?:\\s[^>]*)?>'] = ['~xml']; // JSX
-    token['([{,])(\\s*)(' + ASH.STR + '|\\[[^\\[]+\\]|' + key + ')(\\s*)(:)'] = [0, 'pun', 0, 'key', 0, 'pun'];
-    token[ASH.STR] = function(v) {
-        return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
-    };
-    token[ASH.LOG] = ['log.s0'];
-    token['\\b(?:Infinity|NaN|undefined)\\b'] = ['log.s1'];
-    token[ASH.NUM] = ['num'];
-    token['\\/(?:(?![*+?])(?:[^\\n\\[/\\\\]|\\\\.|\\[(?:[^\\n\\]\\\\]|\\\\.)*\\])+)\\/[gimuy]*'] = ['exp'];
-    token['\\b(function)(\\s+)(' + key + ')\\b'] = [0, 'wor', 0, 'fun'];
-    token['\\b(class|export|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b'] = [0, 'wor', 0, 'cla'];
-    token['(\\??)(\\.)(#?' + key + ')\\b'] = [0, 'pun', 'pun', 0]; // Skip
-    token['#' + key + '\\b'] = ['key']; // Skip
-    let wors = '(?:' + [
+    let libraries = '(?:' + [
+        'console',
+        'document',
+        'global',
+        'globalThis',
+        'location',
+        'navigator',
+        'opener',
+        'parent',
+        'self',
+        'window'
+    ].join('|') + ')';
+    let words = '(?:' + [
         'abstract',
         'arguments',
         'as',
@@ -84,24 +80,33 @@
         'with',
         'yield',
     ].join('|') + ')';
-    let libs = '(?:' + [
-        'console',
-        'document',
-        'global',
-        'globalThis',
-        'location',
-        'navigator',
-        'opener',
-        'parent',
-        'self',
-        'window'
-    ].join('|') + ')';
-    token['\\b' + wors + '\\b'] = ['wor'];
-    token['\\b' + libs + '\\b'] = ['lib'];
-    token['\\b(' + key + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
-    token[ASH.PUN] = ['pun'];
-    token['\\b(?:[A-Z_][A-Z\\d_]*)+\\b'] = ['con'];
-    // Other(s) must be variable
-    token['\\b' + key + '\\b'] = ['var'];
-    ASH.token.js = token;
-})({});
+    let a = ['(\\s+)([^\\s>=/]+)(?:(=)(' + $.STR + '|[^\\s>=/]+))?', [0, 0, 'key', 'pun', 'val']],
+        o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['ele', 'pun', 'nam', [a], 'pun', 'pun']],
+        c = ['(<)(/)([^\\s<>/]+)(>)', ['ele', 'pun', 'pun', 'nam', 'pun']];
+    $.token.js = [
+        ['/\\*[\\s\\S]*?\\*/', ['com.s0']],
+        ['//[^\\n]+', ['com.s1']],
+        ['([\'"])(use strict\\1)', ['typ']],
+        o, c, // JSX
+        ['([{,])(\\s*)(' + $.STR + '|\\[[^\\[]+\\]|' + key + ')(\\s*)(:)', [0, 'pun', 0, 'key', 0, 'pun']],
+        [$.STR, v => {
+            return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
+        }],
+        [$.LOG, ['log.s0']],
+        ['\\b(?:Infinity|NaN|undefined)\\b', ['log.s1']],
+        [$.NUM, ['num']],
+        ['/(?:(?![*+?])(?:[^\\n\\[/\\\\]|\\\\.|\\[(?:[^\\n\\]\\\\]|\\\\.)*\\])+)/[gimuy]*', ['exp']],
+        ['\\b(function)(\\s+)(' + key + ')\\b', [0, 'wor', 0, 'fun']],
+        ['\\b(export)(\\s+)(' + words + ')(\\s+)(' + key + ')\\b', [0, 'wor', 0, 'wor', 0, 'fun']],
+        ['\\b(class|export|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b', [0, 'wor', 0, 'cla']],
+        ['(\\??)(\\.)(#?' + key + ')\\b', [0, 'pun', 'pun', 0]], // Skip
+        ['#' + key + '\\b', ['key']], // Skip
+        ['\\b' + words + '\\b', ['wor']],
+        ['\\b' + libraries + '\\b', ['lib']],
+        ['\\b(' + key + ')(\\s*)(\\()', [0, 'fun', 0, 'pun']],
+        [$.PUN, ['pun']],
+        ['\\b(?:[A-Z_][A-Z\\d_]*)+\\b', ['con']],
+        // Other(s) must be variable
+        ['\\b' + key + '\\b', ['var']]
+    ];
+})(ASH);

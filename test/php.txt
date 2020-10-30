@@ -7,6 +7,8 @@ use Foo\{Bar,Baz,Qux};
 use Foo\Bar as Baz;
 use function foo;
 use const foo;
+use function foo as bar;
+use const foo as bar;
 
 /*
  * comment
@@ -56,23 +58,45 @@ $str = "aaa\n  bbb\nccc";
 
 $str = <<<AAA
 aaa
+aaa
+aaa
   bbb
+  bbb
+  bbb
+ccc
+ccc
 ccc
 AAA;
 
 $str = <<<'AAA'
 aaa
+aaa
+aaa
   bbb
+  bbb
+  bbb
+ccc
+ccc
 ccc
 AAA;
 
 $str = <<<"AAA"
 aaa
+aaa
+aaa
   bbb
+  bbb
+  bbb
+ccc
+ccc
 ccc
 AAA;
 
 $foo = new Foo;
+
+$bar = function(array $baz) {
+    return array_replace($baz, [null, null]);
+};
 
 echo $foo::class;
 
@@ -86,3 +110,13 @@ namespace Foo\Bar\Baz {
         return new Qux;
     }
 }
+
+ob_start();
+
+?>
+<div class="foo">
+  <?= $foo; ?>
+</div>
+<?php
+
+echo ob_get_clean();

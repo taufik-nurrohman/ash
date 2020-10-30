@@ -1,105 +1,9 @@
-(token => {
-    let key = '(?:[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*)';
+($ => {
+    let key = '(?:[a-zA-Z_\\x7f-\\xff][a-zA-Z\\d_\\x7f-\\xff]*)';
     let keys = '(?:\\\\?' + key + '(?:\\\\' + key + ')*)';
-    token['\\/\\*[\\s\\S]*?\\*\\/'] = ['com.s0'];
-    token['\\/\\/[^\\n]+'] = ['com.s1'];
-    token['#[^\\n]+'] = ['com.s2'];
-    // token['(<)(<)(<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)\\4'] = [0, 'pun', 'pun', 'pun', 'con', 'str', 'con'];
-    token['<\\?(?:php|=)|\\?>'] = ['typ'];
-    // token['<\\/?[^\\s>]+(?:\\s[^>]*)?>'] = ['~xml']; // JSX
-    token[ASH.STR] = function(v) {
-        return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
-    };
-    token[ASH.LOG] = ['log.s0'];
-    token[ASH.LOG.toUpperCase().replace(/\\B/g, '\\b')] = ['log.s1'];
-    token[ASH.NUM] = ['num'];
-    let wors = '(?:' + [
-        // List of keywords that may not require parenthesis
-        // (function that look like language construct or language construct that look like function)
-        'die',
-        'echo',
-        'exit',
-        'include',
-        'include_once',
-        'print',
-        'require',
-        'require_once',
-        // Other(s)
-        // <https://www.php.net/manual/en/reserved.php>
-        'array',
-        'abstract',
-        'and',
-        'as',
-        'binary',
-        'bool',
-        'boolean',
-        'break',
-        'callable',
-        'case',
-        'catch',
-        'class',
-        'clone',
-        'const',
-        'continue',
-        'declare',
-        'default',
-        'do',
-        'double',
-        'else',
-        'elseif',
-        'empty',
-        'enddeclare',
-        'endfor',
-        'endforeach',
-        'endif',
-        'endswitch',
-        'endwhile',
-        'eval',
-        'extends',
-        'final',
-        'finally',
-        'float',
-        'for',
-        'foreach',
-        'from',
-        'global',
-        'goto',
-        'if',
-        'implements',
-        'instanceof',
-        'insteadof',
-        'int',
-        'integer',
-        'interface',
-        'isset',
-        'iterable',
-        'list',
-        'match',
-        'namespace',
-        'new',
-        'object',
-        'or',
-        'private',
-        'protected',
-        'public',
-        'real',
-        'return',
-        'string',
-        'switch',
-        'throw',
-        'trait',
-        'try',
-        'unset',
-        'use',
-        'var',
-        'void',
-        'while',
-        'xor',
-        'yield'
-    ].join('|') + ')';
     // Standard PHP library
     // <https://www.php.net/manual/en/book.spl.php>
-    let libs = '(?:' + [
+    let libraries = '(?:' + [
         'AppendIterator',
         'ArgumentCountError',
         'ArithmeticError',
@@ -189,33 +93,137 @@
         'static',
         'stdClass'
     ].join('|') + ')';
-    token['(-)(>)(' + key + ')'] = [0, 'pun', 'pun', 'key']; // Skip
-    token['(\\$+' + key + ')(:)(:)(' + key + ')'] = [0, 'var', 'pun', 'pun', 'con'];
-    token['\\$+' + key] = ['var'];
-    token['\\b(const)(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'con'];
-    token['\\b(function)(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'fun'];
-    let prefix = 'class|extends|implements|interface|namespace|new|trait|use';
-    token['\\b(' + prefix + ')(\\s+)(' + libs + ')\\b'] = [0, 'wor', 0, 'cla.lib'];
-    token['\\b(' + prefix + ')(\\s+)(' + keys + ')\\b'] = [0, 'wor', 0, 'cla'];
-    token['\\b(' + keys + ')(\\s*)(\\()'] = [0, 'fun', 0, 'pun'];
-    token['\\b(' + keys + ')(:)(:)(' + key + ')'] = [0, 'cla', 'pun', 'pun', 'con'];
-    token['\\([ ]*(?:array|bool(?:ean)|double|float|int(?:eger)|object|string)[ ]*\\)'] = ['typ'];
-    token['\\b' + wors + '\\b'] = ['wor'];
-    token['\\b' + libs + '\\b'] = ['cla.lib'];
-    // Magic constant <https://www.php.net/manual/en/language.constants.predefined.php>
-    token['\\b__(?:' + [
-        'CLASS',
-        'DIR',
-        'FILE',
-        'FUNCTION',
-        'LINE',
-        'METHOD',
-        'NAMESPACE',
-        'TRAIT'
-    ].join('|') + ')__\\b'] = ['con.lib'];
-    token['\\b' + keys + '\\b'] = ['con'];
-    token[ASH.PUN] = ['pun'];
-    // Other(s) must be constant
-    token['\\b' + key + '\\b'] = ['con'];
-    ASH.token.php = token;
-})({});
+    let words = '(?:' + [
+        // List of keywords that may not require parenthesis
+        // (function that look like language construct or language construct that look like function)
+        'die',
+        'echo',
+        'exit',
+        'include',
+        'include_once',
+        'print',
+        'require',
+        'require_once',
+        // Other(s)
+        // <https://www.php.net/manual/en/reserved.php>
+        'array',
+        'abstract',
+        'and',
+        'as',
+        'binary',
+        'bool',
+        'boolean',
+        'break',
+        'callable',
+        'case',
+        'catch',
+        'class',
+        'clone',
+        'const',
+        'continue',
+        'declare',
+        'default',
+        'do',
+        'double',
+        'else',
+        'elseif',
+        'empty',
+        'enddeclare',
+        'endfor',
+        'endforeach',
+        'endif',
+        'endswitch',
+        'endwhile',
+        'eval',
+        'extends',
+        'final',
+        'finally',
+        'float',
+        'fn',
+        'for',
+        'foreach',
+        'from',
+        'function',
+        'global',
+        'goto',
+        'if',
+        'implements',
+        'instanceof',
+        'insteadof',
+        'int',
+        'integer',
+        'interface',
+        'isset',
+        'iterable',
+        'list',
+        'match',
+        'namespace',
+        'new',
+        'object',
+        'or',
+        'private',
+        'protected',
+        'public',
+        'real',
+        'return',
+        'string',
+        'switch',
+        'throw',
+        'trait',
+        'try',
+        'unset',
+        'use',
+        'var',
+        'void',
+        'while',
+        'xor',
+        'yield'
+    ].join('|') + ')';
+    let beginClass = 'class|extends|implements|interface|new|trait|use';
+    $.token.php = [
+        ['(<\\?(?:php(?=\\s)|=))([\\s\\S]*?)(\\?>|$)', [0, 'typ', [
+            ['/\\*[\\s\\S]*?\\*/', ['com.s0']],
+            ['//[^\\n]+', ['com.s1']],
+            ['#[^\\n]+', ['com.s2']],
+            ['(<<<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)(\\2)', [0, 'sym', 'con', 'str', 'con']],
+            ['(<<<)(")([A-Z_][A-Z\\d_]*)(")([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str', 'con']],
+            ['(<<<)(\')([A-Z_][A-Z\\d_]*)(\')([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str', 'con']],
+            [$.STR, v => {
+                return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
+            }],
+            [$.LOG, ['log.s0']],
+            [$.LOG.toUpperCase().replace(/\\B/g, '\\b'), ['log.s1']],
+            [$.NUM, ['num']],
+            ['(-)(>)(' + key + ')', [0, 'pun', 'pun', 'key']], // Skip
+            ['(\\$+' + key + ')(:)(:)(' + key + ')', [0, 'var', 'pun', 'pun', 'con']],
+            ['\\$+' + key, ['var']],
+            ['\\b(as)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'nam']],
+            ['\\b(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'con']],
+            ['\\b(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'fun']],
+            ['\\b(namespace)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'nam']],
+            ['\\b(' + beginClass + ')(\\s+)(' + libraries + ')\\b', [0, 'wor', 0, 'cla.lib']],
+            ['\\b(use)(\\s+)(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'con']],
+            ['\\b(use)(\\s+)(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'fun']],
+            ['\\b(' + beginClass + ')(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'cla']],
+            ['\\b(' + words + ')(\\s*)(\\()', [0, 'wor', 0, 'pun']],
+            ['\\b(' + keys + ')(\\s*)(\\()', [0, 'fun', 0, 'pun']],
+            ['\\b(' + keys + ')(:)(:)(' + key + ')', [0, 'cla', 'pun', 'pun', 'con']],
+            ['\\b' + words + '\\b', ['wor']],
+            ['\\b' + libraries + '\\b', ['cla.lib']],
+            // Magic constant <https://www.php.net/manual/en/language.constants.predefined.php>
+            ['\\b__(?:' + [
+                'CLASS',
+                'DIR',
+                'FILE',
+                'FUNCTION',
+                'LINE',
+                'METHOD',
+                'NAMESPACE',
+                'TRAIT'
+            ].join('|') + ')__\\b', ['con.lib']],
+            [$.PUN, ['pun']],
+            // Other(s) must be constant
+            ['\\b' + keys + '\\b', ['con']]
+        ], 'typ']]
+    ];
+})(ASH);

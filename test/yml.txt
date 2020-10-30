@@ -22,7 +22,7 @@ baz: '1'
 qux: true
 
 ---
-%YAML 2.1
+%YAML 1.2
 ---
 # comment
 string_1: "Bar"
@@ -47,6 +47,12 @@ reference: *foobar
 multiline_1: |
   Multiline
   String
+multiline_1_1: |+
+  Multiline
+  String
+multiline_1_2: |+2
+  Multiline
+  String
 multiline_2: >
   Multiline
   String
@@ -61,4 +67,3 @@ array_nested:
 - b: 1
   c: 2
 - b
-- comment

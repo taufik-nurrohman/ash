@@ -26,6 +26,8 @@ aa`
 `aa\`a`
 
 aaa true bbb false ccc null
-aaa atrue bbb bfalse ccc cnull
+(bug) aaa ttrue bbb ffalse ccc nnull
+aaa truee bbb falsee ccc nulll
+aaa ttruee bbb ffalsee ccc nnulll
 
-aaa http://example.com bbb ccc
+aaa http://example.com?foo=bar&baz=qux#foo bbb ccc

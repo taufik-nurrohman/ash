@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width" name="viewport">
+    <title>Demo</title>
+    <link href="ash.css" rel="stylesheet">
+    <style>
+    .ash-with-number {
+      display: flex;
+      border: 1px solid;
+    }
+    .ash-with-number code {
+      border: 0;
+    }
+    .ash-with-number code:first-child {
+      background: black;
+      color: white;
+      text-align: right;
+    }
+    </style>
+  </head>
+  <body>
+    <pre><code class="json">{
+  &quot;foo&quot;: [false, null, true, &quot;a&quot;, 0, 0.1],
+  &quot;bar&quot;: &quot;baz&quot;
+}</code></pre>
+    <script src="ash.js"></script>
+    <script>
+    document.querySelectorAll('pre > code').forEach(code => {
+        const ash = new ASH(code);
+        let j = code.textContent.split('\n').length,
+            c = document.createElement('code'),
+            lines = [];
+        code.parentNode.classList.add(ash.state['class'] + '-with-number');
+        code.parentNode.insertBefore(c, code);
+        for (let i = 0; i < j; ++i) {
+            lines.push(i + 1);
+        }
+        c.textContent = lines.join('\n');
+        c.classList.add(ash.state['class']);
+    });
+    </script>
+  </body>
+</html>

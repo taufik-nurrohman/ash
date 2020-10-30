@@ -92,43 +92,36 @@
     <main>
       <form method="get" target="_blank">
         <p>
-          <select name="x">
+          <textarea name="content"></textarea>
+        </p>
+        <p style="overflow: hidden;">
+          <select name="grammars">
             <option disabled selected>Syntax&hellip;</option>
             <option value="test">Generic Pattern Test</option>
             <option value="htaccess">Apache</option>
-            <option value="sh">Bash</option>
-            <option value="c">C</option>
             <option value="css">CSS</option>
             <option value="html">HTML</option>
             <option value="http">HTTP</option>
-            <option value="ini">INI</option>
             <option value="js">JavaScript</option>
             <option value="json">JSON</option>
             <option value="md">Markdown</option>
             <option value="php">PHP</option>
-            <option value="py">Python</option>
             <option value="sgml">SGML</option>
             <option value="txt">Plain Text</option>
             <option value="xml">SVG, XML</option>
-            <option value="yaml">YAML</option>
+            <option value="yml">YAML</option>
           </select>
           <select name="skin">
             <option selected value="">Default</option>
-            <option value="zenburn">Zenburn</option>
           </select>
-          <button name="submit" type="submit">Update</button>
-        </p>
-        <p>
-          <textarea name="content"></textarea>
+          <label>
+            <input type="checkbox">
+            <span>Inspect</span>
+          </label>
+          <button name="submit" style="float: right;" type="submit">Update</button>
         </p>
       </form>
       <pre><code class="ash">Result goes here&hellip;</code></pre>
-      <p>
-        <label>
-          <input type="checkbox">
-          <span>Inspect</span>
-        </label>
-      </p>
       <h2>Features</h2>
       <ul>
         <li>Light-weight, no dependencies. It uses vanilla JavaScript.</li>
@@ -159,10 +152,7 @@
       <h2>Examples</h2>
       <ul>
         <li><a href="ash.html" target="_blank">No Idea?</a></li>
-        <li>Line Numbers</li>
-        <li>Code Snippet Copy Function</li>
-        <li>Code Snippet Run Function</li>
-        <li>Language Detection by File Extension</li>
+        <li><a href="ash.number.html" target="_blank">Line Numbers</a></li>
       </ul>
       <h2>Settings</h2>
       <pre><code>let ash = new ASH(<var>source</var>, <var>prefix</var>);</code></pre>
@@ -204,7 +194,6 @@ console.log([ASH.state, ash.state]);</code></pre>
     major = version.split('.')[0];
 
 if (+major &lt; 2) { &hellip; }</code></pre>
-      <h3>ASH.x</h3>
       <p>List of regular expression&rsquo;s special characters.</p>
       <h3>ash.state</h3>
       <p>Return the modified syntax highlighter states.</p>
@@ -218,20 +207,16 @@ if (+major &lt; 2) { &hellip; }</code></pre>
       <h2>Languages</h2>
       <p>Currently support these languages:</p>
       <ul>
-        <li>Apache</li>
-        <li>Bash</li>
-        <li>C</li>
+        <li><a href="ash/htaccess.js" target="_blank">Apache</a></li>
         <li><a href="ash/css.js" target="_blank">CSS</a></li>
         <li><a href="ash/html.js" target="_blank">HTML</a></li>
-        <li>HTTP</li>
-        <li><a href="ash/ini.js" target="_blank">INI</a></li>
+        <li><a href="ash/http.js" target="_blank">HTTP</a></li>
         <li><a href="ash/js.js" target="_blank">JavaScript</a></li>
         <li><a href="ash/json.js" target="_blank">JSON</a></li>
         <li>Markdown</li>
         <li><a href="ash/php.js" target="_blank">PHP</a></li>
         <li><a href="ash/sgml.js" target="_blank">SGML</a></li>
         <li><a href="ash/txt.js" target="_blank">Plain Text</a></li>
-        <li>Python</li>
         <li><a href="ash/xml.js" target="_blank">XML</a> (also <a href="ash/svg.js" target="_blank">SVG</a>)</li>
         <li><a href="ash/yml.js" target="_blank">YAML</a></li>
       </ul>
@@ -454,17 +439,17 @@ ASH.token.ts = ASH.token.js;</code></pre>
             skin = doc.querySelector('link[rel=stylesheet]'),
             skins = form.skin,
             view = doc.querySelector('pre'),
-            x = form.x;
+            grammars = form.grammars;
         form.addEventListener('submit', e => {
             let code = doc.createElement('code');
-            code.className = x.value;
+            code.className = grammars.value;
             code.textContent = content.value;
             view.innerHTML = "";
             view.appendChild((new ASH(code)).source);
             e.preventDefault();
         });
-        x.addEventListener('change', () => {
-            win.fetch('test/' + x.value + '.txt').then(response => response.ok && response.text()).then(text => {
+        grammars.addEventListener('change', () => {
+            win.fetch('test/' + grammars.value + '.txt').then(response => response.ok && response.text()).then(text => {
                 content.value = text;
                 form.submit.click();
             }).catch(e => {
@@ -483,7 +468,7 @@ ASH.token.ts = ASH.token.js;</code></pre>
         let hash = win.location.hash.replace('#', "");
         if (hash) {
             let parts = hash.split(':');
-            parts[0] && (x.value = parts[0]);
+            parts[0] && (grammars.value = parts[0]);
             parts[1] && (skins.value = parts[1]);
         }
     })(window, document);

@@ -1,19 +1,38 @@
 .ash {
   background: white;
-  border: 1px solid;
   color: black;
   direction: ltr;
+  text-align: left;
+}
+
+pre .ash {
+  border: 1px solid;
   display: block;
   overflow: auto;
   padding: .5em .75em;
-  text-align: left;
   white-space: pre;
 }
 
-.ash ins[class] {
-  font: inherit;
-  color: inherit;
-  text-decoration: inherit;
+.ash .bol {
+  font-weight: bold;
+}
+
+.ash .ita {
+  font-style: italic;
+}
+
+.ash .stk {
+  text-decoration: line-through;
+}
+
+.ash .cod,
+.ash .com {
+  color: gray;
+}
+
+.ash .con,
+.ash .que.id {
+  color: olive;
 }
 
 .ash .err {
@@ -21,17 +40,27 @@
   color: white;
 }
 
-.ash .com {
-  color: gray;
+.ash .exp,
+.ash .que.pse {
+  color: crimson;
+}
+
+.ash .cla,
+.ash .fun,
+.ash .que {
+  color: darkolivegreen;
 }
 
 .ash .key,
-.ash .nam {
+.ash .ele .nam {
   color: indigo;
 }
 
+.ash .lib {
+  color: blue;
+}
+
 .ash .num,
-.ash .uri,
 .ash .val {
   color: blue;
 }
@@ -41,7 +70,8 @@
   color: navy;
 }
 
-.ash .str {
+.ash .str,
+.ash .uri {
   color: green;
 }
 
@@ -55,5 +85,5 @@
 }
 
 .ash .wor {
-  color: red;
+  color: firebrick;
 }
