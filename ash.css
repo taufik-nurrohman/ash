@@ -31,7 +31,6 @@ pre .ash {
 }
 
 .ash .con,
-.ash .que.id,
 .ash .quo {
   color: olive;
 }
@@ -52,8 +51,7 @@ pre .ash {
 }
 
 .ash .key,
-.ash .mar .nam,
-.ash .que {
+.ash .mar .nam {
   color: indigo;
 }
 
