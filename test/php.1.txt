@@ -1,0 +1,6 @@
+$foo = 'bar';
+
+// comment
+function foo(array $bar) {
+    return array_replace($bar, [null, 'aaa', 1]);
+}

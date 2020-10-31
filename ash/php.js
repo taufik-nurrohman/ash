@@ -180,50 +180,60 @@
         'yield'
     ].join('|') + ')';
     let b = 'class|extends|implements|interface|new|trait|use';
-    $$.token.php = [
-        ['(<\\?(?:php(?=\\s)|=))([\\s\\S]*?)(\\?>|$)', [0, 'typ', [
-            ['/\\*[\\s\\S]*?\\*/', ['com.s0']],
-            ['//[^\\n]+', ['com.s1']],
-            ['#[^\\n]+', ['com.s2']],
-            ['(<<<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)(\\2)', [0, 'sym', 'con', 'str.s3', 'con']],
-            ['(<<<)(")([A-Z_][A-Z\\d_]*)(")([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str.s3', 'con']],
-            ['(<<<)(\')([A-Z_][A-Z\\d_]*)(\')([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str.s3', 'con']],
-            [$$.STR, v => {
-                return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
-            }],
-            [$$.LOG, ['log.s0']],
-            ['\\b(?:FALSE|NULL|TRUE)\\b', ['log.s1']],
-            [$$.NUM, ['num']],
-            ['(-)(>)(' + key + ')', [0, 'pun', 'pun', 'key']], // Skip
-            ['(\\$+' + key + ')(:)(:)(' + key + ')', [0, 'var', 'pun', 'pun', 'con']],
-            ['\\$+' + key, ['var']],
-            ['\\b(as)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'nam']],
-            ['\\b(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'con']],
-            ['\\b(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'fun']],
-            ['\\b(namespace)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'nam']],
-            ['\\b(' + b + ')(\\s+)(' + libraries + ')\\b', [0, 'wor', 0, 'cla.lib']],
-            ['\\b(use)(\\s+)(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'con']],
-            ['\\b(use)(\\s+)(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'fun']],
-            ['\\b(' + b + ')(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'cla']],
-            ['\\b(' + words + ')(\\s*)(\\()', [0, 'wor', 0, 'pun']],
-            ['\\b(' + keys + ')(\\s*)(\\()', [0, 'fun', 0, 'pun']],
-            ['\\b(' + keys + ')(:)(:)(' + key + ')', [0, 'cla', 'pun', 'pun', 'con']],
-            ['\\b' + words + '\\b', ['wor']],
-            ['\\b' + libraries + '\\b', ['cla.lib']],
-            // Magic constant <https://www.php.net/manual/en/language.constants.predefined.php>
-            ['\\b__(?:' + [
-                'CLASS',
-                'DIR',
-                'FILE',
-                'FUNCTION',
-                'LINE',
-                'METHOD',
-                'NAMESPACE',
-                'TRAIT'
-            ].join('|') + ')__\\b', ['con.lib']],
-            [$$.PUN, ['pun']],
-            // Other(s) must be constant
-            ['\\b' + keys + '\\b', ['con']]
-        ], 'typ']]
+    let token = [
+        ['/\\*[\\s\\S]*?\\*/', ['com.s0']],
+        ['//[^\\n]+', ['com.s1']],
+        ['#[^\\n]+', ['com.s2']],
+        ['(<<<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)(\\2)', [0, 'sym', 'con', 'str.s3', 'con']],
+        ['(<<<)(")([A-Z_][A-Z\\d_]*)(")([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str.s3', 'con']],
+        ['(<<<)(\')([A-Z_][A-Z\\d_]*)(\')([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str.s3', 'con']],
+        [$$.STR, v => {
+            return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
+        }],
+        [$$.LOG, ['log.s0']],
+        ['\\b(?:FALSE|NULL|TRUE)\\b', ['log.s1']],
+        [$$.NUM, ['num']],
+        ['(-)(>)(' + key + ')', [0, 'pun', 'pun', 'key']], // Skip
+        ['(\\$+' + key + ')(:)(:)(' + key + ')', [0, 'var', 'pun', 'pun', 'con']],
+        ['\\$+' + key, ['var']],
+        ['\\b(as)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'nam']],
+        ['\\b(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'con']],
+        ['\\b(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'fun']],
+        ['\\b(namespace)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'nam']],
+        ['\\b(' + b + ')(\\s+)(' + libraries + ')\\b', [0, 'wor', 0, 'cla.lib']],
+        ['\\b(use)(\\s+)(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'con']],
+        ['\\b(use)(\\s+)(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'fun']],
+        ['\\b(' + b + ')(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'cla']],
+        ['\\b(' + words + ')(\\s*)(\\()', [0, 'wor', 0, 'pun']],
+        ['\\b(' + keys + ')(\\s*)(\\()', [0, 'fun', 0, 'pun']],
+        ['\\b(' + keys + ')(:)(:)(' + key + ')', [0, 'cla', 'pun', 'pun', 'con']],
+        ['\\b' + words + '\\b', ['wor']],
+        ['\\b' + libraries + '\\b', ['cla.lib']],
+        // Magic constant <https://www.php.net/manual/en/language.constants.predefined.php>
+        ['\\b__(?:' + [
+            'CLASS',
+            'DIR',
+            'FILE',
+            'FUNCTION',
+            'LINE',
+            'METHOD',
+            'NAMESPACE',
+            'TRAIT'
+        ].join('|') + ')__\\b', ['con.lib']],
+        [$$.PUN, ['pun']],
+        // Other(s) must be constant
+        ['\\b' + keys + '\\b', ['con']]
     ];
+    // PHP is quite complex, as every file with `.php` extension can be anything.
+    // Ash is file-oriented. Means that the syntax name tends to follow the associated file extension. a PHP file with a valid PHP syntax must contain at least `<?php` or `<?=` character.
+    // But we also need to allow user to highlight code snippet without `<?php` tag, for compatibility with other syntax highlighters.
+    $$.token.php = function(content) {
+        let isNative = /<\?(php|=)/.test(content);
+        if (isNative) {
+            return token;
+        }
+        return [
+            ['(<\\?(?:php(?=\\s)|=))([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']]
+        ];
+    };
 })(ASH);

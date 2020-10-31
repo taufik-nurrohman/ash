@@ -106,6 +106,7 @@
             <option value="json">JSON</option>
             <option value="md">Markdown</option>
             <option value="php">PHP</option>
+            <option value="php.1">PHP (Bare)</option>
             <option value="sgml">SGML</option>
             <option value="txt">Plain Text</option>
             <option value="xml">SVG, XML</option>
@@ -431,7 +432,7 @@ ASH.token.ts = ASH.token.js;</code></pre>
             grammars = form.grammars;
         form.addEventListener('submit', e => {
             let code = doc.createElement('code');
-            code.className = grammars.value;
+            code.className = grammars.value.split('.')[0];
             code.textContent = content.value;
             view.innerHTML = "";
             view.appendChild((new ASH(code)).source);
