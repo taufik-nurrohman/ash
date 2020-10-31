@@ -63,12 +63,6 @@ pre .ash {
   color: darkgreen;
 }
 
-.ash .mar .key,
-.ash .mar .nam {
-  color: green;
-  font-weight: bold;
-}
-
 .ash .mar .val {
   color: olivedrab;
 }
