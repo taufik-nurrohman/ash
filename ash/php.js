@@ -1,4 +1,4 @@
-($ => {
+($$ => {
     let key = '(?:[a-zA-Z_\\x7f-\\xff][a-zA-Z\\d_\\x7f-\\xff]*)';
     let keys = '(?:\\\\?' + key + '(?:\\\\' + key + ')*)';
     // Standard PHP library
@@ -179,8 +179,8 @@
         'xor',
         'yield'
     ].join('|') + ')';
-    let beginClass = 'class|extends|implements|interface|new|trait|use';
-    $.token.php = [
+    let b = 'class|extends|implements|interface|new|trait|use';
+    $$.token.php = [
         ['(<\\?(?:php(?=\\s)|=))([\\s\\S]*?)(\\?>|$)', [0, 'typ', [
             ['/\\*[\\s\\S]*?\\*/', ['com.s0']],
             ['//[^\\n]+', ['com.s1']],
@@ -188,12 +188,11 @@
             ['(<<<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)(\\2)', [0, 'sym', 'con', 'str', 'con']],
             ['(<<<)(")([A-Z_][A-Z\\d_]*)(")([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str', 'con']],
             ['(<<<)(\')([A-Z_][A-Z\\d_]*)(\')([\\s\\S]*?)(\\3)', [0, 'sym', 'pun', 'con', 'pun', 'str', 'con']],
-            [$.STR, v => {
+            [$$.STR, v => {
                 return ['str.s' + ({'"': 0, "'": 1, '`': 2}[v[0][0]] || 0)];
             }],
-            [$.LOG, ['log.s0']],
-            [$.LOG.toUpperCase().replace(/\\B/g, '\\b'), ['log.s1']],
-            [$.NUM, ['num']],
+            [$$.LOG, ['log']],
+            [$$.NUM, ['num']],
             ['(-)(>)(' + key + ')', [0, 'pun', 'pun', 'key']], // Skip
             ['(\\$+' + key + ')(:)(:)(' + key + ')', [0, 'var', 'pun', 'pun', 'con']],
             ['\\$+' + key, ['var']],
@@ -201,10 +200,10 @@
             ['\\b(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'con']],
             ['\\b(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'fun']],
             ['\\b(namespace)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'nam']],
-            ['\\b(' + beginClass + ')(\\s+)(' + libraries + ')\\b', [0, 'wor', 0, 'cla.lib']],
+            ['\\b(' + b + ')(\\s+)(' + libraries + ')\\b', [0, 'wor', 0, 'cla.lib']],
             ['\\b(use)(\\s+)(const)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'con']],
             ['\\b(use)(\\s+)(function)(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'wor', 0, 'fun']],
-            ['\\b(' + beginClass + ')(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'cla']],
+            ['\\b(' + b + ')(\\s+)(' + keys + ')\\b', [0, 'wor', 0, 'cla']],
             ['\\b(' + words + ')(\\s*)(\\()', [0, 'wor', 0, 'pun']],
             ['\\b(' + keys + ')(\\s*)(\\()', [0, 'fun', 0, 'pun']],
             ['\\b(' + keys + ')(:)(:)(' + key + ')', [0, 'cla', 'pun', 'pun', 'con']],
@@ -221,7 +220,7 @@
                 'NAMESPACE',
                 'TRAIT'
             ].join('|') + ')__\\b', ['con.lib']],
-            [$.PUN, ['pun']],
+            [$$.PUN, ['pun']],
             // Other(s) must be constant
             ['\\b' + keys + '\\b', ['con']]
         ], 'typ']]

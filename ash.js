@@ -188,7 +188,12 @@
                 if (!v || 0 !== v.index) {
                     continue;
                 }
-                out[push]([v, syntax[i][1]]);
+                // Dirty test to match word boundary after chunked
+                if (!r.test('a' + content)) {
+                    out[push]([v, [0]]); // Skip
+                } else {
+                    out[push]([v, syntax[i][1]]);
+                }
                 content = content.slice(v[0].length);
                 break;
             }
@@ -215,7 +220,7 @@
         $$.NUM = '(?:0[bB][01]+(?:_[01]+)*n?|0[oO]\\d+(?:_\\d+)*n?|0[xX][a-fA-F\\d]+(?:_[a-fA-F\\d]+)*n?|[-+]?(?:\\d*(?:_\\d+)*\\.)?\\d+(?:_\\d+)*(?:n|[eE][-+]?\\d+)?)\\b';
         $$.PUN = '[!"#$%&\'\\(\\)*+,\\-./:;<=>?@\\[\\]\\\\^_`{|}~]';
         $$.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'|`(?:\\\\.|[^`])*`';
-        $$.URI = '\\b(?:(?:ht|f)tps?:\\/\\/|(?:data|javascript|mailto):)\\S+\\b';
+        $$.URI = '\\b(?:(?:ht|f)tps?://|(?:data|javascript|mailto):)\\S+\\b';
 
         function esc(x) {
             if (isArray(x)) {

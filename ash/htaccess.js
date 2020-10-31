@@ -1,4 +1,4 @@
-($ => {
+($$ => {
     // <https://www.iana.org/assignments/media-types>
     let types = '(?:' + [
         'application',
@@ -12,16 +12,16 @@
         'text',
         'video'
     ].join('|') + ')/[a-z\\d-]+(?:\\.[a-z\\d-]+)?(?:\\+[a-z\\d-]+)?';
-    $.token.htaccess = [
+    $$.token.htaccess = [
         ['#[^\\n]+', ['com']],
         ['(<)(/)?([^\\s<>/]+)(?:(\\s)([^>]*?))?(>)', ['sec', 0, 0, 'nam', 0, [], 0]],
         ['([aA]dd[dD]efault[cC]harset)(\\s+)([^\\n]+)', [0, 'key', 0, 'val']],
         ['([a-zA-Z][\\w]*)(\\s+)((?:\\\\\\n|[^\\n])+)', [0, 'key', 0, [
-            ['^' + $.LOG + '$', ['log']],
+            ['^' + $$.LOG + '$', ['log']],
             ['^(?:[aA]llow|[dD]eny|False|[nN]o|Null|[oO]ff|[oO]n|True|[yY]es)$', ['log']],
-            [$.STR, ['str']],
+            [$$.STR, ['str']],
             ['[$%]\\d+', ['num.ref']],
-            [$.NUM, ['num']],
+            [$$.NUM, ['num']],
             ['\\^\\S+\\$(?!\\d)', ['exp']],
             ['\\^\\S+', ['exp']],
             ['\\S+\\$(?!\\d)', ['exp']],

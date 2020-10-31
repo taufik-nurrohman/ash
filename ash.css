@@ -51,8 +51,7 @@ pre .ash {
   color: darkolivegreen;
 }
 
-.ash .key,
-.ash .ele .nam {
+.ash .key {
   color: indigo;
 }
 
@@ -60,12 +59,24 @@ pre .ash {
   color: blue;
 }
 
+.ash .mar {
+  color: darkgreen;
+}
+
+.ash .mar .key,
+.ash .mar .nam {
+  color: green;
+}
+
+.ash .mar .val {
+  color: olivedrab;
+}
+
 .ash .num,
 .ash .val {
   color: blue;
 }
 
-.ash .ele .key,
 .ash .log {
   color: navy;
 }

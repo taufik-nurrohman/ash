@@ -1,1 +1,1 @@
-ASH.token.txt = {}; // No syntax
+ASH.token.txt = []; // No syntax
