@@ -52,25 +52,13 @@ pre .ash {
   color: darkolivegreen;
 }
 
-.ash .key {
+.ash .key,
+.ash .mar .nam {
   color: indigo;
 }
 
 .ash .lib {
-  color: blue;
-}
-
-.ash .mar {
-  color: darkgreen;
-}
-
-.ash .mar .key,
-.ash .mar .nam {
-  color: inherit;
-}
-
-.ash .mar .val {
-  color: olivedrab;
+  color: brown;
 }
 
 .ash .num,
