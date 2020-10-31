@@ -47,13 +47,13 @@ pre .ash {
 }
 
 .ash .cla,
-.ash .fun,
-.ash .que {
+.ash .fun {
   color: darkolivegreen;
 }
 
 .ash .key,
-.ash .mar .nam {
+.ash .mar .nam,
+.ash .que {
   color: indigo;
 }
 
