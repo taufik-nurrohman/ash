@@ -47,11 +47,11 @@
                 return fn.call($, fromTokens(toTokens(content, syntax)));
             }
             if (isFunction(syntax)) {
-                syntax = fn.call($, syntax.call($, content));
+                syntax = syntax.call($, content);
                 if (isArray(syntax)) {
                     return fn.call($, fromTokens(toTokens(content, syntax)));
                 }
-                return syntax;
+                return fn.call($, syntax);
             }
         }
         // Async
