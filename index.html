@@ -143,7 +143,9 @@
     &lt;pre&gt;&lt;code class="json"&gt;{&amp;quot;foo&amp;quot;:1}&lt;/code&gt;&lt;/pre&gt;
     &lt;script src="<a href="ash.min.js" target="_blank">ash.min.js</a>"&gt;&lt;/script&gt;
     &lt;script&gt;
-    ASH.$('pre &gt; code[class]');
+    document.querySelectorAll('pre &gt; code[class]').forEach(code =&gt; {
+        let ash = new ASH(code);
+    });
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -194,11 +196,6 @@ console.log([ASH.state, ash.state]);</code></pre>
 if (+major &lt; 2) { &hellip; }</code></pre>
       <h3>ASH.x</h3>
       <p>List of regular expression&rsquo;s special characters.</p>
-      <h3>ASH.$(query, fn)</h3>
-      <p>Helper function to make <code>ASH</code> instances using query selector.</p>
-      <pre><code>ASH.$('pre &gt; code[class]', ash =&gt; {
-    console.log(ash.source);
-});</code></pre>
       <h3>ash.state</h3>
       <p>Return the modified syntax highlighter states.</p>
       <h3>ash.source</h3>
@@ -259,10 +256,6 @@ ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'';</code></pre>
           <tr>
             <td><code>fun</code></td>
             <td>Function. A function declaration.</td>
-           </tr>
-          <tr>
-            <td><code>inh</code></td>
-            <td>Inherit. Used to make certain chunk inside a token to have the same color as the parent color.</td>
           </tr>
           <tr>
             <td><code>key</code></td>
@@ -277,6 +270,10 @@ ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'';</code></pre>
             <td><a href="https://en.m.wikipedia.org/wiki/Three-valued_logic" rel="nofollow" target="_blank">Three-valued logic</a>. Includes <code>false</code>, <code>null</code>, <code>true</code>.</td>
           </tr>
           <tr>
+            <td><code>mar</code></td>
+            <td>Markup. As in HTML tags or Markdown syntax.</td>
+          </tr>
+          <tr>
             <td><code>nam</code></td>
             <td>Name. Name of function, HTML tag, etc.</td>
           </tr>
@@ -284,19 +281,15 @@ ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'';</code></pre>
             <td><code>num</code></td>
             <td>Number. Including units and modifiers, if any.</td>
           </tr>
-           <tr>
-            <td><code>mar</code></td>
-            <td>Markup. As in HTML tags or Markdown syntax.</td>
-          </tr>
           <tr>
             <td><code>str</code></td>
             <td>String. Literal string.</td>
           </tr>
-           <tr>
+          <tr>
             <td><code>sym</code></td>
             <td>Symbol. Smiley, HTML entities, etc.</td>
           </tr>
-           <tr>
+          <tr>
             <td><code>typ</code></td>
             <td>Type. Document type or identifier.</td>
           </tr>
@@ -336,10 +329,6 @@ ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'';</code></pre>
             <td>Code. As in Markdown syntax for codes.</td>
           </tr>
           <tr>
-            <td><code>ele</code></td>
-            <td>Element. As in element selector in CSS.</td>
-          </tr>
-          <tr>
             <td><code>id</code></td>
             <td>ID. As in ID selector in CSS.</td>
           </tr>
@@ -365,11 +354,7 @@ ASH.STR = '"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\'';</code></pre>
           </tr>
           <tr>
             <td><code>sec</code></td>
-            <td>Section. As in INI syntax for sections.</td>
-          </tr>
-          <tr>
-            <td><code>tit</code></td>
-            <td>Title. As in Markdown syntax for headings.</td>
+            <td>Section. As in INI syntax for sections, or in Markdown syntax for heading elements.</td>
           </tr>
           <tr>
             <td><code>uri</code></td>

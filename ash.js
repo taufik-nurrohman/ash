@@ -184,7 +184,7 @@
         while (content) {
             for (let i = 0; i < j; ++i) {
                 r = syntax[i][0];
-                v = (r = isString(r) ? toPattern(r[replace](/[\/]/g, '\\/'), 'g') : r).exec(content);
+                v = (r = isString(r) ? toPattern(r[replace](/[\/]/g, '\\$&'), 'g') : r).exec(content);
                 if (!v || 0 !== v.index) {
                     continue;
                 }
@@ -241,13 +241,6 @@
         $$.version = '0.0.0';
 
         $$.x = '!$^*()-=+[]{}\\|:<>,./?'; // Escape character(s)
-
-        $$.$ = function(query, fn) {
-            doc.querySelectorAll(query).forEach(code => {
-                let ash = new $$(code);
-                isFunction(fn) && fn(ash);
-            });
-        };
 
     })(win[name] = function(source, o) {
 
