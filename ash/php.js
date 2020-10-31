@@ -229,11 +229,8 @@
     // But we also need to allow user to highlight code snippet without `<?php` tag, for compatibility with other syntax highlighters.
     $$.token.php = function(content) {
         let isNative = /<\?(php|=)/.test(content);
-        if (isNative) {
-            return token;
-        }
-        return [
+        return isNative ? [
             ['(<\\?(?:php(?=\\s)|=))([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']]
-        ];
+        ] : token;
     };
 })(ASH);
