@@ -31,7 +31,8 @@ pre .ash {
 }
 
 .ash .con,
-.ash .que.id {
+.ash .que.id,
+.ash .uri {
   color: olive;
 }
 
@@ -76,8 +77,7 @@ pre .ash {
   color: navy;
 }
 
-.ash .str,
-.ash .uri {
+.ash .str {
   color: green;
 }
 
