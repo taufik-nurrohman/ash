@@ -143,9 +143,7 @@
     &lt;pre&gt;&lt;code class="json"&gt;{&amp;quot;foo&amp;quot;:1}&lt;/code&gt;&lt;/pre&gt;
     &lt;script src="<a href="ash.min.js" target="_blank">ash.min.js</a>"&gt;&lt;/script&gt;
     &lt;script&gt;
-    document.querySelectorAll('pre &gt; code[class]').forEach(code =&gt; {
-        new ASH(code);
-    });
+    ASH.$('pre &gt; code[class]');
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
@@ -194,7 +192,13 @@ console.log([ASH.state, ash.state]);</code></pre>
     major = version.split('.')[0];
 
 if (+major &lt; 2) { &hellip; }</code></pre>
+      <h3>ASH.x</h3>
       <p>List of regular expression&rsquo;s special characters.</p>
+      <h3>ASH.$(query, fn)</h3>
+      <p>Helper function to make <code>ASH</code> instances using query selector.</p>
+      <pre><code>ASH.$('pre &gt; code[class]', ash =&gt; {
+    console.log(ash.source);
+});</code></pre>
       <h3>ash.state</h3>
       <p>Return the modified syntax highlighter states.</p>
       <h3>ash.source</h3>

@@ -242,6 +242,13 @@
 
         $$.x = '!$^*()-=+[]{}\\|:<>,./?'; // Escape character(s)
 
+        $$.$ = function(query, fn) {
+            doc.querySelectorAll(query).forEach(code => {
+                let ash = new $$(code);
+                isFunction(fn) && fn(ash);
+            });
+        };
+
     })(win[name] = function(source, o) {
 
         if (!source) return;
