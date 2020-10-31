@@ -97,11 +97,11 @@
         ['\\b(?:Infinity|NaN|undefined)\\b', ['log.s1']],
         [$$.NUM, ['num']],
         ['/(?:(?![*+?])(?:[^\\n\\[/\\\\]|\\\\.|\\[(?:[^\\n\\]\\\\]|\\\\.)*\\])+)/[gimuy]*', ['exp']],
-        ['\\b(function)(\\s+)(' + key + ')\\b', [0, 'wor', 0, 'fun']],
+        ['\\b(function)(\\s+)([*])?(' + key + ')\\b', [0, 'wor', 0, 'sym', 'fun']],
         ['\\b(export)(\\s+)(' + words + ')(\\s+)(' + key + ')\\b', [0, 'wor', 0, 'wor', 0, 'fun']],
         ['\\b(class|export|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b', [0, 'wor', 0, 'cla']],
-        ['(\\??)(\\.)(#?' + key + ')\\b', [0, 'pun', 'pun', 0]], // Skip
-        ['#' + key + '\\b', ['key']], // Skip
+        ['(\\??)(\\.)(#?' + key + ')\\b', [0, 'pun', 'pun', 'key']],
+        ['#' + key + '\\b', ['key']],
         ['\\b' + words + '\\b', ['wor']],
         ['\\b' + libraries + '\\b', ['lib']],
         ['\\b(' + key + ')(\\s*)(\\()', [0, 'fun', 0, 'pun']],

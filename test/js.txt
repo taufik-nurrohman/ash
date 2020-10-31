@@ -49,8 +49,8 @@ window.foo = {
 console.log(foo?.bar?.baz?.qux);
 
 // function test
-function foo(a, b, c = 4) {
-    return a + b + c;
+function *foo(a, b, c = 4) {
+    yield a + b + c;
 }
 
 function bar(
