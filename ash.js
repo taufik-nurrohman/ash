@@ -191,7 +191,7 @@
                 }
                 // Dirty test to match word boundary after slice
                 let R = r.source,
-                    W = '\\b' === R[slice](0, 3) || '(\\b' === R[slice](0, 4) || '(?:\\b' === R[slice](0, 6); // Is word boundary?
+                    W = '\\b' === R[slice](0, 2) || '(\\b' === R[slice](0, 3) || '(?:\\b' === R[slice](0, 5); // Is word boundary?
                 if (W && !r.test('a' + content)) {
                     out[push]([v, [0]]); // Skip
                 } else {
