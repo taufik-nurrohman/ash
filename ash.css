@@ -58,7 +58,8 @@ pre .ash {
 }
 
 .ash .lib {
-  color: brown;
+  color: sienna;
+  font-weight: bold;
 }
 
 .ash .num,
@@ -69,6 +70,7 @@ pre .ash {
 
 .ash .log {
   color: navy;
+  font-weight: bold;
 }
 
 .ash .str {

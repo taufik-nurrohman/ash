@@ -189,14 +189,7 @@
                 if (!v || 0 !== v.index) {
                     continue;
                 }
-                // Dirty test to match word boundary after slice
-                let R = r.source,
-                    W = '\\b' === R[slice](0, 2) || '(\\b' === R[slice](0, 3) || '(?:\\b' === R[slice](0, 5); // Is word boundary?
-                if (W && !r.test('a' + content)) {
-                    out[push]([v, [0]]); // Skip
-                } else {
-                    out[push]([v, syntax[i][1]]);
-                }
+                out[push]([v, syntax[i][1]]);
                 content = content[slice](v[0].length);
                 break;
             }
