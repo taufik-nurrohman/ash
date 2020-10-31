@@ -65,6 +65,11 @@ pre .ash {
   color: darkgreen;
 }
 
+.ash .mar .key,
+.ash .mar .nam {
+  color: inherit;
+}
+
 .ash .mar .val {
   color: olivedrab;
 }
