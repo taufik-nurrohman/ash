@@ -18,6 +18,7 @@
         push = 'push',
         replace = 'replace',
         script = doc.currentScript,
+        slice = 'slice',
         src = script.src,
         textContent = 'textContent',
         token = 'token';
@@ -60,7 +61,7 @@
         }
         a = src.split('?');
         b = a[0].split('/');
-        min = '.min.js' === b.pop().slice(-7);
+        min = '.min.js' === b.pop()[slice](-7);
         win.fetch(b.join('/') + '/ash/' + type + (min ? '.min' : "") + '.js' + (a[1] ? '?' + a[1] : "")).then(response => response.ok && response.text()).then(text => {
             if (isSet(text)) {
                 toScript(text);
@@ -184,17 +185,19 @@
         while (content) {
             for (let i = 0; i < j; ++i) {
                 r = syntax[i][0];
-                v = (r = isString(r) ? toPattern(r[replace](/[\/]/g, '\\$&'), 'g') : r).exec(content);
+                v = (r = isString(r) ? toPattern(r[replace](/\//g, '\\$&'), 'g') : r).exec(content);
                 if (!v || 0 !== v.index) {
                     continue;
                 }
-                // Dirty test to match word boundary after chunked
-                if (!r.test('a' + content)) {
+                // Dirty test to match word boundary after slice
+                let R = r.source,
+                    W = '\\b' === R[slice](0, 3) || '(\\b' === R[slice](0, 4) || '(?:\\b' === R[slice](0, 6); // Is word boundary?
+                if (W && !r.test('a' + content)) {
                     out[push]([v, [0]]); // Skip
                 } else {
                     out[push]([v, syntax[i][1]]);
                 }
-                content = content.slice(v[0].length);
+                content = content[slice](v[0].length);
                 break;
             }
         }
