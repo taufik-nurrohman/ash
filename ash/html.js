@@ -6,8 +6,8 @@
     $$.token.html = [
         ['<!--[\\s\\S]*?-->', ['com']],
         ['<![^<>]+>', ['typ']],
-        ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 0, [c]]],
-        ['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(</style>)', [0, [o], 0, [c]]],
+        ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 'token:js', [c]]],
+        ['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(</style>)', [0, [o], 'token:css', [c]]],
         // Do not highlight content in `<template>` element
         ['(<template(?:\\s[^>]*)?>)([\\s\\S]*?)(</template>)', [0, [o], 'val', [c]]],
         // ditto

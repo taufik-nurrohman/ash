@@ -4,18 +4,16 @@
     <meta charset="utf-8">
     <meta content="width=device-width" name="viewport">
     <title>Demo</title>
-    <link href="ash.css" rel="stylesheet">
+    <link href="ash.min.css" rel="stylesheet">
   </head>
   <body>
     <pre><code class="json">{
-  &quot;foo&quot;: [false, null, true, &quot;a&quot;, 0, 0.1],
+  &quot;foo&quot;: [true, &quot;a&quot;, 1],
   &quot;bar&quot;: &quot;baz&quot;
 }</code></pre>
-    <script src="ash.js"></script>
+    <script src="ash.min.js"></script>
     <script>
-    document.querySelectorAll('pre > code').forEach(code => {
-        new ASH(code);
-    });
+    let ash = new ASH(document.querySelector('pre > code'));
     </script>
   </body>
 </html>

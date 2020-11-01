@@ -225,8 +225,11 @@
         ['\\b' + keys + '\\b', ['con']]
     ];
     // PHP is quite complex, as every file with `.php` extension can be anything.
-    // Ash is file-oriented. Means that the syntax name tends to follow the associated file extension. a PHP file with a valid PHP syntax must contain at least `<?php` or `<?=` character.
-    // But we also need to allow user to highlight code snippet without `<?php` tag, for compatibility with other syntax highlighters.
+    // Ash is file-oriented. Means that the syntax name tends to follow the
+    // associated file extension. a PHP file with a valid PHP syntax must contain
+    // at least `<?php` or `<?=` character.
+    // But we also need to allow user to highlight code snippet without `<?php`
+    // tag, for compatibility with other syntax highlighters.
     $$.token.php = function(content) {
         let isNative = /<\?(php|=)/.test(content);
         return isNative ? [

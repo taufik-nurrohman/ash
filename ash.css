@@ -41,7 +41,7 @@ pre .ash {
 }
 
 .ash .exp,
-.ash .que.pse {
+.ash .que .pse {
   color: crimson;
 }
 
@@ -51,7 +51,8 @@ pre .ash {
 }
 
 .ash .key,
-.ash .mar .nam {
+.ash .mar .nam,
+.ash .que .nam {
   color: indigo;
 }
 
@@ -65,7 +66,8 @@ pre .ash {
   color: blue;
 }
 
-.ash .log {
+.ash .log,
+.ash .que .id {
   color: navy;
 }
 

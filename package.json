@@ -1,0 +1,27 @@
+{
+  "name": "@taufik-nurrohman/ash",
+  "description": "A hard mode client-side syntax highlighter for the web.",
+  "version": "0.0.1",
+  "main": "ash.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taufik-nurrohman/ash.git"
+  },
+  "keywords": [
+    "syntax",
+    "highlight",
+    "client",
+    "async",
+    "fast",
+    "light"
+  ],
+  "author": "Taufik Nurrohman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taufik-nurrohman/ash/issues"
+  },
+  "homepage": "https://taufik-nurrohman.github.io/ash"
+}

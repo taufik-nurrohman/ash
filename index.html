@@ -84,7 +84,7 @@
   <body>
     <p>Do you like this project? Please support my <a href="https://github.com/mecha-cms">Mecha CMS</a> project too. Thank you!</p>
     <header>
-      <h1>Ash Syntax Highlighter v0.0.0</h1>
+      <h1>Ash Syntax Highlighter v0.0.1</h1>
       <p>Ash aims to solve the problem of client-side syntax highlighter file size which usually gets bigger as you have more syntax variants that you need to highlight. With Ash, you will only need to load the main file once, and the associated language files will be loaded automatically as needed.</p>
       <p>Below is a demonstration of dynamic syntax highlighting. Try opening your network inspector to see what files will be loading each time a new syntax is applied.</p>
       <hr>
@@ -126,12 +126,14 @@
       <h2>Features</h2>
       <ul>
         <li>Light-weight, no dependencies. It uses vanilla JavaScript.</li>
+        <li>File-agnostic. Language modes are named after the file extensions that are usually assigned to the file (except for some non-file syntax such as HTTP syntax).</li>
       </ul>
       <h2>Limitations</h2>
       <ul>
         <li>Currently not possible to preserve HTML tags in the source code.</li>
         <li>Mixed PHP expression within HTML tags likely will break.</li>
         <li>There aren&rsquo;t any automatic language detection feature. You have to determine the syntax highlighting mode in the source element manually.</li>
+        <li>Currently does not support nested syntax highlighting. This syntax highlighter was intended to highlight syntax within a file as a preview utility, to help users focus only on the important parts of the file. For example, in a HTML file, only HTML tags are highlighted. CSS and JavaScript syntax that appear in it will not be highlighted.</li>
       </ul>
       <h2>Usage</h2>
       <pre><code>&lt;!DOCTYPE html&gt;
@@ -386,9 +388,6 @@ ASH.token.ts = ASH.token.js;</code></pre>
     // Then return the modified content
     return content;
 };</code></pre>
-      <blockquote>
-        <p><strong>Tips:</strong> Use AST parsers such as A and B to get more accurate results. Using this usually has the side effect of a longer parsing process.</p>
-      </blockquote>
       <p>Below is a simple example of using the array method to mark portions of a JSON file using regular expressions:</p>
       <pre><code>ASH.token.json = [
     ['(' + ASH.STR + ')(\\s*:)', [0, 'key', 0]],
