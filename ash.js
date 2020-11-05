@@ -7,7 +7,7 @@
  * --------------------------------------------------------------
  */
 
-(function(win, doc, name) {
+((win, doc, name) => {
 
     let appendChild = 'appendChild',
         classList = 'classList',
@@ -209,7 +209,7 @@
         }
     }
 
-    (function($$) {
+    ($$ => {
 
         // Reusable pattern(s)
         $$.LOG = '\\b(?:false|null|true)\\b';
@@ -227,9 +227,7 @@
 
         $$.esc = esc;
 
-        $$.h = function(type, content, fn) {
-            doApply($$, {}, type, content, fn);
-        };
+        $$.h = (type, content, fn) => doApply($$, {}, type, content, fn);
 
         $$[instances] = {};
 
@@ -272,7 +270,7 @@
         // Mark current DOM as active syntax highlighter to prevent duplicate instance
         source[name] = 1;
 
-        $.pop = function() {
+        $.pop = () => {
             if (!source[name]) {
                 return $; // Already ejected
             }
