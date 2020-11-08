@@ -26,7 +26,7 @@ aa`
 `aa\`a`
 
 aaa true bbb false ccc null
-(bug) aaa ttrue bbb ffalse ccc nnull
+aaa ttrue bbb ffalse ccc nnull
 aaa truee bbb falsee ccc nulll
 aaa ttruee bbb ffalsee ccc nnulll
 

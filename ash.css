@@ -67,6 +67,7 @@ pre .ash {
 }
 
 .ash .log,
+.ash .mar .key,
 .ash .que .id {
   color: navy;
 }

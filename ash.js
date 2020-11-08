@@ -1,6 +1,6 @@
 /*!
  * ==============================================================
- *  ASYNCHRONOUS SYNTAX HIGHLIGHTER 0.0.1
+ *  ASYNCHRONOUS SYNTAX HIGHLIGHTER 0.0.2
  * ==============================================================
  * Author: Taufik Nurrohman <https://github.com/taufik-nurrohman>
  * License: MIT
@@ -177,22 +177,25 @@
     }
 
     function toTokens(content, syntax) {
-        syntax[push](['[\\s\\S]', [0]]); // Add * to be skipped
-        let out = [],
-            j = syntax.length, r, v;
+        let index,
+            j = syntax.length,
+            out = [], r, tok, v;
         // Normalize line-break to optimize regular expression
         content = content[replace](/\r\n|\r/g, '\n');
         while (content) {
+            tok = 0; // Reset
+            index = content.length;
             for (let i = 0; i < j; ++i) {
                 r = syntax[i][0];
                 v = (r = isString(r) ? toPattern(r[replace](/\//g, '\\$&'), 'g') : r).exec(content);
-                if (!v || 0 !== v.index) {
-                    continue;
+                if (v && (v.index < index)) {
+                    index = v.index;
+                    tok = [v, syntax[i][1]];
                 }
-                out[push]([v, syntax[i][1]]);
-                content = content[slice](v[0].length);
-                break;
             }
+            index && out.push([[content[slice](0, index)], [0]]);
+            tok && out.push(tok);
+            content = content[slice](index + (tok ? tok[0][0].length : 0));
         }
         return out;
     }
@@ -237,7 +240,7 @@
 
         $$[token] = {};
 
-        $$.version = '0.0.1';
+        $$.version = '0.0.2';
 
         $$.x = '!$^*()-=+[]{}\\|:<>,./?'; // Escape character(s)
 
