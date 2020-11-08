@@ -85,7 +85,7 @@
     <p>Do you like this project? Please support my <a href="https://github.com/mecha-cms">Mecha CMS</a> project too. Thank you!</p>
     <header>
       <h1>Ash Syntax Highlighter v0.0.2</h1>
-      <p>Ash aims to solve the problem of client-side syntax highlighter file size which usually gets bigger as you have more syntax variants that you need to highlight. With Ash, you will only need to load the main file once, and the associated language files will be loaded automatically as needed.</p>
+      <p>Ash aims to solve problems related to client-side syntax highlighter file size which usually gets bigger as you have more syntax variants that you want to highlight. With Ash, you will only need to load the main file once, and the associated language files will be loaded automatically as needed.</p>
       <p>Below is a demonstration of dynamic syntax highlighting. Try opening your network inspector to see what files will be loading each time a new syntax is applied.</p>
       <hr>
     </header>
@@ -420,7 +420,7 @@ ASH.token.ts = ASH.token.js;</code></pre>
     </footer>
     <script src="ash.js"></script>
     <script>
-    (function(win, doc) {
+      ((win, doc) => {
         let form = doc.forms[0],
             content = form.content,
             toggle = doc.querySelector('input[type=checkbox]'),
@@ -459,6 +459,9 @@ ASH.token.ts = ASH.token.js;</code></pre>
             let parts = hash.split(':');
             parts[0] && (grammars.value = parts[0]);
             parts[1] && (skins.value = parts[1]);
+        }
+        if (toggle.checked) {
+            root.classList.add('inspect');
         }
     })(window, document);
     </script>

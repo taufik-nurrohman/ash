@@ -140,7 +140,10 @@
         ['/(?:(?![*+?])(?:[^\\n\\[/\\\\]|\\\\.|\\[(?:[^\\n\\]\\\\]|\\\\.)*\\])+)/[gimuy]*', ['exp']],
         ['\\b(function)(\\s+)([*])?(' + key + ')\\b', [0, 'wor', 0, 'sym', 'fun']],
         ['\\b(export)(\\s+)(' + words + ')(\\s+)(' + key + ')\\b', [0, 'wor', 0, 'wor', 0, 'fun']],
-        ['\\b(class|export|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b', [0, 'wor', 0, 'cla']],
+        ['\\b(class|export|extends|implements|interface|new)(\\s+)(' + key + '(?:\\.' + key + ')*)\\b', [0, 'wor', 0, [
+            ['[.]', ['pun']],
+            ['[^.]+', ['cla']]
+        ]]],
         ['(\\??)(\\.)(#?' + key + ')\\b', [0, 'pun', 'pun', 'key']],
         ['#' + key + '\\b', ['key']],
         ['\\b' + classes + '\\b', ['cla.lib']],

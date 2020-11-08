@@ -9,13 +9,12 @@
                 [$$.STR, ['str']],
                 // Slice -2 to remove the `\b` part
                 [$$.NUM.slice(0, -2) + '(?:(?:[cme]m|ch|deg|ex|in|p[ctx]|rem|v(?:[hw]|max|min))\\b|%)', ['num']],
-                ['#(?:[a-fA-F\\d]{1,2}){3,4}\\b', ['num.hex']],
+                ['#(?:[a-fA-F\\d]{1,2}){3,4}\\b', ['con.hex']],
                 [$$.NUM, ['num']],
                 [$$.PUN, ['pun']],
                 // Other(s) must be value
                 ['\\b' + key + '\\b', ['val']]
             ], 'pun']],
-            ['[*]', ['sym']],
             ['\\[[^\\n\\]]+\\]', ['att']],
             ['::?' + key, ['pse']],
             ['\\.' + key, ['cla']],
@@ -33,7 +32,7 @@
                 'speech',
                 'tty',
                 'tv'
-            ].join('|') + ')\\b', ['typ']],
+            ].join('|') + ')\\b', ['nam']],
             ['\\b(?:' + [
                 'and',
                 'from',
@@ -59,7 +58,7 @@
         [$$.STR, ['str']],
         // Slice -2 to remove the `\b` part
         [$$.NUM.slice(0, -2) + '(?:(?:[cme]m|ch|deg|ex|in|p[ctx]|rem|v(?:[hw]|max|min))\\b|%)', ['num']],
-        ['#(?:[a-fA-F\\d]{1,2}){3,4}\\b', ['num.hex']],
+        ['#(?:[a-fA-F\\d]{1,2}){3,4}\\b', ['con.hex']],
         [$$.NUM, ['num']],
         ['\\b(' + key + ')(\\s*)(\\()', [0, 'fun', 0, 'pun']],
         [$$.PUN, ['pun']],

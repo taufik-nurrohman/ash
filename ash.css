@@ -45,9 +45,12 @@ pre .ash {
   color: crimson;
 }
 
-.ash .cla,
-.ash .fun {
+.ash .cla {
   color: darkolivegreen;
+}
+
+.ash .fun {
+  color: darkslategray;
 }
 
 .ash .key,
