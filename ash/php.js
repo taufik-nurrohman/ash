@@ -231,9 +231,14 @@
     // But we also need to allow user to highlight code snippet without `<?php`
     // tag, for compatibility with other syntax highlighters.
     $$.token.php = function(content) {
-        let isNative = /<\?(php|=)/.test(content);
+        let e = ['&(?:[a-zA-Z\\d]+|#x[a-fA-F\\d]+|#\\d+);', ['sym']];
+        let a = ['(\\s+)([^\\s>=/]+)(?:(=)(' + $$.STR + '|[^\\s>=/]+))?', [0, 0, 'key', 'pun', 'val']],
+            o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
+            c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']];
+        let isNative = /<\?(?:php(?=\\s)|=)?/.test(content);
         return isNative ? [
-            ['(<\\?(?:php(?=\\s)|=))([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']]
+            ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']],
+            o, c, e
         ] : token;
     };
 })(ASH);
