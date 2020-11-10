@@ -39,7 +39,7 @@
         'URIError',
         'WeakSet',
         'WeakMap',
-        'XMLHttpRequest"
+        'XMLHttpRequest'
     ].join('|') + ')';
     let vars = '(?:' + [
         'console',
