@@ -43,3 +43,23 @@
     </script>
   </body>
 </html>
+
+<<?= $x; ?>>
+<<?= $x; ?>xxx>
+<xxx<?= $x; ?>>
+<xxx<?= $x; ?>xxx>
+
+<<?= $x; ?>xxx yyy="zzz">
+<xxx<?= $x; ?> yyy="zzz">
+<xxx<?= $x; ?>xxx yyy="zzz">
+
+<xxx yyy="<?= $x; ?>">
+<xxx yyy=<?= $x; ?>>
+<xxx yyy="zzz<?= $x; ?>">
+<xxx yyy="<?= $x; ?>zzz">
+<xxx yyy="zzz<?= $x; ?>zzz">
+
+<xxx <?= $x; ?>="zzz">
+<xxx yyy<?= $x; ?>="zzz">
+<xxx <?= $x; ?>yyy="zzz">
+<xxx yyy<?= $x; ?>yyy="zzz">

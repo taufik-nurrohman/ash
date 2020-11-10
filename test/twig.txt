@@ -1,15 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html class dir="{{ site.direction }}" lang="{{ site.language }}">
   <head>
-    <title>Lorem Ipsum</title>
+    <meta charset="{{ site.charset }}">
+    <meta content="width=device-width" name="viewport">
+    <title>
+      {{ t|striptags }}
+    </title>
+    <link href="{{ url }}/favicon.ico" rel="icon">
+    <style>
+    :root {
+      background: #fff;
+      color: #000;
+    }
+    </style>
   </head>
   <body>
-    <ul id="navigation">
-    {% for item in navigation %}
-      <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
-    {% endfor %}
-    </ul>
-    <h1>Lorem Ipsum</h1>
-    {{ a_variable }}
+    <!-- Comment with Twig {{ constant('PHP_VERSION') }} code. -->
+    <header>
+    <h1>
+      {% if site.is('home') %}
+        <a href="{{ url }}">
+          {{ site.title }}
+        </a>
+      {% else %}
+        {{ site.title }}
+      {% endif %}
+    </h1>
+    <main>
+      {% for page in pages %}
+      <article id="{{ page.id }}">
+        <h2>
+          <a href="{{ page.url }}">
+            {{ page.title }}
+          </a>
+        </h2>
+        {{ page.content }}
+      </article>
+      {% endfor %}
+    </main>
+    <script>
+    console.log('Yo!');
+    </script>
   </body>
 </html>
