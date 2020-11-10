@@ -225,16 +225,15 @@
         ['\\b' + keys + '\\b', ['con']]
     ],
     expr = ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>)', [0, 'typ', token, 'typ']];
-    // PHP is quite complex, as every file with `.php` extension can be anything.
-    // Ash is file-oriented. Means that the syntax name tends to follow the
-    // associated file extension. A PHP file with a valid PHP syntax must contain
-    // at least `<?php` or `<?=` character.
-    // But we also need to allow user to highlight code snippet without `<?php`
-    // tag, for compatibility with other syntax highlighters.
+    // PHP is quite complex, because every file with `.php` extension can be anything.
+    // Ash is file-oriented. Means that the syntax name tends to follow the associated
+    // file extension. A PHP file with a valid PHP syntax must contain at least
+    // `<?php` or `<?=` character. But we also need to allow user(s) to highlight code
+    // snippet without `<?php` tag for compatibility with other syntax highlighter(s).
     $$.token.php = content => {
         let e = ['&(?:[a-zA-Z\\d]+|#x[a-fA-F\\d]+|#\\d+);', ['sym']];
         let a = ['(\\s+)([^\\s<>=/]+)(?:(=)(' + $$.STR + '|[^\\s<>=/]+))?', [0, 0, 'key', 'pun', 'val']],
-            o = ['(<)([^\\s<>/]+)(\\s[^<>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
+            o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
             c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']],
             data = ['(<!\\[CDATA\\[)([\\s\\S]*)(\\]\\]>)', [0, 'typ', 'val', 'typ']],
             comment = ['<!--[\\s\\S]*?-->', ['com']],
@@ -254,6 +253,9 @@
                 ['^(<)([^\\s<>/?]+)', [0, 'pun', 'nam']],
                 // Mark PHP code
                 expr,
+                // Mark value that is not yet highlighted due to
+                // PHP code that spans between attribute and value
+                [$$.STR, ['val']],
                 // Other(s) must be punctuation
                 [$$.PUN, ['pun']]
             ]]],

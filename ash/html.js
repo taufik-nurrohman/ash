@@ -1,13 +1,13 @@
 ($$ => {
     let e = ['&(?:[a-zA-Z\\d]+|#x[a-fA-F\\d]+|#\\d+);', ['sym']];
     let a = ['(\\s+)([^\\s<>=/]+)(?:(=)(' + $$.STR + '|[^\\s<>=/]+))?', [0, 0, 'key', 'pun', 'val']],
-        o = ['(<)([^\\s<>/]+)(\\s[^<>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
+        o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
         c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']];
     $$.token.html = [
         ['<!--[\\s\\S]*?-->', ['com']],
         ['<![^<>]+>', ['typ']],
-        ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 'token:js', [c]]],
-        ['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(</style>)', [0, [o], 'token:css', [c]]],
+        ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 't:js', [c]]],
+        ['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(</style>)', [0, [o], 't:css', [c]]],
         // Do not highlight content in `<template>` element
         ['(<template(?:\\s[^>]*)?>)([\\s\\S]*?)(</template>)', [0, [o], 'val', [c]]],
         // ditto
