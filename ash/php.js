@@ -243,7 +243,7 @@
         let mixed = /<\?(?:php(?=\\s)|=)?/.test(content);
         return mixed ? [
             // Capture HTML markup contains PHP expression
-            ['(<(?:<\\?[\\s\\S]*?\\?>|[^<>!?])+>)', [0, [
+            ['(<(?:<\\?[\\s\\S]*?\\?>|[^<>!?])+>)', ['mar', [
                 // Plain HTML markup
                 ['^' + o[0] + '$', o[1]],
                 ['^' + c[0] + '$', c[1]],
