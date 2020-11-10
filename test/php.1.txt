@@ -1,6 +1,110 @@
-$foo = 'bar';
+namespace Foo\Bar;
+
+use Foo\Bar;
+use Foo\{Bar,Baz,Qux};
+use Foo\Bar as Baz;
+use function foo;
+use const foo;
+use function foo as bar;
+use const foo as bar;
+
+/*
+ * comment
+ * comment
+ * comment
+ */
+
+define('FOO\BAR', 1);
+define("FOO\\BAR", 1);
 
 // comment
-function foo(array $bar) {
-    return baz($bar, [null, 'aaa', 1]);
+// comment
+// comment
+
+echo FOO\BAR . $baz . __DIR__;
+
+# comment
+# comment
+# comment
+
+class Foo extends Bar {
+    public $foo = 1;
+    public $bar = [];
+    public function __construct() {
+        $args = func_get_args();
+        $this->foo = $args[0];
+        $this->bar = (array) ($args[1] ?? []);
+        $this->{$bar} = TRUE;
+    }
+}
+
+$foo = array(1.5, true);
+$bar = (array) $foo;
+
+$$foo = 'bar';
+${$foo} = 'bar';
+
+$str = 'aaa
+  bbb
+ccc';
+
+$str = "aaa
+  bbb
+ccc";
+
+$str = "aaa\n  bbb\nccc";
+
+$str = <<<AAA
+aaa
+aaa
+aaa
+  bbb
+  bbb
+  bbb
+ccc
+ccc
+ccc
+AAA;
+
+$str = <<<'AAA'
+aaa
+aaa
+aaa
+  bbb
+  bbb
+  bbb
+ccc
+ccc
+ccc
+AAA;
+
+$str = <<<"AAA"
+aaa
+aaa
+aaa
+  bbb
+  bbb
+  bbb
+ccc
+ccc
+ccc
+AAA;
+
+$foo = new Foo;
+
+$bar = function(array $baz) {
+    return array_replace($baz, [null, null]);
+};
+
+echo $foo::class;
+
+echo Foo::class;
+
+namespace Foo\Bar\Baz;
+
+namespace Foo\Bar\Baz {
+    class Qux extends \Foo\Bar {}
+    function qux() {
+        return new Qux;
+    }
 }
