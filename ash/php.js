@@ -223,36 +223,44 @@
         [$$.PUN, ['pun']],
         // Other(s) must be constant
         ['\\b' + keys + '\\b', ['con']]
-    ];
+    ],
+    expr = ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>)', [0, 'typ', token, 'typ']];
     // PHP is quite complex, as every file with `.php` extension can be anything.
     // Ash is file-oriented. Means that the syntax name tends to follow the
     // associated file extension. A PHP file with a valid PHP syntax must contain
     // at least `<?php` or `<?=` character.
     // But we also need to allow user to highlight code snippet without `<?php`
     // tag, for compatibility with other syntax highlighters.
-    $$.token.php = function(content) {
+    $$.token.php = content => {
         let e = ['&(?:[a-zA-Z\\d]+|#x[a-fA-F\\d]+|#\\d+);', ['sym']];
         let a = ['(\\s+)([^\\s>=/]+)(?:(=)(' + $$.STR + '|[^\\s>=/]+))?', [0, 0, 'key', 'pun', 'val']],
             o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
             c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']],
+            data = ['(<!\\[CDATA\\[)([\\s\\S]*)(\\]\\]>)', [0, 'typ', 'val', 'typ']],
             comment = ['<!--[\\s\\S]*?-->', ['com']],
-            type = ['<![^<>]+>', ['typ']];
-        let isNative = /<\?(?:php(?=\\s)|=)?/.test(content);
-        return isNative ? [
+            type = ['<![^<>]+>', ['typ']],
+            xml = ['<\\?xml\\s+[\\s\\S]+\\?>', ['typ']];
+        let mixed = /<\?(?:php(?=\\s)|=)?/.test(content);
+        return mixed ? [
             // Capture HTML markup contains PHP expression
-            ['(<(?:[^<>?]*?<\\?(?:php(?=\\s)|=)?[\\s\\S]*?\\?>[^<>?]*?|[^<>?]*?)>)', ['mar', [
+            ['(<(?:<\\?[\\s\\S]*?\\?>|[^<>!?])+>)', [0, [
                 // Plain HTML markup
-                ['^' + comment[0] + '$', comment[1]],
-                ['^' + type[0] + '$', type[1]],
                 ['^' + o[0] + '$', o[1]],
                 ['^' + c[0] + '$', c[1]],
-                a, // Capture attribute(s) first to disable syntax highlighting PHP code in value
+                // Capture attribute(s) first to disable syntax
+                // highlighting of PHP code in the HTML value
+                a,
+                // Mark HTML tag name
                 ['^(<)([^\\s<>/]+)', [0, 'pun', 'nam']],
-                ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']],
+                // Mark PHP code
+                expr,
+                // Other(s) must be punctuation
                 [$$.PUN, ['pun']]
             ]]],
+            // Mark any PHP code in HTML content
             ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']],
-            comment, type,
+            // Mark other(s) native HTML markup
+            comment, data, type, xml,
             o, c, e
         ] : token;
     };
