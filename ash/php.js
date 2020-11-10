@@ -233,8 +233,8 @@
     // tag, for compatibility with other syntax highlighters.
     $$.token.php = content => {
         let e = ['&(?:[a-zA-Z\\d]+|#x[a-fA-F\\d]+|#\\d+);', ['sym']];
-        let a = ['(\\s+)([^\\s>=/]+)(?:(=)(' + $$.STR + '|[^\\s>=/]+))?', [0, 0, 'key', 'pun', 'val']],
-            o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
+        let a = ['(\\s+)([^\\s<>=/]+)(?:(=)(' + $$.STR + '|[^\\s<>=/]+))?', [0, 0, 'key', 'pun', 'val']],
+            o = ['(<)([^\\s<>/]+)(\\s[^<>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
             c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']],
             data = ['(<!\\[CDATA\\[)([\\s\\S]*)(\\]\\]>)', [0, 'typ', 'val', 'typ']],
             comment = ['<!--[\\s\\S]*?-->', ['com']],
