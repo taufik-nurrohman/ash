@@ -251,7 +251,7 @@
                 // highlighting of PHP code in the HTML value
                 a,
                 // Mark HTML tag name
-                ['^(<)([^\\s<>/]+)', [0, 'pun', 'nam']],
+                ['^(<)([^\\s<>/?]+)', [0, 'pun', 'nam']],
                 // Mark PHP code
                 expr,
                 // Other(s) must be punctuation
