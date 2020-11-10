@@ -240,14 +240,16 @@
         let isNative = /<\?(?:php(?=\\s)|=)?/.test(content);
         return isNative ? [
             // Capture HTML markup contains PHP expression
-            ['(<(?:[^<>?]*?<\\?(?:php(?=\\s)|=)?[\\s\\S]*?\\?>[^<>?]*?|[^<>?]*?)>)', [0, [
+            ['(<(?:[^<>?]*?<\\?(?:php(?=\\s)|=)?[\\s\\S]*?\\?>[^<>?]*?|[^<>?]*?)>)', ['mar', [
                 // Plain HTML markup
                 ['^' + comment[0] + '$', comment[1]],
                 ['^' + type[0] + '$', type[1]],
                 ['^' + o[0] + '$', o[1]],
                 ['^' + c[0] + '$', c[1]],
                 a, // Capture attribute(s) first to disable syntax highlighting PHP code in value
-                ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']]
+                ['^(<)([^\\s<>/]+)', [0, 'pun', 'nam']],
+                ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']],
+                [$$.PUN, ['pun']]
             ]]],
             ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']],
             comment, type,
