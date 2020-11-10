@@ -224,7 +224,7 @@
         // Other(s) must be constant
         ['\\b' + keys + '\\b', ['con']]
     ],
-    expr = ['(<\\?(?:php(?=\\s)|=)?)(([\\s\\S]*?))(\\?>)', [0, 'typ', ['t:php', token], 'typ']];
+    expr = ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>)', ['t:php', 'typ', token, 'typ']];
     // PHP is quite complex, because every file with `.php` extension can be anything.
     // Ash is file-oriented. Means that the syntax name tends to follow the associated
     // file extension. A PHP file with a valid PHP syntax must contain at least
@@ -260,7 +260,7 @@
                 [$$.PUN, ['pun']]
             ]]],
             // Mark any PHP code in HTML content
-            ['(<\\?(?:php(?=\\s)|=)?)(([\\s\\S]*?))(\\?>|$)', [0, 'typ', ['t:php', token], 'typ']],
+            ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', ['t:php', 'typ', token, 'typ']],
             // Mark other(s) native HTML markup
             comment, data, type, xml,
             ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 't:js', [c]]],
