@@ -146,10 +146,16 @@
         ['\\b' + key + '\\b', ['var']]
     ];
     $$.token.twig = [
-        ['\\{#[\\s\\S]*?#\\}', ['com']],
-        ['(\\{)(%)([\\s\\S]*?)(%)(\\})', [0, 'pun', 'pun', token, 'pun', 'pun']],
-        ['(\\{)(\\{)([\\s\\S]*?)(\\})(\\})', [0, 'pun', 'pun', token, 'pun', 'pun']],
+        ['(\\{#[\\s\\S]*?#\\})', ['t:twig', 'com']],
+        ['(\\{)(%)([\\s\\S]*?)(%)(\\})', ['t:twig', 'pun', 'pun', token, 'pun', 'pun']],
+        ['(\\{)(\\{)([\\s\\S]*?)(\\})(\\})', ['t:twig', 'pun', 'pun', token, 'pun', 'pun']],
         comment, data, type, xml,
+        ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 't:js', [c]]],
+        ['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(</style>)', [0, [o], 't:css', [c]]],
+        // Do not highlight content in `<template>` element
+        ['(<template(?:\\s[^>]*)?>)([\\s\\S]*?)(</template>)', [0, [o], 'val', [c]]],
+        // ditto
+        ['(<textarea(?:\\s[^>]*)?>)([\\s\\S]*?)(</textarea>)', [0, [o], 'val', [c]]],
         o, c, e
     ];
 })(ASH);
