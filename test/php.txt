@@ -118,7 +118,9 @@ ob_start();
   <?= $foo; ?>
 </div>
 <div class="<?= $foo ? 'bar' : 'baz'; ?>">
+  <!-- Show current date in a human readable style -->
   <?php echo date('Y-m-d H:i:s'); ?>
+  <!-- <?php var_dump($_GET); ?> -->
 </div>
 <?php
 

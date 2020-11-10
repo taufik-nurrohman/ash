@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lorem Ipsum</title>
+  </head>
+  <body>
+    <ul id="navigation">
+    {% for item in navigation %}
+      <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+    {% endfor %}
+    </ul>
+    <h1>Lorem Ipsum</h1>
+    {{ a_variable }}
+  </body>
+</html>

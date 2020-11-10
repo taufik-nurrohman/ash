@@ -234,16 +234,21 @@
         let e = ['&(?:[a-zA-Z\\d]+|#x[a-fA-F\\d]+|#\\d+);', ['sym']];
         let a = ['(\\s+)([^\\s>=/]+)(?:(=)(' + $$.STR + '|[^\\s>=/]+))?', [0, 0, 'key', 'pun', 'val']],
             o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
-            c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']];
+            c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']],
+            comment = ['<!--[\\s\\S]*?-->', ['com']],
+            type = ['<![^<>]+>', ['typ']];
         let isNative = /<\?(?:php(?=\\s)|=)?/.test(content);
         return isNative ? [
             // Capture HTML markup contains PHP expression
             ['(<(?:[^<>?]*?<\\?(?:php(?=\\s)|=)?[\\s\\S]*?\\?>[^<>?]*?|[^<>?]*?)>)', [0, [
+                ['^' + comment[0] + '$', comment[1]],
+                ['^' + type[0] + '$', type[1]],
                 ['^' + o[0] + '$', o[1]],
                 ['^' + c[0] + '$', c[1]],
                 ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']]
             ]]],
             ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', [0, 'typ', token, 'typ']],
+            comment, type,
             o, c, e
         ] : token;
     };
