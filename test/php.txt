@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html class dir="<?= $site->direction; ?>">
+<html class dir="<?= $site->direction; ?>" lang="<?= $site->language; ?>">
   <head>
     <meta charset="<?= $site->charset; ?>">
-    <title><?= $t; ?></title>
+    <meta content="width=device-width" name="viewport">
+    <title>
+      <?= $t; ?>
+    </title>
     <link href="<?= $url; ?>/favicon.ico" rel="icon">
     <style>
     :root {
@@ -12,9 +15,16 @@
     </style>
   </head>
   <body>
-    <!-- Comment with some PHP <?= PHP_VERSION; ?> expression. -->
+    <!-- Comment with PHP <?= PHP_VERSION; ?> code. -->
+    <header>
     <h1>
-      <?= $page->title; ?>
+      <?php if ($site->is('home')): ?>
+        <a href="<?= $url; ?>">
+          <?= $site->title; ?>
+        </a>
+      <?php else: ?>
+        <?= $site->title; ?>
+      <?php endif; ?>
     </h1>
     <main>
       <?php foreach ($pages as $page): ?>
