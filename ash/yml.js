@@ -12,10 +12,10 @@
         [$$.STR, ['val.str']],
         [$$.LOG, ['val.log']],
         // <https://yaml.org/type/bool.html>
-        ['\\b(?:y|Y|yes|Yes|YES|n|N|no|No|NO|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)\\b', ['val.log']],
+        ['\\b(?:[yY]|[yY]es|YES|[nN]|[nN]o|NO|True|TRUE|False|FALSE|[oO]n|ON|[oO]ff|OFF)\\b', ['val.log']],
         // `null`
         ['~', ['val.log']],
-        ['(-)(\\s)', [0, 'sym.bul', 0]],
+        ['(-)(\\s)', [0, 'pun', 0]],
         [$$.NUM, v => {
             return ['val.num.' + (-1 === v[0].indexOf('.') ? 'int' : 'flo')];
         }],
