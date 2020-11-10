@@ -1,4 +1,5 @@
 ($$ => {
+    let key = '[a-zA-Z][\\w_]*';
     // <https://twig.symfony.com/doc/3.x>
     let _filters = [
             'abs',
@@ -125,8 +126,10 @@
     let a = ['(\\s+)([^\\s>=/]+)(?:(=)(' + $$.STR + '|[^\\s>=/]+))?', [0, 0, 'key', 'pun', 'val']],
         o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
         c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']],
+        data = ['(<!\\[CDATA\\[)([\\s\\S]*)(\\]\\]>)', [0, 'typ', 'val', 'typ']],
         comment = ['<!--[\\s\\S]*?-->', ['com']],
-        type = ['<![^<>]+>', ['typ']];
+        type = ['<![^<>]+>', ['typ']],
+        xml = ['<\\?xml\\s+[\\s\\S]+\\?>', ['typ']];
     let token = [
         [$$.LOG, ['log']],
         ['\\b' + booleans + '\\b', ['log']],
@@ -135,15 +138,18 @@
         ['\\bend(?:' + _tags.join('|') + ')\\b', ['wor']],
         ['\\b' + words + '\\b', ['wor']],
         ['\\b' + functions + '\\b', ['fun']],
+        ['\\b(' + key + ')(\\.)(' + key + ')(\\()', [0, 'var', 'pun', 'fun', 'pun']],
+        ['\\b(' + key + ')(\\.)(' + key + ')\\b', [0, 'var', 'pun', 'key']],
+        ['\\b(' + key + ')(\\s*)(\\|)(\\s*)(' + key + ')\\b', [0, 'var', 0, 'pun', 0, 'fun']],
         [$$.PUN, ['pun']],
-        // Other(s) must be variable or constant
-        ['[a-zA-Z_$-][\\w_$-]*', ['var']]
+        // Other(s) must be variable
+        ['\\b' + key + '\\b', ['var']]
     ];
     $$.token.twig = [
         ['\\{#[\\s\\S]*?#\\}', ['com']],
-        ['(\\{%)([\\s\\S]*?)(%\\})', [0, 'typ', token, 'typ']],
-        ['(\\{\\{)([\\s\\S]*?)(\\}\\})', ['val', 0, token, 0]],
-        comment, type,
+        ['(\\{)(%)([\\s\\S]*?)(%)(\\})', [0, 'pun', 'pun', token, 'pun', 'pun']],
+        ['(\\{)(\\{)([\\s\\S]*?)(\\})(\\})', [0, 'pun', 'pun', token, 'pun', 'pun']],
+        comment, data, type, xml,
         o, c, e
     ];
 })(ASH);
