@@ -45,7 +45,8 @@ pre .ash {
   color: crimson;
 }
 
-.ash .cla {
+.ash .cla,
+.ash .nam {
   color: darkolivegreen;
 }
 

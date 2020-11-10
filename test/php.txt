@@ -117,6 +117,9 @@ ob_start();
 <div class="foo">
   <?= $foo; ?>
 </div>
+<div class="<?= $foo ? 'bar' : 'baz'; ?>">
+  <?php echo date('Y-m-d H:i:s'); ?>
+</div>
 <?php
 
 echo ob_get_clean();
