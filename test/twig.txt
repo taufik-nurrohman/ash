@@ -26,6 +26,7 @@
         {{ site.title }}
       {% endif %}
     </h1>
+    {# A comment. #}
     <main>
       {% for page in pages %}
       <article id="{{ page.id }}">
