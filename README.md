@@ -14,7 +14,7 @@ Ash aims to solve problems related to client-side syntax highlighter file size w
 Release Notes
 -------------
 
-### main
+### 0.0.3
 
  - Improved PHP syntax highlighter to mark PHP code that spans in a HTML tag.
  - Added CSV, TSV, and Twig syntax highlighter.

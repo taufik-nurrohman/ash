@@ -1,6 +1,6 @@
 /*!
  * ==============================================================
- *  ASYNCHRONOUS SYNTAX HIGHLIGHTER 0.0.2
+ *  ASYNCHRONOUS SYNTAX HIGHLIGHTER 0.0.3
  * ==============================================================
  * Author: Taufik Nurrohman <https://github.com/taufik-nurrohman>
  * License: MIT
@@ -240,7 +240,7 @@
 
         $$[token] = {};
 
-        $$.version = '0.0.2';
+        $$.version = '0.0.3';
 
         $$.x = '!$^*()-=+[]{}\\|:<>,./?'; // Escape character(s)
 
