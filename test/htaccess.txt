@@ -3,12 +3,12 @@ AddDefaultCharset UTF-8
 
 # Block access to directories without a default document.
 <IfModule mod_autoindex.c>
-  options -Indexes
+  Options -Indexes
 </IfModule>
 
 # Block access to `.htaccess` file.
 <Files .htaccess>
-  deny from all
+  Deny from all
 </Files>
 
 <IfModule mod_gzip.c>
