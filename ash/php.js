@@ -157,8 +157,8 @@
             // Capture HTML markup contains PHP expression
             ['(<(?:<\\?[\\s\\S]*?\\?>|[^<>!?])+>)', ['mar', [
                 // Plain HTML markup
-                ['^' + o[0] + '$', o[1]],
-                ['^' + c[0] + '$', c[1]],
+                ['^()' + o[0] + '$', o[1]],
+                ['^()' + c[0] + '$', c[1]],
                 // Capture attribute(s) first to disable syntax
                 // highlighting of PHP code in the HTML value
                 a,
