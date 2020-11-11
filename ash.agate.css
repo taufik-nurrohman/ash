@@ -38,24 +38,26 @@ pre .ash {
 }
 
 .ash .exp,
-.ash .uri,
-.ash .que .pse {
+.ash .que .pse,
+.ash .uri {
   color: #c6b4f0;
 }
 
 .ash .cla,
+.ash .key,
 .ash .nam,
 .ash .quo {
   color: #ffa;
 }
 
 .ash .mar,
+.ash .mar .key,
+.ash .mar .nam,
 .ash .sec {
   color: #62c8f3;
 }
 
 .ash .mar .nam {
-  color: inherit;
   font-weight: bold;
 }
 
@@ -65,15 +67,10 @@ pre .ash {
 
 .ash .fun,
 .ash .lib,
-.ash .mar .key,
-.ash .val,
 .ash .que .cla,
-.ash .que .id {
+.ash .que .id,
+.ash .val {
   color: #ade5fc;
-}
-
-.ash .key {
-  color: #ffa;
 }
 
 .ash .num,
