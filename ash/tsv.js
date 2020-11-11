@@ -3,10 +3,10 @@
         // This token was added to exclude single-quote and back-tick string variant
         ['[\'`]', [0]],
         [$$.STR, [0]], // Skip
-        ['[,]', ['sym.sep']],
+        ['[\\t]', ['sym.sep']],
         ['\\\\[nt]', ['sym']]
     ]]];
-    $$.token.csv = [
+    $$.token.tsv = [
         ['^' + record[0], ['sec', record[1][1]]],
         record
     ];

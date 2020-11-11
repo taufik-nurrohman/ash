@@ -5,6 +5,10 @@
   text-align: left;
 }
 
+.ash [class^="t:"] {
+  color: black;
+}
+
 pre .ash {
   border: 1px solid;
   display: block;

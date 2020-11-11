@@ -1,20 +1,14 @@
 ($$ => {
     let key = '(?:[a-zA-Z_$][\\w$]*)';
     let classes = '(?:' + [
-        'Array',
-        'ArrayBuffer',
+        'Array(?:Buffer)?',
         'Boolean',
         'DataView',
         'Date',
-        'Error',
-        'EvalError',
-        'Float32Array',
-        'Float64Array',
+        '(?:Eval|Internal|Range|Reference|Syntax|Type|URI)?Error',
+        'Float(?:32|64)Array',
         'Function',
-        'Int16Array',
-        'Int32Array',
-        'Int8Array',
-        'InternalError',
+        'Int(?:16|32|8)Array',
         'Intl',
         'JSON',
         'Map',
@@ -23,29 +17,19 @@
         'Object',
         'Promise',
         'Proxy',
-        'RangeError',
-        'ReferenceError',
         'Reflect',
         'RegExp',
         'Set',
         'String',
         'Symbol',
-        'SyntaxError',
-        'TypeError',
-        'Uint16Array',
-        'Uint32Array',
-        'Uint8Array',
-        'Uint8ClampedArray',
-        'URIError',
-        'WeakSet',
-        'WeakMap',
-        'XMLHttpRequest'
+        'Uint(?:16|32|8(?:Clamped)?)Array',
+        'Weak(?:Set|Map)',
+        'XMLHttpRequest2?'
     ].join('|') + ')';
     let vars = '(?:' + [
         'console',
         'document',
-        'global',
-        'globalThis',
+        'global(?:This)?',
         'location',
         'navigator',
         'opener',
@@ -121,7 +105,7 @@
         'with',
         'yield',
     ].join('|') + ')';
-    let a = ['(\\s+)([^\\s>=/]+)(?:(=)(' + $$.STR + '|[^\\s>=/]+))?', [0, 0, 'key', 'pun', 'val']],
+    let a = ['(\\s+)([^\\s<>=/]+)(?:(=)(' + $$.STR + '|[^\\s<>=/]+))?', [0, 0, 'key', 'pun', 'val']],
         o = ['(<)([^\\s<>/]+)(\\s[^>]*?)?(/)?(>)', ['mar', 'pun', 'nam', [a], 'pun', 'pun']],
         c = ['(<)(/)([^\\s<>/]+)(>)', ['mar', 'pun', 'pun', 'nam', 'pun']];
     $$.token.js = [

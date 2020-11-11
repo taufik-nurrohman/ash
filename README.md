@@ -17,7 +17,7 @@ Release Notes
 ### main
 
  - Improved PHP syntax highlighter to mark PHP code that spans in a HTML tag.
- - Added CSV and Twig syntax highlighter.
+ - Added CSV, TSV, and Twig syntax highlighter.
 
 ### 0.0.2
 
