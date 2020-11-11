@@ -8,7 +8,7 @@ AddDefaultCharset UTF-8
 
 # Block access to `.htaccess` file.
 <Files .htaccess>
-  Deny from all
+  deny from all
 </Files>
 
 <IfModule mod_gzip.c>

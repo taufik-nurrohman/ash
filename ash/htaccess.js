@@ -2,7 +2,7 @@
     $$.token.htaccess = [
         ['#[^\\n]+', ['com']],
         ['<[^<>]+>', ['sec']],
-        ['([a-zA-Z][\\w]*)(\\s+)((?:\\\\\\n|[^\\n])+)', [0, 'key', 0, [
+        ['(^|\\n)([ \\t]*)([a-zA-Z][\\w]*)(\\s+)((?:\\\\\\n|[^\\n])+)', [0, 0, 0, 'key', 0, [
             [$$.LOG, ['log']],
             ['\\b(?:[aA]llow|[dD]eny|False|[nN]o|Null|[oO]ff|[oO]n|True|[yY]es)\\b', ['log']],
             [$$.STR, ['str']],

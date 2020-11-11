@@ -1,7 +1,7 @@
 ($$ => {
     $$.token.json = [
-        // This rule was added just to skip the string variant matching that uses single-quote and back-tick character
-        // The only string variant that is valid for JSON is double-quote
+        // This rule was added to skip the single-quote and back-tick string variant
+        // The only string variant that is valid for JSON file is double-quote
         ['[\'`]', ['pun']],
         ['(' + $$.STR + ')(\\s*)(:)', [0, 'key', 0, 'pun']],
         [$$.STR, ['val.str']],
