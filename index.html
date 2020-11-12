@@ -435,40 +435,45 @@ ASH.token.ts = ASH.token.js;</code></pre>
             skins = form.skin,
             view = doc.querySelector('pre'),
             grammars = form.grammars;
-        form.addEventListener('submit', e => {
-            let code = doc.createElement('code');
-            code.className = grammars.value.split('.')[0];
-            code.textContent = content.value;
-            view.innerHTML = "";
-            view.appendChild((new ASH(code)).source);
-            e.preventDefault();
-        });
-        grammars.addEventListener('change', () => {
+        function onChangeGrammar() {
             win.fetch('test/' + grammars.value + '.txt').then(response => response.ok && response.text()).then(text => {
                 content.value = text;
                 form.submit.click();
             }).catch(e => {
                 content.value = e;
             });
-        });
-        skins.addEventListener('change', () => {
+        }
+        function onChangeSkin() {
             let parts = skin.href.split('/'),
                 n = skins.value;
             parts.pop();
             skin.href = parts.join('/') + '/ash' + (n ? '.' + n : "") + '.css?v=' + Date.now();
-        });
-        toggle.addEventListener('change', () => {
+        }
+        function onChangeToggle() {
             root.classList[toggle.checked ? 'add' : 'remove']('inspect');
-        });
+        }
+        function onSubmitForm(e) {
+            let code = doc.createElement('code');
+            code.className = grammars.value.split('.')[0];
+            code.textContent = content.value;
+            view.innerHTML = "";
+            view.appendChild((new ASH(code)).source);
+            e.preventDefault();
+        }
         let hash = win.location.hash.replace('#', "");
         if (hash) {
             let parts = hash.split(':');
             parts[0] && (grammars.value = parts[0]);
             parts[1] && (skins.value = parts[1]);
         }
-        if (toggle.checked) {
-            root.classList.add('inspect');
-        }
+        form.addEventListener('submit', onSubmitForm);
+        grammars.addEventListener('change', onChangeGrammar);
+        skins.addEventListener('change', onChangeSkin);
+        toggle.addEventListener('change', onChangeToggle);
+        // Handle window refresh
+        grammars.value && onChangeGrammar();
+        skins.value && onChangeSkin();
+        toggle.checked && onChangeToggle();
     })(window, document);
     </script>
   </body>

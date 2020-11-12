@@ -95,6 +95,7 @@
     let b = 'class|extends|implements|interface|new|trait|use';
     let token = [
         ['/\\*[\\s\\S]*?\\*/', ['com.s0']],
+        ['(__halt_compiler)(\\s*)(\\()(\\s*)(\\))(;?)([\\s\\S]*?)$', [0, 'fun.lib', 0, 'pun', 0, 'pun', 'pun', 'com.s3']],
         ['//[^\\n]+', ['com.s1']],
         ['#[^\\n]+', ['com.s2']],
         ['(<<<)([A-Z_][A-Z\\d_]*)([\\s\\S]*?)(\\2)', ['str.s3']],
@@ -125,6 +126,7 @@
         // Magic constant <https://www.php.net/manual/en/language.constants.predefined.php>
         ['\\b__(?:' + [
             'CLASS',
+            'COMPILER_HALT_OFFSET',
             'DIR',
             'FILE',
             'FUNCTION',
@@ -152,13 +154,18 @@
             comment = ['<!--[\\s\\S]*?-->', ['com']],
             type = ['<![^<>]+>', ['typ']],
             xml = ['<\\?xml\\s+[\\s\\S]+\\?>', ['typ']];
-        let mixed = /<\?(?:php(?=\\s)|=)?/.test(content);
-        return mixed ? [
+        return /<\?(?:php(?=\\s)|=)?/.test(content) ? [
+            ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 't:js', [c]]],
+            ['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(</style>)', [0, [o], 't:css', [c]]],
+            // Do not highlight content in `<template>` element
+            ['(<template(?:\\s[^>]*)?>)([\\s\\S]*?)(</template>)', [0, [o], 'val', [c]]],
+            // ditto
+            ['(<textarea(?:\\s[^>]*)?>)([\\s\\S]*?)(</textarea>)', [0, [o], 'val', [c]]],
             // Capture HTML markup contains PHP expression
             ['(<(?:<\\?[\\s\\S]*?\\?>|[^<>!?])+>)', ['mar', [
                 // Plain HTML markup
-                ['^' + o[0] + '$', o[1]],
-                ['^' + c[0] + '$', c[1]],
+                ['^' + o[0] + '$', [0, 'pun', 'nam', [a], 'pun', 'pun']],
+                ['^' + c[0] + '$', [0, 'pun', 'pun', 'nam', 'pun']],
                 // Capture attribute(s) first to disable syntax
                 // highlighting of PHP code in the HTML value
                 a,
@@ -176,12 +183,6 @@
             ['(<\\?(?:php(?=\\s)|=)?)([\\s\\S]*?)(\\?>|$)', ['t:php', 'typ', token, 'typ']],
             // Mark other(s) native HTML markup
             comment, data, type, xml,
-            ['(<script(?:\\s[^>]*)?>)([\\s\\S]*?)(</script>)', [0, [o], 't:js', [c]]],
-            ['(<style(?:\\s[^>]*)?>)([\\s\\S]*?)(</style>)', [0, [o], 't:css', [c]]],
-            // Do not highlight content in `<template>` element
-            ['(<template(?:\\s[^>]*)?>)([\\s\\S]*?)(</template>)', [0, [o], 'val', [c]]],
-            // ditto
-            ['(<textarea(?:\\s[^>]*)?>)([\\s\\S]*?)(</textarea>)', [0, [o], 'val', [c]]],
             o, c, e
         ] : token;
     };
