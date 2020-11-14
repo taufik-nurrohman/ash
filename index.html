@@ -96,7 +96,7 @@
         </p>
         <p style="overflow: hidden;">
           <select name="grammars">
-            <option disabled selected>Syntax&hellip;</option>
+            <option disabled selected value="">Syntax&hellip;</option>
             <option value="test">Generic Pattern Test</option>
             <option value="htaccess">Apache</option>
             <option value="css">CSS</option>
@@ -426,7 +426,7 @@ ASH.token.ts = ASH.token.js;</code></pre>
     </footer>
     <script src="ash.js"></script>
     <script>
-      ((win, doc) => {
+    ((win, doc) => {
         let form = doc.forms[0],
             content = form.content,
             toggle = doc.querySelector('input[type=checkbox]'),
